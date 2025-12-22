@@ -21,7 +21,7 @@ module exunit_mul
    output wire 			 kill_speculative
    );
 
-   reg 			       busy;
+   reg 			       busy /* verilator public */;
    
    assign rob_we = busy;
    assign rrf_we = busy & dstval;

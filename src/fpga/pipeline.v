@@ -15,12 +15,14 @@ module pipeline
    output wire [`ADDR_LEN-1:0] 	dmem_addr,
    input wire [`DATA_LEN-1:0] 	dmem_data
    );
-   wire  stall_IF;
-   wire  kill_IF;
-   wire  stall_ID;
-   wire  kill_ID;
-   wire  stall_DP;
-   wire  kill_DP;
+
+   
+   wire  stall_IF /* verilator public */; 
+   wire  kill_IF  /* verilator public */;
+   wire  stall_ID /* verilator public */;
+   wire  kill_ID  /* verilator public */;
+   wire  stall_DP /* verilator public */;
+   wire  kill_DP  /* verilator public */;
 //   reg [`ADDR_LEN-1:0] pc;
 
    //IF
@@ -33,14 +35,14 @@ module pipeline
    wire [`GSH_BHR_LEN-1:0] bhr;
    
    //Instruction Buffer
-   reg 			   prcond_if;
-   reg [`ADDR_LEN-1:0] 	   npc_if;
-   reg [`ADDR_LEN-1:0] 	   pc_if;
-   reg [`INSN_LEN-1:0] 	   inst1_if;
-   reg [`INSN_LEN-1:0] 	   inst2_if;
-   reg 			           inv1_if;
-   reg 			           inv2_if;
-   reg [`GSH_BHR_LEN-1:0]  bhr_if;  /// reg 			   bhr_if;
+   reg 			   prcond_if /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	   npc_if /* verilator public */ ;
+   reg [`ADDR_LEN-1:0] 	   pc_if /* verilator public */  ; 
+   reg [`INSN_LEN-1:0] 	   inst1_if /* verilator public */  ;
+   reg [`INSN_LEN-1:0] 	   inst2_if /* verilator public */   ;
+   reg 			           inv1_if /* verilator public */  ;
+   reg 			           inv2_if /* verilator public */   ;
+   reg [`GSH_BHR_LEN-1:0]  bhr_if /* verilator public */  ;  /// reg 			   bhr_if;
    wire 		           attachable;
 
    //ID
@@ -95,63 +97,63 @@ module pipeline
    
    //Latch
    //Decode Info1
-   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_1_id;
-   reg [`REG_SEL-1:0] 		rs1_1_id;
-   reg [`REG_SEL-1:0] 		rs2_1_id;
-   reg [`REG_SEL-1:0] 		rd_1_id;
-   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_1_id;
-   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_1_id;
-   reg 				wr_reg_1_id;
-   reg 				uses_rs1_1_id;
-   reg 				uses_rs2_1_id;
-   reg 				illegal_instruction_1_id;
-   reg [`ALU_OP_WIDTH-1:0] 	alu_op_1_id;
-   reg [`RS_ENT_SEL-1:0] 	rs_ent_1_id;
-   reg [2:0] 			dmem_size_1_id;
-   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_1_id;			  
-   reg [`MD_OP_WIDTH-1:0] 	md_req_op_1_id;
-   reg 				md_req_in_1_signed_1_id;
-   reg 				md_req_in_2_signed_1_id;
-   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_1_id;
+   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		rs1_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		rs2_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		rd_1_id /* verilator public */;                         
+   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_1_id /* verilator public */;                         
+   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_1_id /* verilator public */;                         
+   reg 				wr_reg_1_id /* verilator public */;                         
+   reg 				uses_rs1_1_id /* verilator public */;                         
+   reg 				uses_rs2_1_id /* verilator public */;                         
+   reg 				illegal_instruction_1_id /* verilator public */;                         
+   reg [`ALU_OP_WIDTH-1:0] 	alu_op_1_id /* verilator public */;                         
+   reg [`RS_ENT_SEL-1:0] 	rs_ent_1_id /* verilator public */;                         
+   reg [2:0] 			dmem_size_1_id /* verilator public */;                         
+   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_1_id /* verilator public */;			                           
+   reg [`MD_OP_WIDTH-1:0] 	md_req_op_1_id /* verilator public */;                         
+   reg 				md_req_in_1_signed_1_id /* verilator public */;                         
+   reg 				md_req_in_2_signed_1_id /* verilator public */;                         
+   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_1_id /* verilator public */;                         
    //Decode Info2
-   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_2_id;
-   reg [`REG_SEL-1:0] 		rs1_2_id;
-   reg [`REG_SEL-1:0] 		rs2_2_id;
-   reg [`REG_SEL-1:0] 		rd_2_id;
-   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2_id;
-   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2_id;
-   reg 				wr_reg_2_id;
-   reg 				uses_rs1_2_id;
-   reg 				uses_rs2_2_id;
-   reg 				illegal_instruction_2_id;
-   reg [`ALU_OP_WIDTH-1:0] 	alu_op_2_id;
-   reg [`RS_ENT_SEL-1:0] 	rs_ent_2_id;
-   reg [2:0] 			dmem_size_2_id;
-   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2_id;			  
-   reg [`MD_OP_WIDTH-1:0] 	md_req_op_2_id;
-   reg 				md_req_in_1_signed_2_id;
-   reg 				md_req_in_2_signed_2_id;
-   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_2_id;
+   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_2_id  /* verilator public */;                   
+   reg [`REG_SEL-1:0] 		rs1_2_id  /* verilator public */;                   
+   reg [`REG_SEL-1:0] 		rs2_2_id  /* verilator public */;                   
+   reg [`REG_SEL-1:0] 		rd_2_id  /* verilator public */;                   
+   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2_id  /* verilator public */;                   
+   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2_id  /* verilator public */;                   
+   reg 				wr_reg_2_id  /* verilator public */;                   
+   reg 				uses_rs1_2_id  /* verilator public */;                   
+   reg 				uses_rs2_2_id  /* verilator public */;                   
+   reg 				illegal_instruction_2_id  /* verilator public */;                   
+   reg [`ALU_OP_WIDTH-1:0] 	alu_op_2_id  /* verilator public */;                   
+   reg [`RS_ENT_SEL-1:0] 	rs_ent_2_id  /* verilator public */;                   
+   reg [2:0] 			dmem_size_2_id  /* verilator public */;                   
+   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2_id  /* verilator public */;			                     
+   reg [`MD_OP_WIDTH-1:0] 	md_req_op_2_id  /* verilator public */;                   
+   reg 				md_req_in_1_signed_2_id  /* verilator public */;                   
+   reg 				md_req_in_2_signed_2_id  /* verilator public */;                   
+   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_2_id  /* verilator public */;                   
    //Additional Info
-   reg 				rs1_2_eq_dst1_id;
-   reg 				rs2_2_eq_dst1_id;
-   reg [`SPECTAG_LEN-1:0] 	sptag1_id;
-   reg [`SPECTAG_LEN-1:0] 	sptag2_id;
-   reg [`SPECTAG_LEN-1:0] 	tagreg_id;
-   reg 				spec1_id;
-   reg 				spec2_id;
-   reg [`INSN_LEN-1:0] 		inst1_id;
-   reg [`INSN_LEN-1:0] 		inst2_id;
-   reg 				prcond1_id;
-   reg 				prcond2_id;
-   reg 				inv1_id;
-   reg 				inv2_id;
-   reg [`ADDR_LEN-1:0] 		praddr1_id;
-   reg [`ADDR_LEN-1:0] 		praddr2_id;
-   reg [`ADDR_LEN-1:0] 		pc_id;
-   reg [`GSH_BHR_LEN-1:0] 	bhr_id;
-   reg 				isbranch1_id;
-   reg 				isbranch2_id;
+   reg 				rs1_2_eq_dst1_id   /* verilator public */;
+   reg 				rs2_2_eq_dst1_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	sptag1_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	sptag2_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	tagreg_id   /* verilator public */;
+   reg 				spec1_id   /* verilator public */;
+   reg 				spec2_id   /* verilator public */;
+   reg [`INSN_LEN-1:0] 		inst1_id   /* verilator public */;
+   reg [`INSN_LEN-1:0] 		inst2_id   /* verilator public */;
+   reg 				prcond1_id   /* verilator public */;
+   reg 				prcond2_id   /* verilator public */;
+   reg 				inv1_id   /* verilator public */;
+   reg 				inv2_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		praddr1_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		praddr2_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		pc_id   /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	bhr_id   /* verilator public */;
+   reg 				isbranch1_id   /* verilator public */;
+   reg 				isbranch2_id   /* verilator public */;
 
    //DP
    //Source Operand Manager wire
@@ -350,34 +352,34 @@ module pipeline
    wire 		       robwe_alu1;
    wire 		       kill_speculative_alu1;
 
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu1;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu1;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_alu1;
-   reg [`DATA_LEN-1:0] 	       buf_imm_alu1;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu1;
-   reg 			       buf_dstval_alu1;
-   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu1;
-   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu1;
-   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu1;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu1;
-   reg 			       buf_specbit_alu1;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu1     /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu1     /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_pc_alu1     /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_imm_alu1     /* verilator public */;
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu1     /* verilator public */;
+   reg 			       buf_dstval_alu1     /* verilator public */;
+   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu1     /* verilator public */;
+   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu1     /* verilator public */;
+   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu1     /* verilator public */;
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu1     /* verilator public */;
+   reg 			       buf_specbit_alu1     /* verilator public */;
    //ALU2
    wire [`DATA_LEN-1:0]        result_alu2;
    wire 		       rrfwe_alu2;
    wire 		       robwe_alu2;
    wire 		       kill_speculative_alu2;
 
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu2;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu2;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_alu2;
-   reg [`DATA_LEN-1:0] 	       buf_imm_alu2;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu2;
-   reg 			       buf_dstval_alu2;
-   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu2;
-   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu2;
-   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu2;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu2;
-   reg 			       buf_specbit_alu2;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu2 /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu2 /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_pc_alu2 /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_imm_alu2 /* verilator public */;
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu2 /* verilator public */;
+   reg 			       buf_dstval_alu2 /* verilator public */;
+   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu2 /* verilator public */;
+   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu2 /* verilator public */;
+   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu2 /* verilator public */;
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu2 /* verilator public */;
+   reg 			       buf_specbit_alu2 /* verilator public */;
 
    //LDST
    wire [`DATA_LEN-1:0]        result_ldst;
@@ -403,14 +405,14 @@ module pipeline
    wire [`ADDR_LEN-1:0]        storeaddr;
    wire 		       stfin;
    
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_ldst;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_ldst;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_ldst;
-   reg [`DATA_LEN-1:0] 	       buf_imm_ldst;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_ldst;
-   reg 			       buf_dstval_ldst;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_ldst;
-   reg 			       buf_specbit_ldst;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_ldst /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_ldst /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_pc_ldst /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_imm_ldst /* verilator public */;
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_ldst /* verilator public */;
+   reg 			       buf_dstval_ldst /* verilator public */;
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_ldst /* verilator public */;
+   reg 			       buf_specbit_ldst /* verilator public */;
 
    //MUL
    wire [`DATA_LEN-1:0]        result_mul;
@@ -418,16 +420,16 @@ module pipeline
    wire 		       robwe_mul;
    wire 		       kill_speculative_mul;
 
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_mul;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_mul;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_mul;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_mul;
-   reg 			       buf_dstval_mul;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_mul;
-   reg 			       buf_specbit_mul;
-   reg 			       buf_src1_signed_mul;
-   reg 			       buf_src2_signed_mul;
-   reg 			       buf_sel_lohi_mul;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_mul /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_mul /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_pc_mul /* verilator public */;
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_mul /* verilator public */;
+   reg 			       buf_dstval_mul /* verilator public */;
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_mul /* verilator public */;
+   reg 			       buf_specbit_mul /* verilator public */;
+   reg 			       buf_src1_signed_mul /* verilator public */;
+   reg 			       buf_src2_signed_mul /* verilator public */;
+   reg 			       buf_sel_lohi_mul /* verilator public */;
    
    //BRANCH
    wire 		       prmiss;
@@ -441,17 +443,17 @@ module pipeline
    wire 		       rrfwe_branch;
    wire 		       robwe_branch;
    
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_branch;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_branch;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_branch;
-   reg [`DATA_LEN-1:0] 	       buf_imm_branch;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_branch;
-   reg 			       buf_dstval_branch;
-   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_branch;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_branch;
-   reg 			       buf_specbit_branch;
-   reg [`ADDR_LEN-1:0] 	       buf_praddr_branch;
-   reg [6:0] 		       buf_opcode_branch;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_branch /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_branch /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_pc_branch /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_imm_branch /* verilator public */;
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_branch /* verilator public */;
+   reg 			       buf_dstval_branch /* verilator public */;
+   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_branch /* verilator public */;
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_branch /* verilator public */;
+   reg 			       buf_specbit_branch /* verilator public */;
+   reg [`ADDR_LEN-1:0] 	       buf_praddr_branch /* verilator public */;
+   reg [6:0] 		       buf_opcode_branch /* verilator public */;
    
    //miss prediction fix table
    wire [`SPECTAG_LEN-1:0] mpft_valid;

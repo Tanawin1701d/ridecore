@@ -13,10 +13,10 @@ module rrf_freelistmanager
    output wire [`RRF_SEL-1:0] rename_dst2,
    output wire 		      allocatable,
    input wire 		      stall_DP, //= ~allocatable && ~prmiss
-   output reg [`RRF_SEL:0]    freenum,
-   output reg [`RRF_SEL-1:0]  rrfptr,
+   output reg [`RRF_SEL:0]    freenum /* verilator public */,
+   output reg [`RRF_SEL-1:0]  rrfptr /* verilator public */,
    input wire [`RRF_SEL-1:0]  comptr,
-   output reg 		      nextrrfcyc
+   output reg 		      nextrrfcyc /* verilator public */
    );
    
    wire [1:0] 		      reqnum = {1'b0, ~invalid1} + {1'b0, ~invalid2};

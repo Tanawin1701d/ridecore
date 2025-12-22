@@ -28,7 +28,7 @@ module exunit_branch
    output wire [`SPECTAG_LEN-1:0] tagregfix
    );
 
-   reg 			       busy;
+   reg 			       busy /* verilator public */;
    
    wire [`DATA_LEN-1:0]        comprslt;
    wire 		       addrmatch = (jmpaddr == praddr) ? 1'b1 : 1'b0;

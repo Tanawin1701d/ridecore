@@ -25,17 +25,17 @@ module rs_branch_ent
    input wire 			  we,
    output wire [`DATA_LEN-1:0] 	  ex_src1,
    output wire [`DATA_LEN-1:0] 	  ex_src2,
-   output wire 			  ready,
-   output reg [`ADDR_LEN-1:0] 	  pc,
-   output reg [`DATA_LEN-1:0] 	  imm,
-   output reg [`RRF_SEL-1:0] 	  rrftag,
-   output reg 			  dstval,
-   output reg [`ALU_OP_WIDTH-1:0] alu_op,
-   output reg [`SPECTAG_LEN-1:0]  spectag,
-   output reg [`GSH_BHR_LEN-1:0]  bhr,
-   output reg 			  prcond,
-   output reg [`ADDR_LEN-1:0] 	  praddr,
-   output reg [6:0] 		  opcode,
+   output wire 			  ready                 /* verilator public */,
+   output reg [`ADDR_LEN-1:0] 	  pc            /* verilator public */,
+   output reg [`DATA_LEN-1:0] 	  imm           /* verilator public */,
+   output reg [`RRF_SEL-1:0] 	  rrftag        /* verilator public */,
+   output reg 			  dstval                /* verilator public */,
+   output reg [`ALU_OP_WIDTH-1:0] alu_op        /* verilator public */,
+   output reg [`SPECTAG_LEN-1:0]  spectag       /* verilator public */,
+   output reg [`GSH_BHR_LEN-1:0]  bhr           /* verilator public */,
+   output reg 			  prcond                /* verilator public */,
+   output reg [`ADDR_LEN-1:0] 	  praddr        /* verilator public */,
+   output reg [6:0] 		  opcode            /* verilator public */,
    //EXRSLT
    input wire [`DATA_LEN-1:0] 	  exrslt1,
    input wire [`RRF_SEL-1:0] 	  exdst1,
@@ -54,10 +54,10 @@ module rs_branch_ent
    input wire 			  kill_spec5
    );
 
-   reg [`DATA_LEN-1:0] 		  src1;
-   reg [`DATA_LEN-1:0] 		  src2;
-   reg 				  valid1;
-   reg 				  valid2;
+   reg [`DATA_LEN-1:0] 		  src1 /* verilator public */;
+   reg [`DATA_LEN-1:0] 		  src2 /* verilator public */;
+   reg 				  valid1 /* verilator public */;
+   reg 				  valid2 /* verilator public */;
 
    wire [`DATA_LEN-1:0] 	  nextsrc1;
    wire [`DATA_LEN-1:0] 	  nextsrc2;   
@@ -164,7 +164,7 @@ module rs_branch
    //System
    input wire 			     clk,
    input wire 			     reset,
-   output reg [`BRANCH_ENT_NUM-1:0]  busyvec,
+   output reg [`BRANCH_ENT_NUM-1:0]  busyvec /* verilator public */,
    input wire 			     prmiss,
    input wire 			     prsuccess,
    input wire [`SPECTAG_LEN-1:0]     prtag,
@@ -302,7 +302,7 @@ module rs_branch
    wire [`ADDR_LEN-1:0] 	     praddr_3;
    wire [6:0] 			     opcode_3;
    
-   reg [`BRANCH_ENT_NUM-1:0] 	     specbitvec;
+   reg [`BRANCH_ENT_NUM-1:0] 	     specbitvec /* verilator public */;
 
    wire [`BRANCH_ENT_NUM-1:0] 	     inv_vector =
 				     {(spectag_3 & specfixtag) == 0 ? 1'b1 : 1'b0,

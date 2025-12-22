@@ -45,8 +45,8 @@ module rrf(
 	   input wire 		       dpen2
 	   );
 
-   reg [`RRF_NUM-1:0] 		       valid;
-   reg [`DATA_LEN-1:0] 		       datarr [0:`RRF_NUM-1];
+   reg [`RRF_NUM-1:0] 		       valid /* verilator public */;
+   reg [`DATA_LEN-1:0] 		       datarr [0:`RRF_NUM-1] /* verilator public */;
 
    assign rs1_1data = datarr[rs1_1tag];
    assign rs2_1data = datarr[rs2_1tag];

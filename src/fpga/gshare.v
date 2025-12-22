@@ -47,12 +47,12 @@ module gshare_predictor
    input wire [`SPECTAG_LEN-1:0] spectagnow
    );
 
-   reg [`GSH_BHR_LEN-1:0] 	 bhr0;
-   reg [`GSH_BHR_LEN-1:0] 	 bhr1;
-   reg [`GSH_BHR_LEN-1:0] 	 bhr2;
-   reg [`GSH_BHR_LEN-1:0] 	 bhr3;
-   reg [`GSH_BHR_LEN-1:0] 	 bhr4;
-   wire [`GSH_BHR_LEN-1:0] 	 bhr_fix;
+   reg [`GSH_BHR_LEN-1:0] 	 bhr0 /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	 bhr1 /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	 bhr2 /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	 bhr3 /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	 bhr4 /* verilator public */;
+   wire [`GSH_BHR_LEN-1:0] 	 bhr_fix /* verilator public */;
    wire [1:0] 			 rif;
    wire [1:0] 			 rex;
    wire [1:0] 			 wex;

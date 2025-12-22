@@ -25,16 +25,16 @@ module storebuf
    output wire 			 hit
    );
 
-   reg [`STBUF_ENT_SEL-1:0] 	 finptr;
-   reg [`STBUF_ENT_SEL-1:0] 	 comptr;
-   reg [`STBUF_ENT_SEL-1:0] 	 retptr;
+   reg [`STBUF_ENT_SEL-1:0] 	 finptr /* verilator public */;
+   reg [`STBUF_ENT_SEL-1:0] 	 comptr /* verilator public */;
+   reg [`STBUF_ENT_SEL-1:0] 	 retptr /* verilator public */;
    
-   reg [`SPECTAG_LEN-1:0] 	 spectag [0:`STBUF_ENT_NUM-1];
-   reg [`STBUF_ENT_NUM-1:0] 	 completed;
-   reg [`STBUF_ENT_NUM-1:0] 	 valid;
-   reg [`STBUF_ENT_NUM-1:0] 	 specbit;
-   reg [`DATA_LEN-1:0] 		 data [0:`STBUF_ENT_NUM-1];
-   reg [`ADDR_LEN-1:0] 		 addr [0:`STBUF_ENT_NUM-1];
+   reg [`SPECTAG_LEN-1:0] 	 spectag [0:`STBUF_ENT_NUM-1] /* verilator public */;
+   reg [`STBUF_ENT_NUM-1:0] 	 completed                 /* verilator public */;
+   reg [`STBUF_ENT_NUM-1:0] 	 valid                     /* verilator public */;
+   reg [`STBUF_ENT_NUM-1:0] 	 specbit                   /* verilator public */;
+   reg [`DATA_LEN-1:0] 		 data [0:`STBUF_ENT_NUM-1]    /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		 addr [0:`STBUF_ENT_NUM-1]    /* verilator public */;
 
    //when prsuccess, specbit_next = specbit & specbitcls
    wire [`STBUF_ENT_NUM-1:0] 	 specbit_cls;

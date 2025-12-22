@@ -52,16 +52,16 @@ module reorderbuf
    input wire 			  prmiss
    );
 
-   reg [`RRF_NUM-1:0] 		  finish;
-   reg [`RRF_NUM-1:0] 		  storebit;
-   reg [`RRF_NUM-1:0] 		  dstvalid;
-   reg [`RRF_NUM-1:0] 		  brcond;
-   reg [`RRF_NUM-1:0] 		  isbranch;
+   reg [`RRF_NUM-1:0] 		  finish    /* verilator public */;
+   reg [`RRF_NUM-1:0] 		  storebit    /* verilator public */;
+   reg [`RRF_NUM-1:0] 		  dstvalid    /* verilator public */;
+   reg [`RRF_NUM-1:0] 		  brcond    /* verilator public */;
+   reg [`RRF_NUM-1:0] 		  isbranch    /* verilator public */;
    
-   reg [`ADDR_LEN-1:0] 		  inst_pc [0:`RRF_NUM-1];
-   reg [`ADDR_LEN-1:0] 		  jmpaddr [0:`RRF_NUM-1];   
-   reg [`REG_SEL-1:0] 		  dst [0:`RRF_NUM-1];
-   reg [`GSH_BHR_LEN-1:0] 	  bhr [0:`RRF_NUM-1];
+   reg [`ADDR_LEN-1:0] 		  inst_pc [0:`RRF_NUM-1] /* verilator public */;                 
+   reg [`ADDR_LEN-1:0] 		  jmpaddr [0:`RRF_NUM-1] /* verilator public */;                    
+   reg [`REG_SEL-1:0] 		  dst [0:`RRF_NUM-1] /* verilator public */;                 
+   reg [`GSH_BHR_LEN-1:0] 	  bhr [0:`RRF_NUM-1] /* verilator public */;                 
    
    assign comptr2 = comptr+1;
    

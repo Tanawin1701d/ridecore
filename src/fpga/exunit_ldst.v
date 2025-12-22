@@ -37,19 +37,19 @@ module exunit_ldst
    input wire [`DATA_LEN-1:0] 	 lddatamem
    );
 
-   reg 				 busy;
+   reg 				 busy /* verilator public */;
    wire 			 clearbusy;
    wire [`ADDR_LEN-1:0] 	 effaddr;
    wire 			 killspec1;
    
    //LATCH
-   reg 				 dstval_latch;
-   reg [`RRF_SEL-1:0] 		 rrftag_latch;
-   reg 				 specbit_latch;
-   reg [`SPECTAG_LEN-1:0] 	 spectag_latch;
-   reg [`DATA_LEN-1:0] 		 lddatasb_latch;
-   reg 				 hitsb_latch;
-   reg 				 insnvalid_latch;
+   reg 				 dstval_latch /* verilator public */;
+   reg [`RRF_SEL-1:0] 		 rrftag_latch /* verilator public */;
+   reg 				 specbit_latch /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	 spectag_latch /* verilator public */;
+   reg [`DATA_LEN-1:0] 		 lddatasb_latch /* verilator public */;
+   reg 				 hitsb_latch /* verilator public */;
+   reg 				 insnvalid_latch /* verilator public */;
 
    assign clearbusy = (killspec1 || dstval || (~dstval && ~fullsb)) ? 1'b1 : 1'b0;
    assign killspec1 = ((spectag & spectagfix) != 0) && specbit && prmiss;

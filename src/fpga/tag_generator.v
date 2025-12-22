@@ -14,11 +14,11 @@ module tag_generator(
 		     output wire 		    speculative1,
 		     output wire 		    speculative2,
 		     output wire 		    attachable,
-		     output reg [`SPECTAG_LEN-1:0]  tagreg
+		     output reg [`SPECTAG_LEN-1:0]  tagreg /* verilator public */
 		     );
 
 //   reg [`SPECTAG_LEN-1:0] 		       tagreg;
-   reg [`BRDEPTH_LEN-1:0] 		       brdepth;
+   reg [`BRDEPTH_LEN-1:0] 		       brdepth /* verilator public */;
    
    assign sptag1 = (branchvalid1) ? 
 		   {tagreg[`SPECTAG_LEN-2:0], tagreg[`SPECTAG_LEN-1]}

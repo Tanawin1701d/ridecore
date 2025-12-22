@@ -13,7 +13,7 @@ module btb(
 	   );
 
    wire [`ADDR_LEN-1:0] 	  tag_data;
-   reg [`BTB_IDX_NUM-1:0] 	  valid;
+   reg [`BTB_IDX_NUM-1:0] 	  valid /* verilator public */;
    wire [`BTB_IDX_SEL-1:0] 	  waddr = jmpsrc[3+:`BTB_IDX_SEL];
    wire [`ADDR_LEN-1:0] 	  pc2 = pc+4;
    

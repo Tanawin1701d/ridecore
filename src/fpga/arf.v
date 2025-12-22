@@ -189,53 +189,53 @@ module renaming_table
    input wire [`SPECTAG_LEN-1:0] mpft_valid2
    );
    
-   reg [`REG_NUM-1:0] 		 busy_0;
-   reg [`REG_NUM-1:0] 		 tag0_0;
-   reg [`REG_NUM-1:0] 		 tag1_0;
-   reg [`REG_NUM-1:0] 		 tag2_0;
-   reg [`REG_NUM-1:0] 		 tag3_0;
-   reg [`REG_NUM-1:0] 		 tag4_0;
-   reg [`REG_NUM-1:0] 		 tag5_0;
+   reg [`REG_NUM-1:0] 		 busy_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_0 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_0 /* verilator public */;
    
-   reg [`REG_NUM-1:0] 		 busy_1;
-   reg [`REG_NUM-1:0] 		 tag0_1;
-   reg [`REG_NUM-1:0] 		 tag1_1;
-   reg [`REG_NUM-1:0] 		 tag2_1;
-   reg [`REG_NUM-1:0] 		 tag3_1;
-   reg [`REG_NUM-1:0] 		 tag4_1;
-   reg [`REG_NUM-1:0] 		 tag5_1;
+   reg [`REG_NUM-1:0] 		 busy_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_1 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_1 /* verilator public */;
    
-   reg [`REG_NUM-1:0] 		 busy_2;
-   reg [`REG_NUM-1:0] 		 tag0_2;
-   reg [`REG_NUM-1:0] 		 tag1_2;
-   reg [`REG_NUM-1:0] 		 tag2_2;
-   reg [`REG_NUM-1:0] 		 tag3_2;
-   reg [`REG_NUM-1:0] 		 tag4_2;
-   reg [`REG_NUM-1:0] 		 tag5_2;
+   reg [`REG_NUM-1:0] 		 busy_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_2 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_2 /* verilator public */;
    
-   reg [`REG_NUM-1:0] 		 busy_3;
-   reg [`REG_NUM-1:0] 		 tag0_3;
-   reg [`REG_NUM-1:0] 		 tag1_3;
-   reg [`REG_NUM-1:0] 		 tag2_3;
-   reg [`REG_NUM-1:0] 		 tag3_3;
-   reg [`REG_NUM-1:0] 		 tag4_3;
-   reg [`REG_NUM-1:0] 		 tag5_3;
+   reg [`REG_NUM-1:0] 		 busy_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_3 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_3 /* verilator public */;
    
-   reg [`REG_NUM-1:0] 		 busy_4;
-   reg [`REG_NUM-1:0] 		 tag0_4;
-   reg [`REG_NUM-1:0] 		 tag1_4;
-   reg [`REG_NUM-1:0] 		 tag2_4;
-   reg [`REG_NUM-1:0] 		 tag3_4;
-   reg [`REG_NUM-1:0] 		 tag4_4;
-   reg [`REG_NUM-1:0] 		 tag5_4;
+   reg [`REG_NUM-1:0] 		 busy_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_4 /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_4 /* verilator public */;
    
-   reg [`REG_NUM-1:0] 		 busy_master;
-   reg [`REG_NUM-1:0] 		 tag0_master;
-   reg [`REG_NUM-1:0] 		 tag1_master;
-   reg [`REG_NUM-1:0] 		 tag2_master;
-   reg [`REG_NUM-1:0] 		 tag3_master;
-   reg [`REG_NUM-1:0] 		 tag4_master;
-   reg [`REG_NUM-1:0] 		 tag5_master;
+   reg [`REG_NUM-1:0] 		 busy_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag0_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag1_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag2_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag3_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag4_master /* verilator public */;
+   reg [`REG_NUM-1:0] 		 tag5_master /* verilator public */;
 
    wire [`REG_NUM-1:0] 		 tag0;
    wire [`REG_NUM-1:0] 		 tag1;

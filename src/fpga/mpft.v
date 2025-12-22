@@ -23,7 +23,7 @@ module miss_prediction_fix_table
   (
    input wire 			  clk,
    input wire 			  reset,
-   output reg [`SPECTAG_LEN-1:0]  mpft_valid,
+   output reg [`SPECTAG_LEN-1:0]  mpft_valid /* verilator public */,
    input wire [`SPECTAG_LEN-1:0]  value_addr,
    output wire [`SPECTAG_LEN-1:0] mpft_value,
    input wire 			  prmiss,
@@ -35,11 +35,11 @@ module miss_prediction_fix_table
    input wire 			  setspec2_en
    );
 
-   reg [`SPECTAG_LEN-1:0] 	  value0;
-   reg [`SPECTAG_LEN-1:0] 	  value1;
-   reg [`SPECTAG_LEN-1:0] 	  value2;
-   reg [`SPECTAG_LEN-1:0] 	  value3;
-   reg [`SPECTAG_LEN-1:0] 	  value4;
+   reg [`SPECTAG_LEN-1:0] 	  value0 /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	  value1 /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	  value2 /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	  value3 /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	  value4 /* verilator public */;
 
    wire [2:0] 			  val_idx;
    

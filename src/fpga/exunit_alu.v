@@ -27,7 +27,7 @@ module exunit_alu
    wire [`DATA_LEN-1:0] 	alusrc1;
    wire [`DATA_LEN-1:0] 	alusrc2;
 
-   reg 				busy;
+   reg 				busy /* verilator public */;
 
    assign rob_we = busy;
    assign rrf_we = busy & dstval;

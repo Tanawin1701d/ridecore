@@ -131,7 +131,7 @@ module ram_sync_nolatch_4r2w #(
     input wire 			      we2
     );
 
-   reg [BRAM_DATA_WIDTH-1:0] 				       mem [0:DATA_DEPTH-1];
+   reg [BRAM_DATA_WIDTH-1:0] 				       mem [0:DATA_DEPTH-1] /* verilator public */;
    
    assign rdata1 = mem[raddr1];
    assign rdata2 = mem[raddr2];

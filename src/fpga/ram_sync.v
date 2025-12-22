@@ -8,13 +8,13 @@ module ram_sync_1r1w #(
    (
     input wire 			     clk,
     input wire [BRAM_ADDR_WIDTH-1:0] raddr1,
-    output reg [BRAM_DATA_WIDTH-1:0] rdata1,
+    output reg [BRAM_DATA_WIDTH-1:0] rdata1 /* verilator public */,
     input wire [BRAM_ADDR_WIDTH-1:0] waddr,
     input wire [BRAM_DATA_WIDTH-1:0] wdata,
     input wire 			     we
     );
 
-   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1];
+   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1] /* verilator public */;
 
    always @ (posedge clk) begin
       rdata1 <= mem[raddr1];
@@ -32,14 +32,14 @@ module ram_sync_2r1w #(
     input wire 			     clk,
     input wire [BRAM_ADDR_WIDTH-1:0] raddr1,
     input wire [BRAM_ADDR_WIDTH-1:0] raddr2,
-    output reg [BRAM_DATA_WIDTH-1:0] rdata1,
-    output reg [BRAM_DATA_WIDTH-1:0] rdata2,
+    output reg [BRAM_DATA_WIDTH-1:0] rdata1 /* verilator public */,
+    output reg [BRAM_DATA_WIDTH-1:0] rdata2 /* verilator public */,
     input wire [BRAM_ADDR_WIDTH-1:0] waddr,
     input wire [BRAM_DATA_WIDTH-1:0] wdata,
     input wire 			     we
     );
    
-   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1];
+   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1] /* verilator public */;
 
    always @ (posedge clk) begin
       rdata1 <= mem[raddr1];
@@ -58,8 +58,8 @@ module ram_sync_2r2w #(
     input wire 			     clk,
     input wire [BRAM_ADDR_WIDTH-1:0] raddr1,
     input wire [BRAM_ADDR_WIDTH-1:0] raddr2,
-    output reg [BRAM_DATA_WIDTH-1:0] rdata1,
-    output reg [BRAM_DATA_WIDTH-1:0] rdata2,
+    output reg [BRAM_DATA_WIDTH-1:0] rdata1 /* verilator public */,
+    output reg [BRAM_DATA_WIDTH-1:0] rdata2 /* verilator public */,
     input wire [BRAM_ADDR_WIDTH-1:0] waddr1,
     input wire [BRAM_ADDR_WIDTH-1:0] waddr2,
     input wire [BRAM_DATA_WIDTH-1:0] wdata1,
@@ -68,7 +68,7 @@ module ram_sync_2r2w #(
     input wire 			     we2
     );
    
-   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1];
+   reg [BRAM_DATA_WIDTH-1:0] 			      mem [0:DATA_DEPTH-1] /* verilator public */;
 
    always @ (posedge clk) begin
       rdata1 <= mem[raddr1];
