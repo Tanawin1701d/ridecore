@@ -28,8 +28,18 @@ module tag_generator(
 		   : sptag1;
    assign speculative1 = (brdepth != 0) ? 1'b1 : 1'b0;
    assign speculative2 = ((brdepth != 0) || branchvalid1) ? 1'b1 : 1'b0;
-   assign attachable = (brdepth + branchvalid1 + branchvalid2) 
-     > (`BRANCH_ENT_NUM + prsuccess) ? 1'b0 : 1'b1;
+//    assign attachable = (brdepth + branchvalid1 + branchvalid2) 
+//      > (`BRANCH_ENT_NUM + prsuccess) ? 1'b0 : 1'b1;
+
+	 assign attachable =
+    (brdepth
+     + {{($bits(brdepth)-1){1'b0}}, branchvalid1}
+     + {{($bits(brdepth)-1){1'b0}}, branchvalid2}
+    ) > (`BRANCH_ENT_NUM + 
+		{{($bits(brdepth)-1){1'b0}}, prsuccess}
+		)
+      ? 1'b0 : 1'b1;
+
 
    always @ (posedge clk) begin
       if (reset) begin
@@ -40,8 +50,8 @@ module tag_generator(
 		   ~enable ? tagreg : 
 		   sptag2;
 	 brdepth <= prmiss ? `BRDEPTH_LEN'b0 :
-		    ~enable ? brdepth - prsuccess :
-		    brdepth + branchvalid1 + branchvalid2 - prsuccess;
+		    ~enable ? brdepth - {{($bits(brdepth)-1){1'b0}}, prsuccess} :
+		    brdepth + {{($bits(brdepth)-1){1'b0}}, branchvalid1} + {{($bits(brdepth)-1){1'b0}}, branchvalid2} - {{($bits(brdepth)-1){1'b0}}, prsuccess};
       end
    end
    

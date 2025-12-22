@@ -100,7 +100,8 @@ module reorderbuf
       if (reset) begin
 	 comptr <= 0;
       end else if (~prmiss) begin
-	 comptr <= comptr + commit1 + commit2;
+	 comptr <= comptr + {{(`RRF_SEL-$bits(commit1)){1'b0}}, commit1} + {{(`RRF_SEL-$bits(commit2)){1'b0}}, commit2};
+   //comptr <= comptr + commit1 + commit2;
       end
    end
    

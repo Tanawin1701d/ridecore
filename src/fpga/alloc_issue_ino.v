@@ -72,9 +72,14 @@ module alloc_issue_ino  #(
 				       .en(notfull_next)
 				       );
 
+   
    assign issueptr = ~notfull ? allocptr :
-		     ((b1 == 0) && (e1 == ENTNUM-1)) ? (e0+1) : 
+		     ((b1 == 0) && (e1 == ENTSEL'(ENTNUM-1))) ? (e0+1) : 
 		     b1;
+
+   // assign issueptr = ~notfull ? allocptr :
+	// 	     ((b1 == 0) && (e1 == ENTNUM-1)) ? (e0+1) : 
+	// 	     b1;
    
    assign issuevalid = readyvec[issueptr] & ~prmiss & ~exunit_busynext;
 
@@ -87,7 +92,10 @@ module alloc_issue_ino  #(
 	 allocptr <= 0;
       end else if (prmiss) begin
 	 allocptr <= ~notfull_next ? allocptr :
-		     (((nb1 == 0) && (ne1 == ENTNUM-1)) ? nb0 : (ne1+1));
+		     (((nb1 == 0) && (ne1 == ENTSEL'(ENTNUM-1))) ? nb0 : (ne1+1));
+
+   // allocptr <= ~notfull_next ? allocptr :
+	// 	     (((nb1 == 0) && (ne1 == ENTNUM-1)) ? nb0 : (ne1+1));
       end else if (~stall_DP && ~kill_DP) begin
 	 allocptr <= allocptr + reqnum;
       end

@@ -1,7 +1,7 @@
 `include "define.v"
 `include "constants.vh"
 
-module top
+module topSim
   (
 //   input 	    CLK_P,
 //   input 	    CLK_N,

@@ -15,7 +15,7 @@ module prioenc #(
       out = 0;
       for (i = REQ_LEN-1 ; i >= 0 ; i = i - 1) begin
 	 if (~in[i]) begin
-	    out = i;
+	    out = i[$bits(out)-1:0]; // out = i;
 	    en = 1;
 	 end
       end
@@ -36,7 +36,7 @@ module maskunit  #(
    always @ (*) begin
       out = 0;
       for (i = 0 ; i < REQ_LEN ; i = i+1) begin
-	 out[i] = (mask < i) ? 1'b0 : 1'b1;
+	 out[i] = (mask < i[$bits(mask)-1:0]) ? 1'b0 : 1'b1;
       end
    end
 endmodule

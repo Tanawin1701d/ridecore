@@ -38,10 +38,10 @@ module pipeline
    reg [`ADDR_LEN-1:0] 	   pc_if;
    reg [`INSN_LEN-1:0] 	   inst1_if;
    reg [`INSN_LEN-1:0] 	   inst2_if;
-   reg 			   inv1_if;
-   reg 			   inv2_if;
-   reg 			   bhr_if;
-   wire 		   attachable;
+   reg 			           inv1_if;
+   reg 			           inv2_if;
+   reg [`GSH_BHR_LEN-1:0]  bhr_if;  /// reg 			   bhr_if;
+   wire 		           attachable;
 
    //ID
    //Decode Info1
@@ -1065,21 +1065,21 @@ module pipeline
 			 busyvec_alu2[1],busyvec_alu1[1],busyvec_alu2[0],busyvec_alu1[0]
 			 };
 
-   assign ready_alu = 
-		      {
-		       ready_alu2[7],ready_alu1[7],ready_alu2[6],ready_alu1[6],
-		       ready_alu2[5],ready_alu1[5],ready_alu2[4],ready_alu1[4],
-		       ready_alu2[3],ready_alu1[3],ready_alu2[2],ready_alu1[2],
-		       ready_alu2[1],ready_alu1[1],ready_alu2[0],ready_alu1[0]
-		       };
+//    assign ready_alu = 
+// 		      {
+// 		       ready_alu2[7],ready_alu1[7],ready_alu2[6],ready_alu1[6],
+// 		       ready_alu2[5],ready_alu1[5],ready_alu2[4],ready_alu1[4],
+// 		       ready_alu2[3],ready_alu1[3],ready_alu2[2],ready_alu1[2],
+// 		       ready_alu2[1],ready_alu1[1],ready_alu2[0],ready_alu1[0]
+// 		       };
 
    assign 		   issue_alu1 = ~prmiss & issuevalid_alu1;
    assign 		   issue_alu2 = ~prmiss & issuevalid_alu2;
    
    allocateunit #(2*`ALU_ENT_NUM, `ALU_ENT_SEL+1) alloc_alu(
 							    .busy(busyvec_alu), //RS_BUSY
-							    //      .en1(),
-							    //      .en2(),
+							          .en1(),
+							          .en2(),
 							    .free_ent1(allocent1_alu),
 							    .free_ent2(allocent2_alu),
 							    .reqnum(req_alunum),
@@ -1485,8 +1485,8 @@ module pipeline
 
    allocateunit #(`MUL_ENT_NUM, `MUL_ENT_SEL) alloc_mul(
 							.busy(busyvec_mul), //RS_BUSY
-							//      .en1(),
-							//      .en2(),
+							      .en1(),
+							      .en2(),
 							.free_ent1(allocent1_mul),
 							.free_ent2(allocent2_mul),
 							.reqnum(req_mulnum),

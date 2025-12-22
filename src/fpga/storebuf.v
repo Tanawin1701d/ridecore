@@ -87,8 +87,13 @@ module storebuf
 		     ~prmiss;
    assign sb_full = ((finptr == retptr) && (valid[finptr] == 1)) ? 1'b1 : 1'b0;
    assign finptr_next = (~notfull_next | ~notempty_next) ? finptr :
-			(((nb1 == 0) && (ne1 == `STBUF_ENT_NUM-1)) ? nb0 : (ne1+1));
-   assign vecshamt = (`STBUF_ENT_NUM - finptr);
+			(((nb1 == 0) && (ne1 == ($bits(ne1)'(`STBUF_ENT_NUM-1)))) ? nb0 : (ne1+1));
+   wire[`STBUF_ENT_SEL: 0] vecshamt_temp = `STBUF_ENT_NUM - {1'b0, finptr};
+   assign vecshamt = vecshamt_temp[`STBUF_ENT_SEL-1: 0];
+
+   // assign finptr_next = (~notfull_next | ~notempty_next) ? finptr :
+	// 		(((nb1 == 0) && (ne1 == `STBUF_ENT_NUM-1)) ? nb0 : (ne1+1));
+   // assign vecshamt = (`STBUF_ENT_NUM - finptr);
    assign hitvec_rot = {hitvec, hitvec} << vecshamt;
    assign ldent = ldent_rot + finptr;
    

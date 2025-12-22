@@ -15,7 +15,7 @@ module search_begin #(
       en = 0;
       for (i = ENTNUM-1; i >= 0 ; i = i - 1) begin
 	 if (in[i]) begin
-	    out = i;
+	    out = i[$bits(out)-1:0]; ///out = i;
 	    en = 1;
 	 end
       end
@@ -39,7 +39,7 @@ module search_end #(
       en = 0;
       for (i = 0 ; i < ENTNUM ; i = i + 1) begin
 	 if (in[i]) begin
-	    out = i;
+	    out = i[$bits(out)-1:0]; //// out = i;
 	    en = 1;
 	 end
       end

@@ -15,11 +15,18 @@ module sourceoperand_manager
    );
 
    assign src = src_eq_0 ? `DATA_LEN'b0 :
-		src_eq_dst1 ? dst1_renamed :
+		src_eq_dst1 ? {{(`DATA_LEN-$bits(dst1_renamed)){1'b0}}, dst1_renamed} :
 		~arf_busy ? arfdata :
 		rrf_valid ? rrfdata :
-		rrftag;
+		{{(`DATA_LEN-$bits(rrftag)){1'b0}}, rrftag};
    assign rdy = src_eq_0 | (~src_eq_dst1 & (~arf_busy | rrf_valid));
+
+
+  //  assign src = src_eq_0 ? `DATA_LEN'b0 :
+	// 	src_eq_dst1 ? dst1_renamed :
+	// 	~arf_busy ? arfdata :
+	// 	rrf_valid ? rrfdata :
+	// 	rrftag;
 
 endmodule // sourceoperand_manager
 `default_nettype wire

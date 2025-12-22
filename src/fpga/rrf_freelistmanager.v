@@ -21,9 +21,13 @@ module rrf_freelistmanager
    
    wire [1:0] 		      reqnum = {1'b0, ~invalid1} + {1'b0, ~invalid2};
    wire 		      hi = (comptr > rrftagfix) ? 1'b1 : 1'b0;
-   wire [`RRF_SEL-1:0] 	      rrfptr_next = rrfptr + reqnum;
+   wire [`RRF_SEL-1:0] 	      rrfptr_next = rrfptr + {{(`RRF_SEL-$bits(reqnum)){1'b0}}, reqnum};
    
-   assign allocatable = (freenum + comnum) < reqnum ? 1'b0 : 1'b1;
+   assign allocatable = (freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum}) < 
+                        ({{(`RRF_SEL+1-$bits(reqnum)){1'b0}}, reqnum}) ? 1'b0 : 1'b1;
+
+   //  wire [`RRF_SEL-1:0] 	      rrfptr_next = rrfptr + reqnum;
+   // assign allocatable = (freenum + comnum) < reqnum ? 1'b0 : 1'b1;
    assign rename_dst1 = rrfptr;
    assign rename_dst2 = rrfptr + (~invalid1 ? 1 : 0);
    
@@ -38,11 +42,13 @@ module rrf_freelistmanager
 	 nextrrfcyc <= 0;
       end else if (stall_DP) begin
 	 rrfptr <= rrfptr;
-	 freenum <= freenum + comnum;
+	 freenum <= freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum};
+    /// freenum <= freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum};
 	 nextrrfcyc <= 0;
       end else begin
 	 rrfptr <= rrfptr_next;
-	 freenum <= freenum + comnum - reqnum;
+	 freenum <= freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum} - ({{(`RRF_SEL+1-$bits(reqnum)){1'b0}}, reqnum});
+    //// freenum <= freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum} - ({{(`RRF_SEL+1-$bits(reqnum)){1'b0}}, reqnum});
 	 nextrrfcyc <= (rrfptr > rrfptr_next) ? 1'b1 : 1'b0;
       end
    end
