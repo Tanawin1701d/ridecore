@@ -39,11 +39,11 @@ module storebuf
    //when prsuccess, specbit_next = specbit & specbitcls
    wire [`STBUF_ENT_NUM-1:0] 	 specbit_cls;
    wire [`STBUF_ENT_NUM-1:0] 	 valid_cls;
-   wire 			 notfull_next;
-   wire 			 notempty_next;
-   wire [`STBUF_ENT_SEL-1:0] 	 nb1;
-   wire [`STBUF_ENT_SEL-1:0] 	 ne1;
-   wire [`STBUF_ENT_SEL-1:0] 	 nb0;
+   wire 			 notfull_next       /* verilator public */;
+   wire 			 notempty_next      /* verilator public */;
+   wire [`STBUF_ENT_SEL-1:0] 	 nb1 /* verilator public */;
+   wire [`STBUF_ENT_SEL-1:0] 	 ne1 /* verilator public */;
+   wire [`STBUF_ENT_SEL-1:0] 	 nb0 /* verilator public */;
    wire [`STBUF_ENT_SEL-1:0] 	 finptr_next;
    //For CAM with Priority
    wire [`STBUF_ENT_NUM-1:0] 	 hitvec;

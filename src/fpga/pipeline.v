@@ -43,7 +43,7 @@ module pipeline
    reg 			           inv1_if /* verilator public */  ;
    reg 			           inv2_if /* verilator public */   ;
    reg [`GSH_BHR_LEN-1:0]  bhr_if /* verilator public */  ;  /// reg 			   bhr_if;
-   wire 		           attachable;
+   wire 		           attachable /* verilator public */;
 
    //ID
    //Decode Info1
@@ -167,7 +167,7 @@ module pipeline
    wire 		rdy2_2;
 
    //rrf_FL wire
-   wire 		alloc_rrf;
+   wire 		alloc_rrf /* verilator public */;
    wire [`RRF_SEL-1:0] 	dst1_renamed;
    wire [`RRF_SEL-1:0] 	dst2_renamed;
    wire [`RRF_SEL:0] 	freenum;
@@ -243,12 +243,12 @@ module pipeline
    wire [`ALU_ENT_NUM:0]     ready_alu;
 
    wire 		   issuevalid_alu1;
-   wire [`ALU_ENT_SEL-1:0] issueent_alu1;
-   wire 		   issue_alu1;
+   wire [`ALU_ENT_SEL-1:0] issueent_alu1 /* verilator public */;
+   wire 		   issue_alu1 /* verilator public */;
    wire 		   issuevalid_alu2;
-   wire [`ALU_ENT_SEL-1:0] issueent_alu2;
-   wire 		   issue_alu2;
-   wire 		   allocatable_alu;
+   wire [`ALU_ENT_SEL-1:0] issueent_alu2 /* verilator public */;
+   wire 		   issue_alu2 /* verilator public */;
+   wire 		   allocatable_alu /* verilator public */;
    wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] histvect1;
    wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] histvect2;
    wire [`RRF_SEL+1:0] 			entval_alu1;
@@ -288,8 +288,8 @@ module pipeline
    wire [`LDST_ENT_NUM-1:0]    prbusyvec_next_ldst;
    wire [`LDST_ENT_NUM-1:0]    ready_ldst;
    wire 		       issuevalid_ldst;
-   wire [`LDST_ENT_SEL-1:0]    issueent_ldst;
-   wire 		       issue_ldst;
+   wire [`LDST_ENT_SEL-1:0]    issueent_ldst /* verilator public */;
+   wire 		       issue_ldst /* verilator public */;
    wire 		       allocatable_ldst;
 
    wire [`DATA_LEN-1:0]        ex_src1_ldst;
@@ -307,9 +307,9 @@ module pipeline
    wire [`BRANCH_ENT_NUM-1:0]  prbusyvec_next_branch;
    wire [`BRANCH_ENT_NUM-1:0]  ready_branch;
    wire 		       issuevalid_branch;
-   wire [`BRANCH_ENT_SEL-1:0]  issueent_branch;
-   wire 		       issue_branch;
-   wire 		       allocatable_branch;
+   wire [`BRANCH_ENT_SEL-1:0]  issueent_branch /* verilator public */;
+   wire 		       issue_branch /* verilator public */;
+   wire 		       allocatable_branch /* verilator public */;
 
    wire [`DATA_LEN-1:0]        ex_src1_branch;
    wire [`DATA_LEN-1:0]        ex_src2_branch;
@@ -330,8 +330,8 @@ module pipeline
    wire [`MUL_ENT_NUM-1:0]     busyvec_mul;
    wire [`MUL_ENT_NUM-1:0]     ready_mul;
    wire 		       issuevalid_mul;
-   wire [`MUL_ENT_SEL-1:0]     issueent_mul;
-   wire 		       issue_mul;
+   wire [`MUL_ENT_SEL-1:0]     issueent_mul /* verilator public */;
+   wire 		       issue_mul /* verilator public */;
    wire 		       allocatable_mul;
 
    wire [`DATA_LEN-1:0]        ex_src1_mul;
@@ -432,8 +432,8 @@ module pipeline
    reg 			       buf_sel_lohi_mul /* verilator public */;
    
    //BRANCH
-   wire 		       prmiss;
-   wire 		       prsuccess;
+   wire 		       prmiss /* verilator public */;
+   wire 		       prsuccess /* verilator public */;
    wire [`ADDR_LEN-1:0]        jmpaddr;
    wire [`ADDR_LEN-1:0]        jmpaddr_taken;
    wire 		       brcond;

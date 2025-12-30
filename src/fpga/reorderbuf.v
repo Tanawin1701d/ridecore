@@ -34,7 +34,7 @@ module reorderbuf
    input wire 			  exfin_branch_brcond,
    input wire [`ADDR_LEN-1:0] 	  exfin_branch_jmpaddr, 
   
-   output reg [`RRF_SEL-1:0] 	  comptr,
+   output reg [`RRF_SEL-1:0] 	  comptr /* verilator public */,
    output wire [`RRF_SEL-1:0] 	  comptr2,
    output wire [1:0] 		  comnum,
    output wire 			  stcommit,
@@ -69,10 +69,12 @@ module reorderbuf
 				  1'b1 : 1'b0;
    wire 			  com_en1 = ({hidp, dispatchptr} - {1'b0, comptr}) > 0 ? 1'b1 : 1'b0;
    wire 			  com_en2 = ({hidp, dispatchptr} - {1'b0, comptr}) > 1 ? 1'b1 : 1'b0;
-   wire 			  commit1 = com_en1 & finish[comptr];
+   wire 			  commit1 /* verilator public */ ;
+   assign       commit1 = com_en1 & finish[comptr];
    //   wire commit2 = commit1 & com_en2 & finish[comptr2];
 
-   wire 			  commit2 = 
+   wire 			  commit2/* verilator public */;
+   assign 	    commit2 = 
 				  ~(~prmiss & commit1 & isbranch[comptr]) &
 				  ~(commit1 & storebit[comptr] & ~prmiss) &
 				  commit1 & com_en2 & finish[comptr2];
