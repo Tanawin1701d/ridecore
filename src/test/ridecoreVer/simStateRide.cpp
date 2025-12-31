@@ -24,15 +24,16 @@ namespace kathryn::o3{
 
         ///// alu 1
         Vpipeline_pipeline* pl = core.pipeline;
-        Vpipeline_rs_alu* vrsv1 = (idx == 1) ? pl->reserv_alu1: pl->reserv_alu2;
-        recruitRsvBaseEntry(rsvAlu1[0], vrsv1->ent0, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 0);
-        recruitRsvBaseEntry(rsvAlu1[1], vrsv1->ent1, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 1);
-        recruitRsvBaseEntry(rsvAlu1[2], vrsv1->ent2, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 2);
-        recruitRsvBaseEntry(rsvAlu1[3], vrsv1->ent3, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 3);
-        recruitRsvBaseEntry(rsvAlu1[4], vrsv1->ent4, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 4);
-        recruitRsvBaseEntry(rsvAlu1[5], vrsv1->ent5, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 5);
-        recruitRsvBaseEntry(rsvAlu1[6], vrsv1->ent6, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 6);
-        recruitRsvBaseEntry(rsvAlu1[7], vrsv1->ent7, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 7);
+        Vpipeline_rs_alu* vrsv1  = (idx == 1) ? pl->reserv_alu1: pl->reserv_alu2;
+        RSV_BASE_ENTRY*   desRsv = (idx == 1) ? rsvAlu1: rsvAlu2;
+        recruitRsvBaseEntry(desRsv[0], vrsv1->ent0, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 0);
+        recruitRsvBaseEntry(desRsv[1], vrsv1->ent1, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 1);
+        recruitRsvBaseEntry(desRsv[2], vrsv1->ent2, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 2);
+        recruitRsvBaseEntry(desRsv[3], vrsv1->ent3, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 3);
+        recruitRsvBaseEntry(desRsv[4], vrsv1->ent4, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 4);
+        recruitRsvBaseEntry(desRsv[5], vrsv1->ent5, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 5);
+        recruitRsvBaseEntry(desRsv[6], vrsv1->ent6, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 6);
+        recruitRsvBaseEntry(desRsv[7], vrsv1->ent7, vrsv1->busyvec, vrsv1->sortbit, vrsv1->specbitvec, 7);
         
     }
 
@@ -238,11 +239,11 @@ namespace kathryn::o3{
         //////////////////////
         /// ISSUE ////////////
         //////////////////////
-        st_issue_alu1    = generatePipState(0, pl->issue_alu1  );
-        st_issue_alu2    = generatePipState(0, pl->issue_alu2  );
-        st_issue_mul     = generatePipState(0, pl->issue_mul   );
-        st_issue_branch  = generatePipState(0, pl->issue_branch);
-        st_issue_ldst    = generatePipState(0, pl->issue_ldst  );
+        st_issue_alu1    = generatePipState(0, pl->issue_alu1   == 0);
+        st_issue_alu2    = generatePipState(0, pl->issue_alu2   == 0);
+        st_issue_mul     = generatePipState(0, pl->issue_mul    == 0);
+        st_issue_branch  = generatePipState(0, pl->issue_branch == 0);
+        st_issue_ldst    = generatePipState(0, pl->issue_ldst   == 0);
         idx_issue_alu1   = ull(1 << pl->issueent_alu1);
         idx_issue_alu2   = ull(1 << pl->issueent_alu2);
         idx_issue_mul    = ull(1 << pl->issueent_mul);

@@ -39,15 +39,17 @@ namespace kathryn::o3{
 
     void SimCtrlRide::simStart(){
 
+
+        iterateCycle();
         for (; _curTestCaseIdx < _testTypes.size(); _curTestCaseIdx++){
             std::cout << TC_BLUE << "[O3 RISC-V] test type is " << _testTypes[_curTestCaseIdx] << TC_DEF << std::endl;
             //////////////  read assembly and assertVal
             _slotWriter. renew(_prefixFolder + _testTypes[_curTestCaseIdx]+ "/oslot.sl");
             //////// set reset wire to 1
-            *rstWire = 1;
+            _core.reset = 1;
             //////// cycle before cycle cycle is running
             iterateCycle();
-            *rstWire = 0;
+            _core.reset = 0;
             resetRegister();
             readAssembly (_prefixFolder + _testTypes[_curTestCaseIdx] + "/asm.out");
             readAssertVal(_prefixFolder + _testTypes[_curTestCaseIdx] + "/ast.out");
@@ -143,7 +145,7 @@ namespace kathryn::o3{
         }
     }
 
-    void postCycleAction(){}
+    void SimCtrlRide::postCycleAction(){}
 
 
 }

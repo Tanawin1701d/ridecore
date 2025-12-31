@@ -68,7 +68,7 @@ namespace kathryn::o3{
                 std::move(params["prefix"] + testTypes[0] + "/oslot.sl"));
 
             ///mMod(o3Top, TopSim, false);
-            Vpipeline* _core = new Vpipeline();
+            auto* _core = new Vpipeline();
 
             SimStateRide simState(*_core);
 

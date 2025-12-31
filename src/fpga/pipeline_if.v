@@ -27,9 +27,15 @@ module pipeline_if
    wire 			  hit;
    wire [`ADDR_LEN-1:0] 	  pred_pc;
 
-   assign npc = (hit && predict_cond) ? pred_pc :
-		invalid2 ? pc + 4 :
-		pc + 8;
+   // assign npc = (hit && predict_cond) ? pred_pc :
+	// 	invalid2 ? pc + 4 :
+	// 	pc + 8;
+
+   assign npc = invalid2 ? pc + 4 :
+		                     pc + 8;
+   
+   assign predict_cond = 0;
+
 /*   
    imem instmem(
 		.clk(~clk),
@@ -63,13 +69,14 @@ module pipeline_if
 	     .invalid2(invalid2)
 	     );
 
+   wire predict_cond_dummy;
    gshare_predictor gsh
      (
       .clk(clk),
       .reset(reset),
       .pc(pc),
       .hit_bht(hit),
-      .predict_cond(predict_cond),
+      .predict_cond(predict_cond_dummy),
       .we(btbpht_we),
       .wcond(pht_wcond),
       .went(btbpht_pc[2+:`GSH_BHR_LEN] ^ pht_bhr),
