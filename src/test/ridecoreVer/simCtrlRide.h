@@ -6,7 +6,7 @@
 #define EXT_SIM_RIDECORE_SRC_TEST_RIDECOREVER_SIMCTRLRIDE_H
 
 #include "simStateRide.h"
-#include "example/o3/simCompare/simCtrlBase.h"
+#include "../../../../../src/example/o3/simCompare/ctrl/simCtrlBase.h"
 #include "Vpipeline.h"
 #include "Vpipeline_arf.h"
 #include "Vpipeline_pipeline.h"
@@ -38,6 +38,9 @@ namespace kathryn::o3{
         void  iterateCycle();
         void  iterateAtEndCycle();
 
+        void  doRideInit (int curTestCaseIdx);
+        void  doRideCycle(bool recordThisCycle);
+
         void  simStart();
 
         void  readMem2Fetch         () override;
@@ -65,7 +68,7 @@ namespace kathryn::o3{
                 {20       , 40   , 25    , 25       , 30,
                  30       , 35   , 25    , 35       , 25,
                  25},
-                std::move(params["prefix"] + testTypes[0] + "/oslot.sl"));
+                std::move(params["prefix"] + testTypes[0] + "/oslot_ride.sl"));
 
             ///mMod(o3Top, TopSim, false);
             auto* _core = new Vpipeline();

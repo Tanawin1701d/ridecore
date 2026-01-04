@@ -24,6 +24,9 @@
 #include "Vpipeline_exunit_alu.h"
 #include "Vpipeline_exunit_ldst.h"
 #include "Vpipeline_reorderbuf.h"
+#include "Vpipeline_exunit_branch.h"
+#include "Vpipeline_rrf_freelistmanager.h"
+#include "Vpipeline_exunit_mul.h"
 
 ///// storeBuf
 #include "Vpipeline_storebuf.h"
@@ -88,7 +91,8 @@ namespace kathryn::o3{
                                  int   idx
         );
 
-        void recruitValue() override;
+        void recruitValue()     override;
+        void recruitNextCycle() override;
 
 
     };

@@ -4,7 +4,6 @@
 
 #include "simStateRide.h"
 
-#include "Vpipeline_rrf_freelistmanager.h"
 
 
 namespace kathryn::o3{
@@ -184,13 +183,13 @@ namespace kathryn::o3{
         /////////////////////
         ///// Fetch /////////
         /////////////////////
-        fetch.st = generatePipState(0, pl->stall_IF);
+        fetch.st = generatePipState(0, pl->stall_IF | pl->kill_IF);
         fetch.pc = pl->pc;
 
         /////////////////////
         ///// Decode ////////
         /////////////////////
-        decode.st        = generatePipState(pl->inv1_if, pl->stall_ID);
+        decode.st        = generatePipState(pl->inv1_if, pl->stall_ID | pl->kill_ID | pl->stall_DP);
         decode.inst1     = ull(pl->inst1_if);
         decode.invalid2  = ull(pl->inv2_if);
         decode.inst2     = ull(pl->inst2_if);
@@ -201,7 +200,7 @@ namespace kathryn::o3{
         /////////////////////
         ///// Dispatch //////
         /////////////////////
-        dispatch.st = generatePipState(pl->inv1_id, pl->stall_DP);
+        dispatch.st = generatePipState(pl->inv1_id, pl->stall_DP | pl->kill_DP);
         dispatch.pc = ull(pl->pc_id);
         dispatch.desEqSrc1 = ull(pl->rs1_2_eq_dst1_id);
         dispatch.desEqSrc2 = ull(pl->rs2_2_eq_dst1_id);
@@ -290,10 +289,58 @@ namespace kathryn::o3{
         aluEt2.src2     =     ull(pl->buf_ex_src2_alu2);
         aluEt2.src2_sel =     ull(pl->buf_src_b_alu2);
         aluEt2.valid2   =     0;   /// TODO delete from Kathryn
+        //////// mul
+        exec_mul.st = generatePipState(pl->genbu->busy == 0, 0);
+        RSV_MUL_ENTRY& mulEt1 = exec_mul.entry;
+        mulEt1.busy     = 0                   ;
+        mulEt1.sortbit  = 0                   ;
+        mulEt1.pc       = pl->buf_pc_mul      ;
+        mulEt1.imm      = 0                   ;
+        mulEt1.rrftag   = pl->buf_rrftag_mul  ;
+        mulEt1.dstval   = pl-> buf_dstval_mul ;
+        mulEt1.alu_op   = 0                   ;
+        mulEt1.specBit  = pl->buf_specbit_mul ;
+        mulEt1.spectag  = pl->buf_spectag_mul ;
+        mulEt1.src1     = pl->buf_ex_src1_mul ;
+        mulEt1.src1_sel = 0                   ;
+        mulEt1.valid1   = 0                   ;
+        mulEt1.src2     = pl->buf_ex_src2_mul ;
+        mulEt1.src2_sel = 0                   ;
+        mulEt1.valid2   = 0                   ;
+
+        mulEt1.src1_signed = pl->buf_src1_signed_mul;
+        mulEt1.src2_signed = pl->buf_src2_signed_mul;
+        mulEt1.sel_lohi    = pl->buf_sel_lohi_mul   ;
+
+
+
+        //////// branch
+        exec_branch.st = generatePipState(pl->kirin->busy == 0, 0);
+        RSV_BRANCH_ENTRY& brEt1 =  exec_branch.entry;
+        brEt1.busy     = 0;
+        brEt1.sortbit  = 0;
+        brEt1.pc       = ull(pl->buf_pc_branch);
+        brEt1.imm      = 0;
+        brEt1.rrftag   = ull(pl->buf_rrftag_branch);
+        brEt1.dstval   = ull(pl->buf_dstval_branch);
+        brEt1.alu_op   = ull(pl->buf_alu_op_branch);
+        brEt1.specBit  = ull(pl->buf_specbit_branch);
+        brEt1.spectag  = ull(pl->buf_spectag_branch);
+        brEt1.src1     = ull(pl->buf_ex_src1_branch);
+        brEt1.src1_sel = 0;
+        brEt1.valid1   = 0;
+        brEt1.src2     = ull(pl->buf_ex_src2_branch);
+        brEt1.src2_sel = 0;
+        brEt1.valid2   = 0;
+
+        brEt1.imm_br   = ull(pl->buf_imm_branch);
+        brEt1.praddr   = ull(pl->buf_praddr_branch);
+        brEt1.opcode   = ull(pl->buf_opcode_branch);
+
         //////// ldst
         Vpipeline_exunit_ldst* vldstExt = pl->seiryu;
         exec_ldst.st1 = generatePipState(pl->seiryu->busy == 0, 0);
-        exec_ldst.st2 = generatePipState(pl->seiryu->insnvalid_latch, 0);
+        exec_ldst.st2 = generatePipState(pl->seiryu->insnvalid_latch == 0, 0);
         RSV_BASE_ENTRY& ldstEt = exec_ldst.entry;
         ldstEt.busy     =     0;/// TODO delete from Kathryn
         ldstEt.sortbit  =     0;/// TODO delete from Kathryn
@@ -323,8 +370,8 @@ namespace kathryn::o3{
         /// COMMIT STATE /////
         //////////////////////
         rob.comPtr = ull(pl->rob->comptr);
-        rob.com1Status = pl->rob->commit1 != 0;
-        rob.com2Status = pl->rob->commit2 != 0;
+        rob.com1Status = (pl->rob->commit1 != 0) && (!pl->prmiss);
+        rob.com2Status = (pl->rob->commit2 != 0) && (!pl->prmiss);
 
         for(int idx = 0; idx < RRF_NUM; idx++){
             COMMIT_ENTRY& cmEntry = rob.comEntries[idx];
@@ -432,12 +479,19 @@ namespace kathryn::o3{
         rrf.reqPtr       = pl->rrf_fl->rrfptr;
         rrf.nextRrfCycle = pl->rrf_fl->nextrrfcyc;
 
-
-
-
-
-
     }
+
+    void SimStateRide::recruitNextCycle(){
+        /////////// temporary data
+        Vpipeline_pipeline* pl = core.pipeline;
+        isLastCycleMisPred = (pl->prmiss    != 0);
+        isLastCycleSucc    = (pl->prsuccess != 0);
+        ///////// state recorder for next cycle
+        isLastCycleDisp1   = (dispatch.st == PS_RUNNING);
+        isLastCycleDisp2   = (dispatch.st == PS_RUNNING) && ( pl->inv2_id == 0);
+        lastDispatchPtr    = ull(pl->rrf_fl->rrfptr);
+    }
+
 
 
 }

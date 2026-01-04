@@ -37,38 +37,52 @@ namespace kathryn::o3{
     }
 
 
+    void SimCtrlRide::doRideInit(int curTestCaseIdx){
+        //////////////  read assembly and assertVal
+        _slotWriter. renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/oslot_ride.sl");
+        iterateCycle();
+        //////// set reset wire to 1
+        _core.reset = 1;
+        //////// cycle before cycle cycle is running
+        iterateCycle();
+        _core.reset = 0;
+        resetRegister();
+        readAssembly (_prefixFolder + _testTypes[curTestCaseIdx] + "/asm.out");
+        readAssertVal(_prefixFolder + _testTypes[curTestCaseIdx] + "/ast.out");
+        resetDmem();
+    }
+
+    void SimCtrlRide::doRideCycle(bool recordThisCycle){
+        ///////// give the data to
+        readMem2Fetch();
+        readWriteDataMemDoCmd(); ///// do the dmem command command
+
+        iterateAtEndCycle();
+        readWriteDataMemGetCmd();
+        ///////// record the system
+        _state.recruitValue();
+        if (recordThisCycle){
+            _state.printSlotWindow(_slotWriter);
+        }
+        _state.recruitNextCycle();
+        postCycleAction();
+        _slotWriter.concludeEachCycle();
+        //////////////////////////////////
+        iterateCycle();
+    }
+
+
     void SimCtrlRide::simStart(){
 
 
-        iterateCycle();
+
         for (; _curTestCaseIdx < _testTypes.size(); _curTestCaseIdx++){
             std::cout << TC_BLUE << "[O3 RISC-V] test type is " << _testTypes[_curTestCaseIdx] << TC_DEF << std::endl;
-            //////////////  read assembly and assertVal
-            _slotWriter. renew(_prefixFolder + _testTypes[_curTestCaseIdx]+ "/oslot.sl");
-            //////// set reset wire to 1
-            _core.reset = 1;
-            //////// cycle before cycle cycle is running
-            iterateCycle();
-            _core.reset = 0;
-            resetRegister();
-            readAssembly (_prefixFolder + _testTypes[_curTestCaseIdx] + "/asm.out");
-            readAssertVal(_prefixFolder + _testTypes[_curTestCaseIdx] + "/ast.out");
-            resetDmem();
+            doRideInit(_curTestCaseIdx);
+
             //////// iterate for 100 cycle
             for (int i = 0; i <= 150; i++){
-                ///////// give the data to
-                readMem2Fetch();
-                readWriteDataMemDoCmd(); ///// do the dmem command command
-
-                iterateAtEndCycle();
-                readWriteDataMemGetCmd();
-                ///////// record the system
-                _state.recruitValue();
-                _state.printSlotWindow(_slotWriter);
-                postCycleAction();
-                _slotWriter.concludeEachCycle();
-                //////////////////////////////////
-                iterateCycle();
+                doRideCycle(true);
             }
             /////////////////////////////////
             testRegister();
@@ -97,12 +111,12 @@ namespace kathryn::o3{
         ///// read data from CPU
         CData dmem_we   = ull(_core.dmem_we);
         IData dmem_rwaddr = ull(_core.dmem_addr);
-        IData dmem_wdata  = ull(_core.dmem_data);
+        IData dmem_wdata  = ull(_core.dmem_wdata);
         assert((dmem_rwaddr & 0b11) == 0b00);
 
         lastDmemRead = (dmem_we == 0);
         lastDmemAddr = static_cast<uint32_t>(dmem_rwaddr);
-        lastDmemData = static_cast<uint32_t>(dmem_wdata);
+        lastDmemWData = static_cast<uint32_t>(dmem_wdata);
 
     }
 
@@ -116,8 +130,8 @@ namespace kathryn::o3{
         if (lastDmemRead){
             _core.dmem_data = _dmem[aligned_addr];
         }else{
-            _dmem[aligned_addr] = lastDmemData;
-            std::cout << "write Detect at @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemData << std::endl;
+            _dmem[aligned_addr] = lastDmemWData;
+            std::cout << "write Detect at @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemWData << std::endl;
         }
 
     }
