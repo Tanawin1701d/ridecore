@@ -339,7 +339,7 @@ namespace kathryn::o3{
 
         //////// ldst
         Vpipeline_exunit_ldst* vldstExt = pl->seiryu;
-        exec_ldst.st1 = generatePipState(pl->seiryu->busy == 0, 0);
+        exec_ldst.st1 = generatePipState(pl->seiryu->busy == 0, pl->seiryu->killspec1);
         exec_ldst.st2 = generatePipState(pl->seiryu->insnvalid_latch == 0, 0);
         RSV_BASE_ENTRY& ldstEt = exec_ldst.entry;
         ldstEt.busy     =     0;/// TODO delete from Kathryn
@@ -357,6 +357,7 @@ namespace kathryn::o3{
         ldstEt.src2     =     ull(pl->buf_ex_src2_ldst);
         ldstEt.src2_sel =     0;/// TODO delete from Kathryn
         ldstEt.valid2   =     0;/// TODO delete from Kathryn
+        exec_ldst.effAddr = ull(vldstExt->effaddr);
         //////// ldst2
         exec_ldst.rrftag    = ull(vldstExt->rrftag_latch);
         exec_ldst.rdUse     = ull(vldstExt->dstval_latch);
@@ -364,6 +365,7 @@ namespace kathryn::o3{
         exec_ldst.specTag   = ull(vldstExt->spectag_latch);
         exec_ldst.stBufData = ull(vldstExt->lddatasb_latch);
         exec_ldst.stBufHit  = ull(vldstExt->hitsb_latch);
+        exec_ldst.loadData  = ull(vldstExt->lddatamem);
 
 
         //////////////////////
@@ -436,40 +438,19 @@ namespace kathryn::o3{
         //////////////////////
 
         Vpipeline_renaming_table* rtm = pl->aregfile->rt;
-        ///rt->tag0_0
 
-        IData rt[SPECTAG_LEN+1][RRF_SEL] ={
-            {rtm->tag0_0     ,rtm->tag1_0     ,rtm->tag2_0     ,rtm->tag3_0     ,rtm->tag4_0     ,rtm->tag5_0     },
-            {rtm->tag0_1     ,rtm->tag1_1     ,rtm->tag2_1     ,rtm->tag3_1     ,rtm->tag4_1     ,rtm->tag5_1     },
-            {rtm->tag0_2     ,rtm->tag1_2     ,rtm->tag2_2     ,rtm->tag3_2     ,rtm->tag4_2     ,rtm->tag5_2     },
-            {rtm->tag0_3     ,rtm->tag1_3     ,rtm->tag2_3     ,rtm->tag3_3     ,rtm->tag4_3     ,rtm->tag5_3     },
-            {rtm->tag0_4     ,rtm->tag1_4     ,rtm->tag2_4     ,rtm->tag3_4     ,rtm->tag4_4     ,rtm->tag5_4     },
-            {rtm->tag0_master,rtm->tag1_master,rtm->tag2_master,rtm->tag3_master,rtm->tag4_master,rtm->tag5_master}
-
-        };
-
-        IData arfValid[SPECTAG_LEN+1] = {
-            rtm->busy_0,
-            rtm->busy_1,
-            rtm->busy_2,
-            rtm->busy_3,
-            rtm->busy_4,
-            rtm->busy_master,
-        };
 
         for(int tableIdx = 0; tableIdx < (SPECTAG_LEN+1); tableIdx++){
-            ull* headTable = arf.rename[tableIdx];
-            for (int archIdx = 0; archIdx < REG_NUM; archIdx++){
-                headTable[archIdx] = 0;
-                headTable[archIdx] |= (((rt[tableIdx][0] >> archIdx) & 1) << 0);
-                headTable[archIdx] |= (((rt[tableIdx][1] >> archIdx) & 1) << 1);
-                headTable[archIdx] |= (((rt[tableIdx][2] >> archIdx) & 1) << 2);
-                headTable[archIdx] |= (((rt[tableIdx][3] >> archIdx) & 1) << 3);
-                headTable[archIdx] |= (((rt[tableIdx][4] >> archIdx) & 1) << 4);
-                headTable[archIdx] |= (((rt[tableIdx][5] >> archIdx) & 1) << 5);
-                arf.busy[tableIdx][archIdx] = ((arfValid[tableIdx] >> archIdx) & 1) == 1;
+            for(int archIdx = 0; archIdx < REG_NUM; archIdx++){
+                arf.busy[tableIdx][archIdx] = (rtm->busy[tableIdx][archIdx] != 0);
+                arf.rename[tableIdx][archIdx] = ull(rtm->rem[tableIdx][archIdx]);
             }
         }
+
+
+        //////////////
+        //// RRF /////
+        //////////////
 
         for (int phyIdx = 0; phyIdx < RRF_NUM; phyIdx++){
             rrf.busy[phyIdx] = ull((pl->rregfile->valid >> phyIdx) & 1);

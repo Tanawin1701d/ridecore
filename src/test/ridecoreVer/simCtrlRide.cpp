@@ -37,7 +37,7 @@ namespace kathryn::o3{
     }
 
 
-    void SimCtrlRide::doRideInit(int curTestCaseIdx){
+    void SimCtrlRide::doWorkloadInit(int curTestCaseIdx, bool reqRegTest){
         //////////////  read assembly and assertVal
         _slotWriter. renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/oslot_ride.sl");
         iterateCycle();
@@ -48,11 +48,14 @@ namespace kathryn::o3{
         _core.reset = 0;
         resetRegister();
         readAssembly (_prefixFolder + _testTypes[curTestCaseIdx] + "/asm.out");
-        readAssertVal(_prefixFolder + _testTypes[curTestCaseIdx] + "/ast.out");
-        resetDmem();
+        if (reqRegTest){
+            readAssertVal(_prefixFolder + _testTypes[curTestCaseIdx] + "/ast.out");
+        }
+
+        /////resetDmem();
     }
 
-    void SimCtrlRide::doRideCycle(bool recordThisCycle){
+    void SimCtrlRide::doWorkloadCycle(bool recordThisCycle){
         ///////// give the data to
         readMem2Fetch();
         readWriteDataMemDoCmd(); ///// do the dmem command command
@@ -63,6 +66,7 @@ namespace kathryn::o3{
         _state.recruitValue();
         if (recordThisCycle){
             _state.printSlotWindow(_slotWriter);
+
         }
         _state.recruitNextCycle();
         postCycleAction();
@@ -74,15 +78,13 @@ namespace kathryn::o3{
 
     void SimCtrlRide::simStart(){
 
-
-
         for (; _curTestCaseIdx < _testTypes.size(); _curTestCaseIdx++){
             std::cout << TC_BLUE << "[O3 RISC-V] test type is " << _testTypes[_curTestCaseIdx] << TC_DEF << std::endl;
-            doRideInit(_curTestCaseIdx);
+            doWorkloadInit(_curTestCaseIdx, true);
 
             //////// iterate for 100 cycle
             for (int i = 0; i <= 150; i++){
-                doRideCycle(true);
+                doWorkloadCycle(true);
             }
             /////////////////////////////////
             testRegister();
@@ -128,10 +130,24 @@ namespace kathryn::o3{
         uint32_t aligned_addr = lastDmemAddr >> 2;
 
         if (lastDmemRead){
-            _core.dmem_data = _dmem[aligned_addr];
+            if (aligned_addr >= DMEM_ROW){
+                std::cout << "skip read due to exceed memory address" << std::endl;
+            }else{
+                _core.dmem_data = _dmem[aligned_addr];
+            }
+
+            // std::cout << "read Detect at @ " << cvtNum2HexStr(lastDmemAddr) << "   with  " << _dmem[aligned_addr] << std::endl;
+            // if (lastDmemAddr == 0x598){
+            //     std::cout << "read Detect at @ " << cvtNum2HexStr(lastDmemAddr) << "   with  " << _dmem[aligned_addr] << std::endl;
+            // }
         }else{
-            _dmem[aligned_addr] = lastDmemWData;
-            std::cout << "write Detect at @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemWData << std::endl;
+            if (aligned_addr >= DMEM_ROW){
+                std::cout << "skip write due to exceed memory address" << std::endl;
+            }else{
+                _dmem[aligned_addr] = lastDmemWData;
+                std::cout << "write Detect at @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemWData << std::endl;
+            }
+
         }
 
     }

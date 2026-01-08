@@ -38,8 +38,8 @@ namespace kathryn::o3{
         void  iterateCycle();
         void  iterateAtEndCycle();
 
-        void  doRideInit (int curTestCaseIdx);
-        void  doRideCycle(bool recordThisCycle);
+        void  doWorkloadInit (int curTestCaseIdx, bool reqRegTest) override;
+        void  doWorkloadCycle(bool recordThisCycle) override;
 
         void  simStart();
 

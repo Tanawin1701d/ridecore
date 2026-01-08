@@ -35,3 +35,4 @@ Currently, there are three options:
   - "make dbg" (testbench.v is compiled): generates an a.out executable file which reports the states of RIDECORE in every clock cycle while executing applications.
   - "make pred" (testbench_pred.v is compiled): generates an a.out executable file which reports the branch prediction information while executing applications.
 
+export PATH=$PATH:/media/tanawin/tanawin1701e/project2/Kathryn/extSim/ridecore/toolchain/memgen-v0.9

@@ -34,13 +34,13 @@ module exunit_ldst
    input wire 			 hitsb,
    output wire [`ADDR_LEN-1:0] 	 ldaddr,
    input wire [`DATA_LEN-1:0] 	 lddatasb,
-   input wire [`DATA_LEN-1:0] 	 lddatamem
+   input wire [`DATA_LEN-1:0] 	 lddatamem /* verilator public */
    );
 
    reg 				 busy /* verilator public */;
    wire 			 clearbusy;
-   wire [`ADDR_LEN-1:0] 	 effaddr;
-   wire 			 killspec1;
+   wire [`ADDR_LEN-1:0] 	 effaddr /* verilator public */;
+   wire 			 killspec1/* verilator public */;
    
    //LATCH
    reg 				 dstval_latch /* verilator public */;

@@ -9,7 +9,7 @@ module alloc_issue_ino  #(
    (
     input wire 		     clk,
     input wire 		     reset,
-    input wire [1:0] 	     reqnum,
+    input wire [1:0] 	     reqnum /* verilator public */,
     input wire [ENTNUM-1:0]  busyvec,
     input wire [ENTNUM-1:0]  prbusyvec_next,
     input wire [ENTNUM-1:0]  readyvec,
@@ -17,9 +17,9 @@ module alloc_issue_ino  #(
     input wire 		     exunit_busynext,
     input wire 		     stall_DP,
     input wire 		     kill_DP,
-    output reg [ENTSEL-1:0]  allocptr,
+    output reg [ENTSEL-1:0]  allocptr /* verilator public */,
     output wire 	     allocatable,
-    output wire [ENTSEL-1:0] issueptr,
+    output wire [ENTSEL-1:0] issueptr ,
     output wire 	     issuevalid
    );
 
