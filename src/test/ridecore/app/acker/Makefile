@@ -13,8 +13,8 @@ MIPSLD  = $(CMDPREF)riscv64-unknown-elf-ld
 OBJDUMP = $(CMDPREF)riscv64-unknown-elf-objdump
 MEMGEN  = memgen
 
-CFLAGS  = -m32 -O2
-AFLAGS  = -m32
+CFLAGS  = -march=rv32im -mabi=ilp32 -O2
+AFLAGS  = -march=rv32im
 LFLAGS  = -static -melf32lriscv
 
 .SUFFIXES:
@@ -37,7 +37,7 @@ image:
 	$(MEMGEN) -b $(TARGET) 8 > $(TARGET).bin
 
 dump:
-	$(OBJDUMP) -S $(TARGET)
+	$(OBJDUMP) -S $(TARGET) > $(TARGET).dump
 
 copy:
 	cp init.bin ../../bin

@@ -25,6 +25,9 @@ module storebuf
    output wire 			 hit
    );
 
+   wire stspecbitNext = stspecbit & 
+                           ( (~prsuccess) | (prtag != stspectag));
+
    reg [`STBUF_ENT_SEL-1:0] 	 finptr /* verilator public */;
    reg [`STBUF_ENT_SEL-1:0] 	 comptr /* verilator public */;
    reg [`STBUF_ENT_SEL-1:0] 	 retptr /* verilator public */;
@@ -159,14 +162,20 @@ module storebuf
       if (reset | prmiss) begin
 	 specbit <= 0;
       end else if (prsuccess) begin
-	 specbit <= (specbit & specbit_cls) |
-		    (stfin ? 
-		     ({`STBUF_ENT_NUM{stspecbit}} << finptr) : 
-		     `STBUF_ENT_NUM'b0);
+	 specbit <= ((specbit & specbit_cls) &
+		    (stfin ?(~({`STBUF_ENT_NUM{1'b1}} << finptr)) : 
+                  (~(`STBUF_ENT_NUM'b0))
+           ))|
+          (stfin ? ({`STBUF_ENT_NUM{stspecbitNext}} << finptr) :
+                   (`STBUF_ENT_NUM'b0)
+          );
+
+
+
       end else begin
-	 if (stfin) begin
-	    specbit[finptr] <= stspecbit;
-	 end
+         if (stfin) begin
+            specbit[finptr] <= stspecbit;
+         end
       end
    end
 endmodule // storebuf

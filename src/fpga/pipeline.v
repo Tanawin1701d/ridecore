@@ -749,7 +749,7 @@ module pipeline
 		     1'b0 : spec1_id;
 	 spec2_id <= (spec2_id && (buf_spectag_branch == sptag2_id)) ?
 		     1'b0 : spec2_id;
-      end else if (~stall_ID) begin
+      end else if ( (~stall_ID) && (~stall_DP)) begin
 	 spec1_id <= spec1;
 	 spec2_id <= spec2;
       end

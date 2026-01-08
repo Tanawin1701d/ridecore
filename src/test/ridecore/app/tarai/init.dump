@@ -1,0 +1,119 @@
+
+init:     file format elf32-littleriscv
+
+
+Disassembly of section .startup:
+
+00000000 <_start>:
+   0:	00000013          	nop
+   4:	00000033          	add	zero,zero,zero
+   8:	000000b3          	add	ra,zero,zero
+   c:	00000133          	add	sp,zero,zero
+  10:	000001b3          	add	gp,zero,zero
+  14:	00000233          	add	tp,zero,zero
+  18:	000002b3          	add	t0,zero,zero
+  1c:	00000333          	add	t1,zero,zero
+  20:	000003b3          	add	t2,zero,zero
+  24:	00000433          	add	s0,zero,zero
+  28:	000004b3          	add	s1,zero,zero
+  2c:	00000533          	add	a0,zero,zero
+  30:	000005b3          	add	a1,zero,zero
+  34:	00000633          	add	a2,zero,zero
+  38:	000006b3          	add	a3,zero,zero
+  3c:	00000733          	add	a4,zero,zero
+  40:	000007b3          	add	a5,zero,zero
+  44:	00000833          	add	a6,zero,zero
+  48:	000008b3          	add	a7,zero,zero
+  4c:	00000933          	add	s2,zero,zero
+  50:	000009b3          	add	s3,zero,zero
+  54:	00000a33          	add	s4,zero,zero
+  58:	00000ab3          	add	s5,zero,zero
+  5c:	00000b33          	add	s6,zero,zero
+  60:	00000bb3          	add	s7,zero,zero
+  64:	00000c33          	add	s8,zero,zero
+  68:	00000cb3          	add	s9,zero,zero
+  6c:	00000d33          	add	s10,zero,zero
+  70:	00000db3          	add	s11,zero,zero
+  74:	00000e33          	add	t3,zero,zero
+  78:	00000eb3          	add	t4,zero,zero
+  7c:	00000f33          	add	t5,zero,zero
+  80:	00000fb3          	add	t6,zero,zero
+  84:	00002137          	lui	sp,0x2
+  88:	f0010113          	addi	sp,sp,-256 # 1f00 <disp_addr+0x1bec>
+  8c:	23c0006f          	j	2c8 <main>
+  90:	00000013          	nop
+
+Disassembly of section .text:
+
+00000200 <DISPLAY_INT>:
+ 200:	01c00713          	li	a4,28
+ 204:	00900813          	li	a6,9
+ 208:	ffc00593          	li	a1,-4
+ 20c:	40e557b3          	sra	a5,a0,a4
+ 210:	31402603          	lw	a2,788(zero) # 314 <disp_addr>
+ 214:	00f7f793          	andi	a5,a5,15
+ 218:	ffc70713          	addi	a4,a4,-4
+ 21c:	03078693          	addi	a3,a5,48
+ 220:	00f85463          	bge	a6,a5,228 <DISPLAY_INT+0x28>
+ 224:	03778693          	addi	a3,a5,55
+ 228:	00d62023          	sw	a3,0(a2)
+ 22c:	feb710e3          	bne	a4,a1,20c <DISPLAY_INT+0xc>
+ 230:	00008067          	ret
+
+00000234 <tarai>:
+ 234:	fe010113          	addi	sp,sp,-32
+ 238:	00812c23          	sw	s0,24(sp)
+ 23c:	00112e23          	sw	ra,28(sp)
+ 240:	00912a23          	sw	s1,20(sp)
+ 244:	01212823          	sw	s2,16(sp)
+ 248:	01312623          	sw	s3,12(sp)
+ 24c:	00058413          	mv	s0,a1
+ 250:	04a5dc63          	bge	a1,a0,2a8 <tarai+0x74>
+ 254:	00050913          	mv	s2,a0
+ 258:	00060493          	mv	s1,a2
+ 25c:	00048613          	mv	a2,s1
+ 260:	00040593          	mv	a1,s0
+ 264:	fff90513          	addi	a0,s2,-1
+ 268:	fcdff0ef          	jal	ra,234 <tarai>
+ 26c:	00050793          	mv	a5,a0
+ 270:	00048593          	mv	a1,s1
+ 274:	00090613          	mv	a2,s2
+ 278:	fff40513          	addi	a0,s0,-1
+ 27c:	00090993          	mv	s3,s2
+ 280:	00078913          	mv	s2,a5
+ 284:	fb1ff0ef          	jal	ra,234 <tarai>
+ 288:	00050793          	mv	a5,a0
+ 28c:	00040613          	mv	a2,s0
+ 290:	fff48513          	addi	a0,s1,-1
+ 294:	00098593          	mv	a1,s3
+ 298:	00078413          	mv	s0,a5
+ 29c:	f99ff0ef          	jal	ra,234 <tarai>
+ 2a0:	00050493          	mv	s1,a0
+ 2a4:	fb244ce3          	blt	s0,s2,25c <tarai+0x28>
+ 2a8:	01c12083          	lw	ra,28(sp)
+ 2ac:	00040513          	mv	a0,s0
+ 2b0:	01812403          	lw	s0,24(sp)
+ 2b4:	01412483          	lw	s1,20(sp)
+ 2b8:	01012903          	lw	s2,16(sp)
+ 2bc:	00c12983          	lw	s3,12(sp)
+ 2c0:	02010113          	addi	sp,sp,32
+ 2c4:	00008067          	ret
+
+000002c8 <main>:
+ 2c8:	ff010113          	addi	sp,sp,-16
+ 2cc:	00000613          	li	a2,0
+ 2d0:	00400593          	li	a1,4
+ 2d4:	00800513          	li	a0,8
+ 2d8:	00112623          	sw	ra,12(sp)
+ 2dc:	f59ff0ef          	jal	ra,234 <tarai>
+ 2e0:	f21ff0ef          	jal	ra,200 <DISPLAY_INT>
+ 2e4:	31402703          	lw	a4,788(zero) # 314 <disp_addr>
+ 2e8:	31002783          	lw	a5,784(zero) # 310 <finish_addr>
+ 2ec:	00c12083          	lw	ra,12(sp)
+ 2f0:	00a00693          	li	a3,10
+ 2f4:	00d72023          	sw	a3,0(a4)
+ 2f8:	00100713          	li	a4,1
+ 2fc:	00e7a023          	sw	a4,0(a5)
+ 300:	00000513          	li	a0,0
+ 304:	01010113          	addi	sp,sp,16
+ 308:	00008067          	ret
