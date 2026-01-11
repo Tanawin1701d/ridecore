@@ -324,7 +324,7 @@ module renaming_table
 				end
 			end
 			
-		end begin
+		end else begin
 
 			integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin

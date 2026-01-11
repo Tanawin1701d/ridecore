@@ -27,25 +27,25 @@ int main()
     for (i = 1; i <= 9; i++)
       if (sign[i] == 0) n = 10 * n + i;
       else {
-	x += s * n;  s = sign[i];  n = i;
+	        x += s * n;  s = sign[i];  n = i;
       }
     x += s * n;
     if (x == 100) {
       for (i = 1; i <= 9; i++) {
-	if      (sign[i] ==  1) {
-	  //printf(" + ");
-	  DISPLAY_CHAR(' ');
-	  DISPLAY_CHAR('+');
-	  DISPLAY_CHAR(' ');
-	}
-	else if (sign[i] == -1) {
-	  //			    printf(" - ");
-	  DISPLAY_CHAR(' ');
-	  DISPLAY_CHAR('-');
-	  DISPLAY_CHAR(' ');
-	}
-	//			  printf("%10d", i);
-	DISPLAY_INT(i);
+        if      (sign[i] ==  1) {
+          //printf(" + ");
+          DISPLAY_CHAR(' ');
+          DISPLAY_CHAR('+');
+          DISPLAY_CHAR(' ');
+        }
+        else if (sign[i] == -1) {
+          //			    printf(" - ");
+          DISPLAY_CHAR(' ');
+          DISPLAY_CHAR('-');
+          DISPLAY_CHAR(' ');
+        }
+        //			  printf("%10d", i);
+        DISPLAY_INT(i);
       }
       //printf(" = 100\n");
       DISPLAY_CHAR(' ');

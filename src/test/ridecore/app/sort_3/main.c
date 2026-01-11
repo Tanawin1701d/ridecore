@@ -34,9 +34,9 @@ void sort(int *x, int n) {
   for (i = 0; i < n - 1; i++) {
     for (j = n - 1; j > i; j--) {
       if (x[j - 1] > x[j]) {
-	t = x[j];
-	x[j] = x[j - 1];
-	x[j - 1]= t;
+        t = x[j];
+        x[j] = x[j - 1];
+        x[j - 1]= t;
       }
     }
   }

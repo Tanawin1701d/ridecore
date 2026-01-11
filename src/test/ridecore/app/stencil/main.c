@@ -50,6 +50,7 @@ int main(void) {
 	+mat[i+1][j+1+1]+mat[i+1+1][j+1+1]+mat[i+1-1][j+1+1]
 	+mat[i+1][j+1-1]+mat[i+1+1][j+1-1]+mat[i+1-1][j+1-1];
       DISPLAY_INT(result[i][j]);
+      DISPLAY_CHAR(',');
       /*
       outnum(	mat[i+1][j+1]+mat[i+1+1][j+1]+mat[i+1-1][j+1]
 	+mat[i+1][j+1+1]+mat[i+1+1][j+1+1]+mat[i+1-1][j+1+1]
