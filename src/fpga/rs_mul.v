@@ -116,27 +116,27 @@ module rs_mul_ent
 		       .resolved(nextvalid1)
 		       );
 
-   src_manager srcmng2(
-		       .opr(src2),
-		       .opr_rdy(valid2),
-		       .exrslt1(exrslt1),
-		       .exdst1(exdst1),
-		       .kill_spec1(kill_spec1),
-		       .exrslt2(exrslt2),
-		       .exdst2(exdst2),
-		       .kill_spec2(kill_spec2),
-		       .exrslt3(exrslt3),
-		       .exdst3(exdst3),
-		       .kill_spec3(kill_spec3),
-		       .exrslt4(exrslt4),
-		       .exdst4(exdst4),
-		       .kill_spec4(kill_spec4),
-		       .exrslt5(exrslt5),
-		       .exdst5(exdst5),
-		       .kill_spec5(kill_spec5),
-		       .src(nextsrc2),
-		       .resolved(nextvalid2)
-		       );
+   src_manager srcmng2(                  ///DC
+		       .opr(src2),               ///DC
+		       .opr_rdy(valid2),         ///DC
+		       .exrslt1(exrslt1),        ///DC
+		       .exdst1(exdst1),          ///DC
+		       .kill_spec1(kill_spec1),  ///DC
+		       .exrslt2(exrslt2),        ///DC
+		       .exdst2(exdst2),          ///DC
+		       .kill_spec2(kill_spec2),  ///DC
+		       .exrslt3(exrslt3),        ///DC
+		       .exdst3(exdst3),          ///DC
+		       .kill_spec3(kill_spec3),  ///DC
+		       .exrslt4(exrslt4),        ///DC
+		       .exdst4(exdst4),          ///DC
+		       .kill_spec4(kill_spec4),  ///DC
+		       .exrslt5(exrslt5),        ///DC
+		       .exdst5(exdst5),          ///DC
+		       .kill_spec5(kill_spec5),  ///DC
+		       .src(nextsrc2),           ///DC
+		       .resolved(nextvalid2)     ///DC
+		       );                        ///DC
    
 endmodule // rs_mul
 
@@ -172,17 +172,17 @@ module rs_mul
    input wire 			  wsel_lohi_1,
 
    //WriteSignal2
-   input wire [`DATA_LEN-1:0] 	  wsrc1_2,
-   input wire [`DATA_LEN-1:0] 	  wsrc2_2,
-   input wire 			  wvalid1_2,
-   input wire 			  wvalid2_2,
-   input wire [`RRF_SEL-1:0] 	  wrrftag_2,
-   input wire 			  wdstval_2,
-   input wire [`SPECTAG_LEN-1:0] 	  wspectag_2,
-   input wire 			  wspecbit_2,
-   input wire 			  wsrc1_signed_2,
-   input wire 			  wsrc2_signed_2,
-   input wire 			  wsel_lohi_2,
+   input wire [`DATA_LEN-1:0] 	  wsrc1_2,        ///DC
+   input wire [`DATA_LEN-1:0] 	  wsrc2_2,        ///DC
+   input wire 			  wvalid1_2,              ///DC
+   input wire 			  wvalid2_2,              ///DC
+   input wire [`RRF_SEL-1:0] 	  wrrftag_2,      ///DC
+   input wire 			  wdstval_2,              ///DC
+   input wire [`SPECTAG_LEN-1:0] 	  wspectag_2, ///DC
+   input wire 			  wspecbit_2,             ///DC
+   input wire 			  wsrc1_signed_2,         ///DC
+   input wire 			  wsrc2_signed_2,         ///DC
+   input wire 			  wsel_lohi_2,            ///DC
 
    //ReadSignal
    output wire [`DATA_LEN-1:0] 	  ex_src1,
@@ -226,15 +226,15 @@ module rs_mul
    wire 			      sel_lohi_0;
    
    //_1
-   wire [`DATA_LEN-1:0] 	      ex_src1_1;
-   wire [`DATA_LEN-1:0] 	      ex_src2_1;
-   wire 			      ready_1;
-   wire [`RRF_SEL-1:0] 		      rrftag_1;
-   wire 			      dstval_1;
-   wire [`SPECTAG_LEN-1:0] 	      spectag_1;
-   wire 			      src1_signed_1;
-   wire 			      src2_signed_1;
-   wire 			      sel_lohi_1;
+   wire [`DATA_LEN-1:0] 	      ex_src1_1;  ///DC
+   wire [`DATA_LEN-1:0] 	      ex_src2_1;  ///DC
+   wire 			      ready_1;            ///DC
+   wire [`RRF_SEL-1:0] 		      rrftag_1;   ///DC
+   wire 			      dstval_1;           ///DC
+   wire [`SPECTAG_LEN-1:0] 	      spectag_1;  ///DC
+   wire 			      src1_signed_1;      ///DC
+   wire 			      src2_signed_1;      ///DC
+   wire 			      sel_lohi_1;         ///DC
 
    reg [`MUL_ENT_NUM-1:0] 	  specbitvec /* verilator public */;
 
@@ -335,46 +335,46 @@ module rs_mul
 		   .kill_spec5(kill_spec5)
 		   );
 
-   rs_mul_ent ent1(
-		   .clk(clk),
-		   .reset(reset),		   
-		   .busy(busyvec[1]),
-		   .wsrc1((we1 && (waddr1 == 1)) ? wsrc1_1 : wsrc1_2),
-		   .wsrc2((we1 && (waddr1 == 1)) ? wsrc2_1 : wsrc2_2),
-		   .wvalid1((we1 && (waddr1 == 1)) ? wvalid1_1 : wvalid1_2),
-		   .wvalid2((we1 && (waddr1 == 1)) ? wvalid2_1 : wvalid2_2),
-		   .wrrftag((we1 && (waddr1 == 1)) ? wrrftag_1 : wrrftag_2),
-		   .wdstval((we1 && (waddr1 == 1)) ? wdstval_1 : wdstval_2),
-		   .wspectag((we1 && (waddr1 == 1)) ? wspectag_1 : wspectag_2),
-		   .wsrc1_signed((we1 && (waddr1 == 1)) ? wsrc1_signed_1 : wsrc1_signed_2),
-		   .wsrc2_signed((we1 && (waddr1 == 1)) ? wsrc2_signed_1 : wsrc2_signed_2),
-		   .wsel_lohi((we1 && (waddr1 == 1)) ? wsel_lohi_1 : wsel_lohi_2),
-		   .we((we1 && (waddr1 == 1)) || (we2 && (waddr2 == 1))),
-		   .ex_src1(ex_src1_1),
-		   .ex_src2(ex_src2_1),
-		   .ready(ready_1),
-		   .rrftag(rrftag_1),
-		   .dstval(dstval_1),
-		   .spectag(spectag_1),
-		   .src1_signed(src1_signed_1),
-		   .src2_signed(src2_signed_1),
-		   .sel_lohi(sel_lohi_1),
-		   .exrslt1(exrslt1),
-		   .exdst1(exdst1),
-		   .kill_spec1(kill_spec1),
-		   .exrslt2(exrslt2),
-		   .exdst2(exdst2),
-		   .kill_spec2(kill_spec2),
-		   .exrslt3(exrslt3),
-		   .exdst3(exdst3),
-		   .kill_spec3(kill_spec3),
-		   .exrslt4(exrslt4),
-		   .exdst4(exdst4),
-		   .kill_spec4(kill_spec4),
-		   .exrslt5(exrslt5),
-		   .exdst5(exdst5),
-		   .kill_spec5(kill_spec5)
-		   );
+   rs_mul_ent ent1(                                                                    ///DC
+		   .clk(clk),                                                                  ///DC
+		   .reset(reset),		                                                       ///DC
+		   .busy(busyvec[1]),                                                          ///DC
+		   .wsrc1((we1 && (waddr1 == 1)) ? wsrc1_1 : wsrc1_2),                         ///DC
+		   .wsrc2((we1 && (waddr1 == 1)) ? wsrc2_1 : wsrc2_2),                         ///DC
+		   .wvalid1((we1 && (waddr1 == 1)) ? wvalid1_1 : wvalid1_2),                   ///DC
+		   .wvalid2((we1 && (waddr1 == 1)) ? wvalid2_1 : wvalid2_2),                   ///DC
+		   .wrrftag((we1 && (waddr1 == 1)) ? wrrftag_1 : wrrftag_2),                   ///DC
+		   .wdstval((we1 && (waddr1 == 1)) ? wdstval_1 : wdstval_2),                   ///DC
+		   .wspectag((we1 && (waddr1 == 1)) ? wspectag_1 : wspectag_2),                ///DC
+		   .wsrc1_signed((we1 && (waddr1 == 1)) ? wsrc1_signed_1 : wsrc1_signed_2),    ///DC
+		   .wsrc2_signed((we1 && (waddr1 == 1)) ? wsrc2_signed_1 : wsrc2_signed_2),    ///DC
+		   .wsel_lohi((we1 && (waddr1 == 1)) ? wsel_lohi_1 : wsel_lohi_2),             ///DC
+		   .we((we1 && (waddr1 == 1)) || (we2 && (waddr2 == 1))),                      ///DC
+		   .ex_src1(ex_src1_1),                                                        ///DC
+		   .ex_src2(ex_src2_1),                                                        ///DC
+		   .ready(ready_1),                                                            ///DC
+		   .rrftag(rrftag_1),                                                          ///DC
+		   .dstval(dstval_1),                                                          ///DC
+		   .spectag(spectag_1),                                                        ///DC
+		   .src1_signed(src1_signed_1),                                                ///DC
+		   .src2_signed(src2_signed_1),                                                ///DC
+		   .sel_lohi(sel_lohi_1),                                                      ///DC
+		   .exrslt1(exrslt1),                                                          ///DC
+		   .exdst1(exdst1),                                                            ///DC
+		   .kill_spec1(kill_spec1),                                                    ///DC
+		   .exrslt2(exrslt2),                                                          ///DC
+		   .exdst2(exdst2),                                                            ///DC
+		   .kill_spec2(kill_spec2),                                                    ///DC
+		   .exrslt3(exrslt3),                                                          ///DC
+		   .exdst3(exdst3),                                                            ///DC
+		   .kill_spec3(kill_spec3),                                                    ///DC
+		   .exrslt4(exrslt4),                                                          ///DC
+		   .exdst4(exdst4),                                                            ///DC
+		   .kill_spec4(kill_spec4),                                                    ///DC
+		   .exrslt5(exrslt5),                                                          ///DC
+		   .exdst5(exdst5),                                                            ///DC
+		   .kill_spec5(kill_spec5)                                                     ///DC
+		   );                                                                          ///DC
    
    assign ex_src1 = (issueaddr == 0) ? ex_src1_0 : ex_src1_1;
    

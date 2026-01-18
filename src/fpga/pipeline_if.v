@@ -5,22 +5,22 @@ module pipeline_if
    input wire 			  clk,
    input wire 			  reset,
    input wire [`ADDR_LEN-1:0] 	  pc,
-   output wire 			  predict_cond,
+//   output wire 			  predict_cond,
    output wire [`ADDR_LEN-1:0] 	  npc,
    output wire [`INSN_LEN-1:0] 	  inst1,
    output wire [`INSN_LEN-1:0] 	  inst2,
    output wire 			  invalid2,
-   input wire 			  btbpht_we,
-   input wire [`ADDR_LEN-1:0] 	  btbpht_pc,
-   input wire [`ADDR_LEN-1:0] 	  btb_jmpdst,
-   input wire 			  pht_wcond,
-   input wire [`SPECTAG_LEN-1:0]  mpft_valid,
-   input wire [`GSH_BHR_LEN-1:0]  pht_bhr,
+//   input wire 			  btbpht_we,
+//   input wire [`ADDR_LEN-1:0] 	  btbpht_pc,
+//   input wire [`ADDR_LEN-1:0] 	  btb_jmpdst,
+//   input wire 			  pht_wcond,
+//   input wire [`SPECTAG_LEN-1:0]  mpft_valid,
+//   input wire [`GSH_BHR_LEN-1:0]  pht_bhr,
    input wire 			  prmiss,
    input wire 			  prsuccess,
-   input wire [`SPECTAG_LEN-1:0]  prtag,
-   output wire [`GSH_BHR_LEN-1:0] bhr,
-   input wire [`SPECTAG_LEN-1:0]  spectagnow,
+//   input wire [`SPECTAG_LEN-1:0]  prtag,
+//   output wire [`GSH_BHR_LEN-1:0] bhr,
+//   input wire [`SPECTAG_LEN-1:0]  spectagnow,
    input wire [4*`INSN_LEN-1:0]   idata
    );
 
@@ -34,7 +34,7 @@ module pipeline_if
    assign npc = invalid2 ? pc + 4 :
 		                     pc + 8;
    
-   assign predict_cond = 0;
+   //assign predict_cond = 0;
 
 /*   
    imem instmem(
@@ -57,36 +57,36 @@ module pipeline_if
 		       .invalid(invalid2)
 		       );
 
-   btb brtbl(
-	     .clk(clk),
-	     .reset(reset),
-	     .pc(pc),
-	     .hit(hit),
-	     .jmpaddr(pred_pc),
-	     .we(btbpht_we),
-	     .jmpsrc(btbpht_pc),
-	     .jmpdst(btb_jmpdst),
-	     .invalid2(invalid2)
-	     );
+   // btb brtbl(
+	//      .clk(clk),
+	//      .reset(reset),
+	//      .pc(pc),
+	//      .hit(hit),
+	//      .jmpaddr(pred_pc),
+	//      .we(btbpht_we),
+	//      .jmpsrc(btbpht_pc),
+	//      .jmpdst(btb_jmpdst),
+	//      .invalid2(invalid2)
+	//      );
 
-   wire predict_cond_dummy;
-   gshare_predictor gsh
-     (
-      .clk(clk),
-      .reset(reset),
-      .pc(pc),
-      .hit_bht(hit),
-      .predict_cond(predict_cond_dummy),
-      .we(btbpht_we),
-      .wcond(pht_wcond),
-      .went(btbpht_pc[2+:`GSH_BHR_LEN] ^ pht_bhr),
-      .mpft_valid(mpft_valid),
-      .prmiss(prmiss),
-      .prsuccess(prsuccess),
-      .prtag(prtag),
-      .bhr_master(bhr),
-      .spectagnow(spectagnow)
-      );
+   // wire predict_cond_dummy;
+   // gshare_predictor gsh
+   //   (
+   //    .clk(clk),
+   //    .reset(reset),
+   //    .pc(pc),
+   //    .hit_bht(hit),
+   //    .predict_cond(predict_cond_dummy),
+   //    .we(btbpht_we),
+   //    .wcond(pht_wcond),
+   //    .went(btbpht_pc[2+:`GSH_BHR_LEN] ^ pht_bhr),
+   //    .mpft_valid(mpft_valid),
+   //    .prmiss(prmiss),
+   //    .prsuccess(prsuccess),
+   //    .prtag(prtag),
+   //    .bhr_master(bhr),
+   //    .spectagnow(spectagnow)
+   //    );
    
 endmodule // pipeline_pc
 

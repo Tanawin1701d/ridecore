@@ -27,22 +27,22 @@ module pipeline
 
    //IF
    // Signal from pipe_if
-   wire     	       prcond;
+   wire     	       prcond = 0; ///DC
    wire [`ADDR_LEN-1:0] npc;
    wire [`INSN_LEN-1:0] inst1;
    wire [`INSN_LEN-1:0] inst2;
    wire 		invalid2_pipe;
-   wire [`GSH_BHR_LEN-1:0] bhr;
+   wire [`GSH_BHR_LEN-1:0] bhr = 0; ///DC
    
    //Instruction Buffer
-   reg 			   prcond_if /* verilator public */;
+   reg 			   prcond_if /* verilator public */;            ///DC
    reg [`ADDR_LEN-1:0] 	   npc_if /* verilator public */ ;
    reg [`ADDR_LEN-1:0] 	   pc_if /* verilator public */  ; 
    reg [`INSN_LEN-1:0] 	   inst1_if /* verilator public */  ;
    reg [`INSN_LEN-1:0] 	   inst2_if /* verilator public */   ;
    reg 			           inv1_if /* verilator public */  ;
    reg 			           inv2_if /* verilator public */   ;
-   reg [`GSH_BHR_LEN-1:0]  bhr_if /* verilator public */  ;  /// reg 			   bhr_if;
+   reg [`GSH_BHR_LEN-1:0]  bhr_if /* verilator public */  ; ///DC
    wire 		           attachable /* verilator public */;
 
    //ID
@@ -66,24 +66,24 @@ module pipeline
    wire 		       md_req_in_2_signed_1;
    wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_1;
    //Decode Info2
-   wire [`IMM_TYPE_WIDTH-1:0] 	imm_type_2;
-   wire [`REG_SEL-1:0] 		rs1_2;
-   wire [`REG_SEL-1:0] 		rs2_2;
-   wire [`REG_SEL-1:0] 		rd_2;
-   wire [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2;
-   wire [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2;
-   wire 			wr_reg_2;
-   wire 			uses_rs1_2;
-   wire 			uses_rs2_2;
-   wire 			illegal_instruction_2;
-   wire [`ALU_OP_WIDTH-1:0] 	alu_op_2;
-   wire [`RS_ENT_SEL-1:0] 	rs_ent_2;
-   wire [2:0] 			dmem_size_2;
-   wire [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2;			  
-   wire [`MD_OP_WIDTH-1:0] 	md_req_op_2;
-   wire 			md_req_in_1_signed_2;
-   wire 			md_req_in_2_signed_2;
-   wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_2;
+   wire [`IMM_TYPE_WIDTH-1:0] 	imm_type_2;        ///DC
+   wire [`REG_SEL-1:0] 		rs1_2;                 ///DC
+   wire [`REG_SEL-1:0] 		rs2_2;                 ///DC
+   wire [`REG_SEL-1:0] 		rd_2;                  ///DC
+   wire [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2;       ///DC
+   wire [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2;       ///DC
+   wire 			wr_reg_2;                      ///DC
+   wire 			uses_rs1_2;                    ///DC
+   wire 			uses_rs2_2;                    ///DC
+   wire 			illegal_instruction_2;         ///DC
+   wire [`ALU_OP_WIDTH-1:0] 	alu_op_2;          ///DC
+   wire [`RS_ENT_SEL-1:0] 	rs_ent_2;              ///DC
+   wire [2:0] 			dmem_size_2;               ///DC
+   wire [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2;	   ///DC
+   wire [`MD_OP_WIDTH-1:0] 	md_req_op_2;           ///DC
+   wire 			md_req_in_1_signed_2;          ///DC
+   wire 			md_req_in_2_signed_2;          ///DC
+   wire [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel_2;  ///DC
    //Additional Info
    wire [`SPECTAG_LEN-1:0] 	sptag1;
    wire [`SPECTAG_LEN-1:0] 	sptag2;
@@ -98,62 +98,62 @@ module pipeline
    //Latch
    //Decode Info1
    reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_1_id /* verilator public */;                         
-   reg [`REG_SEL-1:0] 		rs1_1_id /* verilator public */;                         
-   reg [`REG_SEL-1:0] 		rs2_1_id /* verilator public */;                         
-   reg [`REG_SEL-1:0] 		rd_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		    rs1_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		    rs2_1_id /* verilator public */;                         
+   reg [`REG_SEL-1:0] 		    rd_1_id /* verilator public */;                         
    reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_1_id /* verilator public */;                         
    reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_1_id /* verilator public */;                         
-   reg 				wr_reg_1_id /* verilator public */;                         
-   reg 				uses_rs1_1_id /* verilator public */;                         
-   reg 				uses_rs2_1_id /* verilator public */;                         
-   reg 				illegal_instruction_1_id /* verilator public */;                         
-   reg [`ALU_OP_WIDTH-1:0] 	alu_op_1_id /* verilator public */;                         
-   reg [`RS_ENT_SEL-1:0] 	rs_ent_1_id /* verilator public */;                         
-   reg [2:0] 			dmem_size_1_id /* verilator public */;                         
+   reg 				            wr_reg_1_id /* verilator public */;                         
+   reg 				            uses_rs1_1_id /* verilator public */;                         
+   reg 				            uses_rs2_1_id /* verilator public */;                         
+   reg 				            illegal_instruction_1_id /* verilator public */;                         
+   reg [`ALU_OP_WIDTH-1:0] 	    alu_op_1_id /* verilator public */;                         
+   reg [`RS_ENT_SEL-1:0] 	    rs_ent_1_id /* verilator public */;                         
+   reg [2:0] 			        dmem_size_1_id /* verilator public */;                         
    reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_1_id /* verilator public */;			                           
-   reg [`MD_OP_WIDTH-1:0] 	md_req_op_1_id /* verilator public */;                         
-   reg 				md_req_in_1_signed_1_id /* verilator public */;                         
-   reg 				md_req_in_2_signed_1_id /* verilator public */;                         
+   reg [`MD_OP_WIDTH-1:0] 	    md_req_op_1_id /* verilator public */;                         
+   reg 				            md_req_in_1_signed_1_id /* verilator public */;                         
+   reg 				            md_req_in_2_signed_1_id /* verilator public */;                         
    reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_1_id /* verilator public */;                         
    //Decode Info2
-   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_2_id  /* verilator public */;                   
-   reg [`REG_SEL-1:0] 		rs1_2_id  /* verilator public */;                   
-   reg [`REG_SEL-1:0] 		rs2_2_id  /* verilator public */;                   
-   reg [`REG_SEL-1:0] 		rd_2_id  /* verilator public */;                   
-   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2_id  /* verilator public */;                   
-   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2_id  /* verilator public */;                   
-   reg 				wr_reg_2_id  /* verilator public */;                   
-   reg 				uses_rs1_2_id  /* verilator public */;                   
-   reg 				uses_rs2_2_id  /* verilator public */;                   
-   reg 				illegal_instruction_2_id  /* verilator public */;                   
-   reg [`ALU_OP_WIDTH-1:0] 	alu_op_2_id  /* verilator public */;                   
-   reg [`RS_ENT_SEL-1:0] 	rs_ent_2_id  /* verilator public */;                   
-   reg [2:0] 			dmem_size_2_id  /* verilator public */;                   
-   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2_id  /* verilator public */;			                     
-   reg [`MD_OP_WIDTH-1:0] 	md_req_op_2_id  /* verilator public */;                   
-   reg 				md_req_in_1_signed_2_id  /* verilator public */;                   
-   reg 				md_req_in_2_signed_2_id  /* verilator public */;                   
-   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_2_id  /* verilator public */;                   
+   reg [`IMM_TYPE_WIDTH-1:0] 	imm_type_2_id  /* verilator public */;             ///DC
+   reg [`REG_SEL-1:0] 		    rs1_2_id  /* verilator public */;                  ///DC
+   reg [`REG_SEL-1:0] 		    rs2_2_id  /* verilator public */;                  ///DC
+   reg [`REG_SEL-1:0] 		    rd_2_id  /* verilator public */;                   ///DC
+   reg [`SRC_A_SEL_WIDTH-1:0] 	src_a_sel_2_id  /* verilator public */;            ///DC
+   reg [`SRC_B_SEL_WIDTH-1:0] 	src_b_sel_2_id  /* verilator public */;            ///DC
+   reg 				            wr_reg_2_id  /* verilator public */;               ///DC
+   reg 				            uses_rs1_2_id  /* verilator public */;             ///DC
+   reg 				            uses_rs2_2_id  /* verilator public */;             ///DC
+   reg 				            illegal_instruction_2_id  /* verilator public */;  ///DC
+   reg [`ALU_OP_WIDTH-1:0] 	    alu_op_2_id  /* verilator public */;               ///DC
+   reg [`RS_ENT_SEL-1:0] 	    rs_ent_2_id  /* verilator public */;               ///DC
+   reg [2:0] 			        dmem_size_2_id  /* verilator public */;            ///DC
+   reg [`MEM_TYPE_WIDTH-1:0] 	dmem_type_2_id  /* verilator public */;			   ///DC
+   reg [`MD_OP_WIDTH-1:0] 	    md_req_op_2_id  /* verilator public */;            ///DC
+   reg 				            md_req_in_1_signed_2_id  /* verilator public */;   ///DC
+   reg 				            md_req_in_2_signed_2_id  /* verilator public */;   ///DC
+   reg [`MD_OUT_SEL_WIDTH-1:0] 	md_req_out_sel_2_id  /* verilator public */;       ///DC
    //Additional Info
-   reg 				rs1_2_eq_dst1_id   /* verilator public */;
-   reg 				rs2_2_eq_dst1_id   /* verilator public */;
-   reg [`SPECTAG_LEN-1:0] 	sptag1_id   /* verilator public */;
-   reg [`SPECTAG_LEN-1:0] 	sptag2_id   /* verilator public */;
-   reg [`SPECTAG_LEN-1:0] 	tagreg_id   /* verilator public */;
-   reg 				spec1_id   /* verilator public */;
-   reg 				spec2_id   /* verilator public */;
-   reg [`INSN_LEN-1:0] 		inst1_id   /* verilator public */;
-   reg [`INSN_LEN-1:0] 		inst2_id   /* verilator public */;
-   reg 				prcond1_id   /* verilator public */;
-   reg 				prcond2_id   /* verilator public */;
-   reg 				inv1_id   /* verilator public */;
-   reg 				inv2_id   /* verilator public */;
-   reg [`ADDR_LEN-1:0] 		praddr1_id   /* verilator public */;
-   reg [`ADDR_LEN-1:0] 		praddr2_id   /* verilator public */;
-   reg [`ADDR_LEN-1:0] 		pc_id   /* verilator public */;
-   reg [`GSH_BHR_LEN-1:0] 	bhr_id   /* verilator public */;
-   reg 				isbranch1_id   /* verilator public */;
-   reg 				isbranch2_id   /* verilator public */;
+   reg 				            rs1_2_eq_dst1_id   /* verilator public */;
+   reg 				            rs2_2_eq_dst1_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	    sptag1_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	    sptag2_id   /* verilator public */;
+   reg [`SPECTAG_LEN-1:0] 	    tagreg_id   /* verilator public */;
+   reg 				            spec1_id   /* verilator public */;
+   reg 				            spec2_id   /* verilator public */;
+   reg [`INSN_LEN-1:0] 		    inst1_id   /* verilator public */;
+   reg [`INSN_LEN-1:0] 		    inst2_id   /* verilator public */;
+   reg 				            prcond1_id   /* verilator public */; ///DC
+   reg 				            prcond2_id   /* verilator public */; ///DC
+   reg 				            inv1_id   /* verilator public */;
+   reg 				            inv2_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		    praddr1_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		    praddr2_id   /* verilator public */;
+   reg [`ADDR_LEN-1:0] 		    pc_id   /* verilator public */;
+   reg [`GSH_BHR_LEN-1:0] 	    bhr_id   /* verilator public */; ///DC
+   reg 				            isbranch1_id   /* verilator public */;
+   reg 				            isbranch2_id   /* verilator public */;
 
    //DP
    //Source Operand Manager wire
@@ -269,18 +269,18 @@ module pipeline
    wire [`SPECTAG_LEN-1:0]     spectag_alu1;
    wire 		       specbit_alu1;
 
-   wire [`DATA_LEN-1:0]        ex_src1_alu2;
-   wire [`DATA_LEN-1:0]        ex_src2_alu2;
-   wire [`ALU_ENT_NUM-1:0]     ready_alu2;
-   wire [`ADDR_LEN-1:0]        pc_alu2;
-   wire [`DATA_LEN-1:0]        imm_alu2;
-   wire [`RRF_SEL-1:0] 	       rrftag_alu2;
-   wire 		       dstval_alu2;
-   wire [`SRC_A_SEL_WIDTH-1:0] src_a_alu2;
-   wire [`SRC_B_SEL_WIDTH-1:0] src_b_alu2;
-   wire [`ALU_OP_WIDTH-1:0]    alu_op_alu2;
-   wire [`SPECTAG_LEN-1:0]     spectag_alu2;
-   wire 		       specbit_alu2;
+   wire [`DATA_LEN-1:0]        ex_src1_alu2;               ///DC
+   wire [`DATA_LEN-1:0]        ex_src2_alu2;               ///DC
+   wire [`ALU_ENT_NUM-1:0]     ready_alu2;               ///DC
+   wire [`ADDR_LEN-1:0]        pc_alu2;               ///DC
+   wire [`DATA_LEN-1:0]        imm_alu2;               ///DC
+   wire [`RRF_SEL-1:0] 	       rrftag_alu2;               ///DC
+   wire 		       dstval_alu2;               ///DC
+   wire [`SRC_A_SEL_WIDTH-1:0] src_a_alu2;               ///DC
+   wire [`SRC_B_SEL_WIDTH-1:0] src_b_alu2;               ///DC
+   wire [`ALU_OP_WIDTH-1:0]    alu_op_alu2;               ///DC
+   wire [`SPECTAG_LEN-1:0]     spectag_alu2;               ///DC
+   wire 		       specbit_alu2;               ///DC
    
    wire [`LDST_ENT_SEL-1:0]    allocent1_ldst;
    wire [`LDST_ENT_SEL-1:0]    allocent2_ldst;
@@ -320,10 +320,10 @@ module pipeline
    wire [`ALU_OP_WIDTH-1:0]    alu_op_branch;
    wire [`SPECTAG_LEN-1:0]     spectag_branch;
    wire 		       specbit_branch;
-   wire [`GSH_BHR_LEN-1:0]     bhr_branch;
-   wire 		       prcond_branch;
+   wire [`GSH_BHR_LEN-1:0]     bhr_branch; ///DC
+   wire 		       prcond_branch;      ///DC
    wire [`ADDR_LEN-1:0]        praddr_branch;
-   wire [6:0] 		       opcode_branch;
+   wire [6:0] 		       opcode_branch;  
 
    wire [`MUL_ENT_SEL-1:0]       allocent1_mul;
    wire [`MUL_ENT_SEL-1:0]       allocent2_mul;
@@ -364,22 +364,22 @@ module pipeline
    reg [`SPECTAG_LEN-1:0]      buf_spectag_alu1     /* verilator public */;
    reg 			       buf_specbit_alu1     /* verilator public */;
    //ALU2
-   wire [`DATA_LEN-1:0]        result_alu2;
-   wire 		       rrfwe_alu2;
-   wire 		       robwe_alu2;
-   wire 		       kill_speculative_alu2;
+   wire [`DATA_LEN-1:0]        result_alu2;                                ///DC
+   wire 		               rrfwe_alu2;                                 ///DC
+   wire 		               robwe_alu2;                                 ///DC
+   wire 		               kill_speculative_alu2;                      ///DC
 
-   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu2 /* verilator public */;
-   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu2 /* verilator public */;
-   reg [`ADDR_LEN-1:0] 	       buf_pc_alu2 /* verilator public */;
-   reg [`DATA_LEN-1:0] 	       buf_imm_alu2 /* verilator public */;
-   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu2 /* verilator public */;
-   reg 			       buf_dstval_alu2 /* verilator public */;
-   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu2 /* verilator public */;
-   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu2 /* verilator public */;
-   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu2 /* verilator public */;
-   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu2 /* verilator public */;
-   reg 			       buf_specbit_alu2 /* verilator public */;
+   reg [`DATA_LEN-1:0] 	       buf_ex_src1_alu2 /* verilator public */;    ///DC
+   reg [`DATA_LEN-1:0] 	       buf_ex_src2_alu2 /* verilator public */;    ///DC
+   reg [`ADDR_LEN-1:0] 	       buf_pc_alu2 /* verilator public */;         ///DC
+   reg [`DATA_LEN-1:0] 	       buf_imm_alu2 /* verilator public */;        ///DC
+   reg [`RRF_SEL-1:0] 	       buf_rrftag_alu2 /* verilator public */;     ///DC
+   reg 			       buf_dstval_alu2 /* verilator public */;             ///DC
+   reg [`SRC_A_SEL_WIDTH-1:0]  buf_src_a_alu2 /* verilator public */;      ///DC
+   reg [`SRC_B_SEL_WIDTH-1:0]  buf_src_b_alu2 /* verilator public */;      ///DC
+   reg [`ALU_OP_WIDTH-1:0]     buf_alu_op_alu2 /* verilator public */;     ///DC
+   reg [`SPECTAG_LEN-1:0]      buf_spectag_alu2 /* verilator public */;    ///DC
+   reg 			       buf_specbit_alu2 /* verilator public */;            ///DC
 
    //LDST
    wire [`DATA_LEN-1:0]        result_ldst;
@@ -436,7 +436,7 @@ module pipeline
    wire 		       prsuccess /* verilator public */;
    wire [`ADDR_LEN-1:0]        jmpaddr;
    wire [`ADDR_LEN-1:0]        jmpaddr_taken;
-   wire 		       brcond;
+   wire 		       brcond; ///DC
    wire [`SPECTAG_LEN-1:0]     tagregfix;
    
    wire [`DATA_LEN-1:0]        result_branch;
@@ -468,11 +468,11 @@ module pipeline
    wire 		   arfwe2;
    wire [`REG_SEL-1:0] 	   dstarf1;
    wire [`REG_SEL-1:0] 	   dstarf2;
-   wire [`ADDR_LEN-1:0]    pc_combranch;
-   wire [`GSH_BHR_LEN-1:0] bhr_combranch;
-   wire 		   brcond_combranch;
-   wire 		   combranch;
-   wire [`ADDR_LEN-1:0]    jmpaddr_combranch;
+   wire [`ADDR_LEN-1:0]    pc_combranch;      ///DC
+   wire [`GSH_BHR_LEN-1:0] bhr_combranch;     ///DC
+   wire 		   brcond_combranch;          ///DC
+   wire 		   combranch;                 ///DC
+   wire [`ADDR_LEN-1:0]    jmpaddr_combranch; ///DC
    
    //IF Stage********************************************************
 //   assign stall_IF = stall_ID;
@@ -497,45 +497,45 @@ module pipeline
 		       .clk(clk),
 		       .reset(reset),
 		       .pc(pc),
-		       .predict_cond(prcond),
+		       //.predict_cond(prcond),
 		       .npc(npc),
 		       .inst1(inst1),
 		       .inst2(inst2),
 		       .invalid2(invalid2_pipe),
-		       .btbpht_we(combranch),
-		       .btbpht_pc(pc_combranch),
-		       .btb_jmpdst(jmpaddr_combranch),
-		       .pht_wcond(brcond_combranch),
-		       .mpft_valid(mpft_valid),
-		       .pht_bhr(bhr_combranch), //when PHT write
+		       // .btbpht_we(combranch),         
+		       // .btbpht_pc(pc_combranch),      
+		       // .btb_jmpdst(jmpaddr_combranch),
+		       // .pht_wcond(brcond_combranch),  
+		       // .mpft_valid(mpft_valid),       
+		       // .pht_bhr(bhr_combranch), //when PHT write
 		       .prmiss(prmiss),
 		       .prsuccess(prsuccess),
-		       .prtag(buf_spectag_branch),
-		       .bhr(bhr),
-		       .spectagnow(tagreg),
+		       //.prtag(buf_spectag_branch),
+		       //.bhr(bhr),                 
+		       //.spectagnow(tagreg),       
 		       .idata(idata)
 		       );
 
    always @ (posedge clk) begin
       if (reset | kill_IF) begin
-	 prcond_if <= 0;
+	 prcond_if <= 0; ///DC
 	 npc_if <= 0;
 	 pc_if <= 0;
 	 inst1_if <= 0;
 	 inst2_if <= 0;
 	 inv1_if <= 1;
 	 inv2_if <= 1;
-	 bhr_if <= 0;
+	 bhr_if <= 0; ///DC
 	 
       end else if (~stall_IF) begin
-	 prcond_if <= prcond;
+	 prcond_if <= prcond; ///DC
 	 npc_if <= npc;
 	 pc_if <= pc;
 	 inst1_if <= inst1;
 	 inst2_if <= inst2;
 	 inv1_if <= 0;
 	 inv2_if <= invalid2_pipe;
-	 bhr_if <= bhr;
+	 bhr_if <= bhr; ///DC
 	 
       end
    end // always @ (posedge clk)
@@ -592,27 +592,27 @@ module pipeline
 		.md_req_out_sel(md_req_out_sel_1)
 		);
 
-   decoder dec2(
-		.inst(inst2_if),
-		.imm_type(imm_type_2),
-		.rs1(rs1_2),
-		.rs2(rs2_2),
-		.rd(rd_2),
-		.src_a_sel(src_a_sel_2),
-		.src_b_sel(src_b_sel_2),
-		.wr_reg(wr_reg_2),
-		.uses_rs1(uses_rs1_2),
-		.uses_rs2(uses_rs2_2),
-		.illegal_instruction(illegal_instruction_2),
-		.alu_op(alu_op_2),
-		.rs_ent(rs_ent_2),
-		.dmem_size(dmem_size_2),
-		.dmem_type(dmem_type_2),
-		.md_req_op(md_req_op_2),
-		.md_req_in_1_signed(md_req_in_1_signed_2),
-		.md_req_in_2_signed(md_req_in_2_signed_2),
-		.md_req_out_sel(md_req_out_sel_2)
-		);
+   decoder dec2(                                      ///DC
+		.inst(inst2_if),                              ///DC
+		.imm_type(imm_type_2),                        ///DC
+		.rs1(rs1_2),                                  ///DC
+		.rs2(rs2_2),                                  ///DC
+		.rd(rd_2),                                    ///DC
+		.src_a_sel(src_a_sel_2),                      ///DC
+		.src_b_sel(src_b_sel_2),                      ///DC
+		.wr_reg(wr_reg_2),                            ///DC
+		.uses_rs1(uses_rs1_2),                        ///DC
+		.uses_rs2(uses_rs2_2),                        ///DC
+		.illegal_instruction(illegal_instruction_2),  ///DC
+		.alu_op(alu_op_2),                            ///DC
+		.rs_ent(rs_ent_2),                            ///DC
+		.dmem_size(dmem_size_2),                      ///DC
+		.dmem_type(dmem_type_2),                      ///DC
+		.md_req_op(md_req_op_2),                      ///DC
+		.md_req_in_1_signed(md_req_in_1_signed_2),    ///DC
+		.md_req_in_2_signed(md_req_in_2_signed_2),    ///DC
+		.md_req_out_sel(md_req_out_sel_2)             ///DC
+		);                                            ///DC
 
    always @ (posedge clk) begin
       if (reset | kill_ID) begin
@@ -634,24 +634,25 @@ module pipeline
 	 md_req_in_1_signed_1_id <= 0;
 	 md_req_in_2_signed_1_id <= 0;
 	 md_req_out_sel_1_id <= 0;
-	 imm_type_2_id <= 0;
-	 rs1_2_id <= 0;
-	 rs2_2_id <= 0;
-	 rd_2_id <= 0;
-	 src_a_sel_2_id <= 0;
-	 src_b_sel_2_id <= 0;
-	 wr_reg_2_id <= 0;
-	 uses_rs1_2_id <= 0;
-	 uses_rs2_2_id <= 0;
-	 illegal_instruction_2_id <= 0;
-	 alu_op_2_id <= 0;
-	 rs_ent_2_id <= 0;
-	 dmem_size_2_id <= 0;
-	 dmem_type_2_id <= 0;			  
-	 md_req_op_2_id <= 0;
-	 md_req_in_1_signed_2_id <= 0;
-	 md_req_in_2_signed_2_id <= 0;
-	 md_req_out_sel_2_id <= 0;
+
+	 imm_type_2_id <= 0;             ///DC
+	 rs1_2_id <= 0;                  ///DC
+	 rs2_2_id <= 0;                  ///DC
+	 rd_2_id <= 0;                   ///DC
+	 src_a_sel_2_id <= 0;            ///DC
+	 src_b_sel_2_id <= 0;            ///DC
+	 wr_reg_2_id <= 0;               ///DC
+	 uses_rs1_2_id <= 0;             ///DC
+	 uses_rs2_2_id <= 0;             ///DC
+	 illegal_instruction_2_id <= 0;  ///DC
+	 alu_op_2_id <= 0;               ///DC
+	 rs_ent_2_id <= 0;               ///DC
+	 dmem_size_2_id <= 0;            ///DC
+	 dmem_type_2_id <= 0;			 ///DC
+	 md_req_op_2_id <= 0;            ///DC
+	 md_req_in_1_signed_2_id <= 0;   ///DC
+	 md_req_in_2_signed_2_id <= 0;   ///DC
+	 md_req_out_sel_2_id <= 0;       ///DC
 
 	 rs1_2_eq_dst1_id <= 0;
   	 rs2_2_eq_dst1_id <= 0;
@@ -662,14 +663,14 @@ module pipeline
 //	 spec2_id <= 0;
 	 inst1_id <= 0;
 	 inst2_id <= 0;
-	 prcond1_id <= 0;
-	 prcond2_id <= 0;
+	 prcond1_id <= 0; ///DC
+	 prcond2_id <= 0; ///DC
 	 inv1_id <= 1;
 	 inv2_id <= 1;
 	 praddr1_id <= 0;
 	 praddr2_id <= 0;
 	 pc_id <= 0;
-	 bhr_id <= 0;
+	 bhr_id <= 0; ///DC
 	 isbranch1_id <= 0;
 	 isbranch2_id <= 0;
 	 
@@ -692,24 +693,25 @@ module pipeline
 	 md_req_in_1_signed_1_id <= md_req_in_1_signed_1;
 	 md_req_in_2_signed_1_id <= md_req_in_2_signed_1;
 	 md_req_out_sel_1_id <= md_req_out_sel_1;
-	 imm_type_2_id <= imm_type_2;
-	 rs1_2_id <= rs1_2;
-	 rs2_2_id <= rs2_2;
-	 rd_2_id <= rd_2;
-	 src_a_sel_2_id <= src_a_sel_2;
-	 src_b_sel_2_id <= src_b_sel_2;
-	 wr_reg_2_id <= wr_reg_2;
-	 uses_rs1_2_id <= uses_rs1_2;
-	 uses_rs2_2_id <= uses_rs2_2;
-	 illegal_instruction_2_id <= illegal_instruction_2;
-	 alu_op_2_id <= alu_op_2;
-	 rs_ent_2_id <= (inv2_if | (prcond_if & isbranch1)) ? 0 : rs_ent_2;
-	 dmem_size_2_id <= dmem_size_2;
-	 dmem_type_2_id <= dmem_type_2;			  
-	 md_req_op_2_id <= md_req_op_2;
-	 md_req_in_1_signed_2_id <= md_req_in_1_signed_2;
-	 md_req_in_2_signed_2_id <= md_req_in_2_signed_2;
-	 md_req_out_sel_2_id <= md_req_out_sel_2;
+
+	 imm_type_2_id <= imm_type_2;                                        ///DC
+	 rs1_2_id <= rs1_2;                                                  ///DC
+	 rs2_2_id <= rs2_2;                                                  ///DC
+	 rd_2_id <= rd_2;                                                    ///DC
+	 src_a_sel_2_id <= src_a_sel_2;                                      ///DC
+	 src_b_sel_2_id <= src_b_sel_2;                                      ///DC
+	 wr_reg_2_id <= wr_reg_2;                                            ///DC
+	 uses_rs1_2_id <= uses_rs1_2;                                        ///DC
+	 uses_rs2_2_id <= uses_rs2_2;                                        ///DC
+	 illegal_instruction_2_id <= illegal_instruction_2;                  ///DC
+	 alu_op_2_id <= alu_op_2;                                            ///DC
+	 rs_ent_2_id <= (inv2_if | (prcond_if & isbranch1)) ? 0 : rs_ent_2;  ///DC
+	 dmem_size_2_id <= dmem_size_2;                                      ///DC
+	 dmem_type_2_id <= dmem_type_2;			                             ///DC
+	 md_req_op_2_id <= md_req_op_2;                                      ///DC
+	 md_req_in_1_signed_2_id <= md_req_in_1_signed_2;                    ///DC
+	 md_req_in_2_signed_2_id <= md_req_in_2_signed_2;                    ///DC
+	 md_req_out_sel_2_id <= md_req_out_sel_2;                            ///DC
 	 
 	 rs1_2_eq_dst1_id <= (rs1_2 == rd_1 && wr_reg_1) ? 1'b1 : 1'b0;
   	 rs2_2_eq_dst1_id <= (rs2_2 == rd_1 && wr_reg_1) ? 1'b1 : 1'b0;
@@ -720,8 +722,8 @@ module pipeline
 //	 spec2_id <= spec2;
 	 inst1_id <= inst1_if;
 	 inst2_id <= inst2_if;
-	 prcond1_id <= prcond_if & isbranch1;
-	 prcond2_id <= isbranch2 & prcond_if & ~isbranch1;
+	 prcond1_id <= prcond_if & isbranch1; ///DC
+	 prcond2_id <= isbranch2 & prcond_if & ~isbranch1; ///DC
 	 inv1_id <= inv1_if;
 	 inv2_id <= inv2_if | (prcond_if & isbranch1);
 	 /*
@@ -732,7 +734,7 @@ module pipeline
 	 praddr1_id <= (prcond_if & isbranch1) ? npc_if : (pc_if + 4);
 	 praddr2_id <= npc_if;
 	 pc_id <= pc_if;
-	 bhr_id <= bhr_if;
+	 bhr_id <= bhr_if; ///DC
 	 isbranch1_id <= isbranch1;
 	 isbranch2_id <= isbranch2;
 	 
@@ -944,71 +946,71 @@ module pipeline
 			 .resolved(resolved1_1)
 			 );
 
-   src_manager srcmng2_1(
-			 .opr(opr2_1),
-			 .opr_rdy(rdy2_1),
-			 .exrslt1(result_alu1),
-			 .exdst1(buf_rrftag_alu1),
-			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),
-			 .exrslt2(result_alu2),
-			 .exdst2(buf_rrftag_alu2),
-			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),
-			 .exrslt3(result_ldst),
-			 .exdst3(wrrftag_ldst),
-			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),
-			 .exrslt4(result_branch),
-			 .exdst4(buf_rrftag_branch),
-			 .kill_spec4(~robwe_branch),
-			 .exrslt5(result_mul),
-			 .exdst5(buf_rrftag_mul),
-			 .kill_spec5(kill_speculative_mul | ~robwe_mul),
-			 .src(src2_1),
-			 .resolved(resolved2_1)
-			 );
+   src_manager srcmng2_1(                                       ///DC
+			 .opr(opr2_1),                                      ///DC
+			 .opr_rdy(rdy2_1),                                  ///DC
+			 .exrslt1(result_alu1),                             ///DC
+			 .exdst1(buf_rrftag_alu1),                          ///DC
+			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),  ///DC
+			 .exrslt2(result_alu2),                             ///DC
+			 .exdst2(buf_rrftag_alu2),                          ///DC
+			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),  ///DC
+			 .exrslt3(result_ldst),                             ///DC
+			 .exdst3(wrrftag_ldst),                             ///DC
+			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),  ///DC
+			 .exrslt4(result_branch),                           ///DC
+			 .exdst4(buf_rrftag_branch),                        ///DC
+			 .kill_spec4(~robwe_branch),                        ///DC
+			 .exrslt5(result_mul),                              ///DC
+			 .exdst5(buf_rrftag_mul),                           ///DC
+			 .kill_spec5(kill_speculative_mul | ~robwe_mul),    ///DC
+			 .src(src2_1),                                      ///DC
+			 .resolved(resolved2_1)                             ///DC
+			 );                                                 ///DC
 
-   src_manager srcmng1_2(
-			 .opr(opr1_2),
-			 .opr_rdy(rdy1_2),
-			 .exrslt1(result_alu1),
-			 .exdst1(buf_rrftag_alu1),
-			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),
-			 .exrslt2(result_alu2),
-			 .exdst2(buf_rrftag_alu2),
-			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),
-			 .exrslt3(result_ldst),
-			 .exdst3(wrrftag_ldst),
-			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),
-			 .exrslt4(result_branch),
-			 .exdst4(buf_rrftag_branch),
-			 .kill_spec4(~robwe_branch),
-			 .exrslt5(result_mul),
-			 .exdst5(buf_rrftag_mul),
-			 .kill_spec5(kill_speculative_mul | ~robwe_mul),
-			 .src(src1_2),
-			 .resolved(resolved1_2)
-			 );
+   src_manager srcmng1_2(                                       ///DC
+			 .opr(opr1_2),                                      ///DC
+			 .opr_rdy(rdy1_2),                                  ///DC
+			 .exrslt1(result_alu1),                             ///DC
+			 .exdst1(buf_rrftag_alu1),                          ///DC
+			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),  ///DC
+			 .exrslt2(result_alu2),                             ///DC
+			 .exdst2(buf_rrftag_alu2),                          ///DC
+			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),  ///DC
+			 .exrslt3(result_ldst),                             ///DC
+			 .exdst3(wrrftag_ldst),                             ///DC
+			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),  ///DC
+			 .exrslt4(result_branch),                           ///DC
+			 .exdst4(buf_rrftag_branch),                        ///DC
+			 .kill_spec4(~robwe_branch),                        ///DC
+			 .exrslt5(result_mul),                              ///DC
+			 .exdst5(buf_rrftag_mul),                           ///DC
+			 .kill_spec5(kill_speculative_mul | ~robwe_mul),    ///DC
+			 .src(src1_2),                                      ///DC
+			 .resolved(resolved1_2)                             ///DC
+			 );                                                 ///DC
 
-   src_manager srcmng2_2(
-			 .opr(opr2_2),
-			 .opr_rdy(rdy2_2),
-			 .exrslt1(result_alu1),
-			 .exdst1(buf_rrftag_alu1),
-			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),
-			 .exrslt2(result_alu2),
-			 .exdst2(buf_rrftag_alu2),
-			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),
-			 .exrslt3(result_ldst),
-			 .exdst3(wrrftag_ldst),
-			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),
-			 .exrslt4(result_branch),
-			 .exdst4(buf_rrftag_branch),
-			 .kill_spec4(~robwe_branch),
-			 .exrslt5(result_mul),
-			 .exdst5(buf_rrftag_mul),
-			 .kill_spec5(kill_speculative_mul | ~robwe_mul),
-			 .src(src2_2),
-			 .resolved(resolved2_2)
-			 );
+   src_manager srcmng2_2(                                       ///DC
+			 .opr(opr2_2),                                      ///DC
+			 .opr_rdy(rdy2_2),                                  ///DC
+			 .exrslt1(result_alu1),                             ///DC
+			 .exdst1(buf_rrftag_alu1),                          ///DC
+			 .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),  ///DC
+			 .exrslt2(result_alu2),                             ///DC
+			 .exdst2(buf_rrftag_alu2),                          ///DC
+			 .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),  ///DC
+			 .exrslt3(result_ldst),                             ///DC
+			 .exdst3(wrrftag_ldst),                             ///DC
+			 .kill_spec3(kill_speculative_ldst | ~robwe_ldst),  ///DC
+			 .exrslt4(result_branch),                           ///DC
+			 .exdst4(buf_rrftag_branch),                        ///DC
+			 .kill_spec4(~robwe_branch),                        ///DC
+			 .exrslt5(result_mul),                              ///DC
+			 .exdst5(buf_rrftag_mul),                           ///DC
+			 .kill_spec5(kill_speculative_mul | ~robwe_mul),    ///DC
+			 .src(src2_2),                                      ///DC
+			 .resolved(resolved2_2)                             ///DC
+			 );                                                 ///DC
 
    imm_gen immgen1(
 		   .inst(inst1_id),
@@ -1152,33 +1154,33 @@ module pipeline
 			      allocent2_alu[`ALU_ENT_SEL:1] : 
 			      allocent1_alu[`ALU_ENT_SEL:1]), //allocent2
 		      //WriteSignal1
-		      .wpc_1(pc_id),
-		      .wsrc1_1(src1_1),
-		      .wsrc2_1(src2_1),
-		      .wvalid1_1(~uses_rs1_1_id | resolved1_1),
-		      .wvalid2_1(~uses_rs2_1_id | resolved2_1),
-		      .wimm_1(imm1),
-		      .wrrftag_1(dst1_renamed),
-		      .wdstval_1(wr_reg_1_id),
-		      .wsrc_a_1(src_a_sel_1_id),
-		      .wsrc_b_1(src_b_sel_1_id),
-		      .walu_op_1(alu_op_1_id),
-		      .wspectag_1(sptag1_id),
-		      .wspecbit_1(spec1_id),
+		      .wpc_1(pc_id),                                       
+		      .wsrc1_1(src1_1),                                       
+		      .wsrc2_1(src2_1),                                       
+		      .wvalid1_1(~uses_rs1_1_id | resolved1_1),                                       
+		      .wvalid2_1(~uses_rs2_1_id | resolved2_1),                                       
+		      .wimm_1(imm1),                                       
+		      .wrrftag_1(dst1_renamed),                                       
+		      .wdstval_1(wr_reg_1_id),                                       
+		      .wsrc_a_1(src_a_sel_1_id),                                       
+		      .wsrc_b_1(src_b_sel_1_id),                                       
+		      .walu_op_1(alu_op_1_id),                                       
+		      .wspectag_1(sptag1_id),                                       
+		      .wspecbit_1(spec1_id),                                       
 		      //WriteSignal2
-		      .wpc_2(pc_id + 4),
-		      .wsrc1_2(src1_2),
-		      .wsrc2_2(src2_2),
-		      .wvalid1_2(~uses_rs1_2_id | resolved1_2),
-		      .wvalid2_2(~uses_rs2_2_id | resolved2_2),
-		      .wimm_2(imm2),
-		      .wrrftag_2(dst2_renamed),
-		      .wdstval_2(wr_reg_2_id),
-		      .wsrc_a_2(src_a_sel_2_id),
-		      .wsrc_b_2(src_b_sel_2_id),
-		      .walu_op_2(alu_op_2_id),
-		      .wspectag_2(sptag2_id),
-		      .wspecbit_2(spec2_id),
+		      .wpc_2(pc_id + 4),                        ///DC
+		      .wsrc1_2(src1_2),                         ///DC
+		      .wsrc2_2(src2_2),                         ///DC
+		      .wvalid1_2(~uses_rs1_2_id | resolved1_2), ///DC
+		      .wvalid2_2(~uses_rs2_2_id | resolved2_2), ///DC
+		      .wimm_2(imm2),                            ///DC
+		      .wrrftag_2(dst2_renamed),                 ///DC
+		      .wdstval_2(wr_reg_2_id),                  ///DC
+		      .wsrc_a_2(src_a_sel_2_id),                ///DC
+		      .wsrc_b_2(src_b_sel_2_id),                ///DC
+		      .walu_op_2(alu_op_2_id),                  ///DC
+		      .wspectag_2(sptag2_id),                   ///DC
+		      .wspecbit_2(spec2_id),                    ///DC
 		      //ReadSignal
 		      .ex_src1(ex_src1_alu1),
 		      .ex_src2(ex_src2_alu1),
@@ -1210,84 +1212,84 @@ module pipeline
 		      .kill_spec5(kill_speculative_mul | ~robwe_mul)
 		      );
 
-   rs_alu reserv_alu2(
-		      //System
-		      .clk(clk),
-		      .reset(reset),
-		      .busyvec(busyvec_alu2),
-		      .prmiss(prmiss),
-		      .prsuccess(prsuccess),
-		      .prtag(buf_spectag_branch),
-		      .specfixtag(spectagfix),
-		      .histvect(histvect2),
-		      .nextrrfcyc(nextrrfcyc),
-		      //WriteSignal
-		      .clearbusy(issue_alu2), //Issue 
-		      .issueaddr(issueent_alu2), //= raddr, clsbsyadr
-		      .we1(~stall_DP & ~kill_DP & req1_alu & rsalu2_we1), //alloc1
-		      .we2(~stall_DP & ~kill_DP & req2_alu & rsalu2_we2), //alloc2
-		      .waddr1(allocent1_alu[`ALU_ENT_SEL:1]), //allocent1
-		      .waddr2(req1_alu ? 
-			      allocent2_alu[`ALU_ENT_SEL:1] : 
-			      allocent1_alu[`ALU_ENT_SEL:1]), //allocent2
-		      //WriteSignal1
-		      .wpc_1(pc_id),
-		      .wsrc1_1(src1_1),
-		      .wsrc2_1(src2_1),
-		      .wvalid1_1(~uses_rs1_1_id | resolved1_1),
-		      .wvalid2_1(~uses_rs2_1_id | resolved2_1),
-		      .wimm_1(imm1),
-		      .wrrftag_1(dst1_renamed),
-		      .wdstval_1(wr_reg_1_id),
-		      .wsrc_a_1(src_a_sel_1_id),
-		      .wsrc_b_1(src_b_sel_1_id),
-		      .walu_op_1(alu_op_1_id),
-		      .wspectag_1(sptag1_id),
-		      .wspecbit_1(spec1_id),
-		      //WriteSignal2
-		      .wpc_2(pc_id + 4),
-		      .wsrc1_2(src1_2),
-		      .wsrc2_2(src2_2),
-		      .wvalid1_2(~uses_rs1_2_id | resolved1_2),
-		      .wvalid2_2(~uses_rs2_2_id | resolved2_2),
-		      .wimm_2(imm2),
-		      .wrrftag_2(dst2_renamed),
-		      .wdstval_2(wr_reg_2_id),
-		      .wsrc_a_2(src_a_sel_2_id),
-		      .wsrc_b_2(src_b_sel_2_id),
-		      .walu_op_2(alu_op_2_id),
-		      .wspectag_2(sptag2_id),
-		      .wspecbit_2(spec2_id),
-		      //ReadSignal
-		      .ex_src1(ex_src1_alu2),
-		      .ex_src2(ex_src2_alu2),
-		      .ready(ready_alu2),
-		      .pc(pc_alu2),
-		      .imm(imm_alu2),
-		      .rrftag(rrftag_alu2),
-		      .dstval(dstval_alu2),
-		      .src_a(src_a_alu2),
-		      .src_b(src_b_alu2),
-		      .alu_op(alu_op_alu2),
-		      .spectag(spectag_alu2),
-		      .specbit(specbit_alu2),
-		      //EXRSLT
-		      .exrslt1(result_alu1),
-		      .exdst1(buf_rrftag_alu1),
-		      .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),
-		      .exrslt2(result_alu2),
-		      .exdst2(buf_rrftag_alu2),
-		      .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),
-		      .exrslt3(result_ldst),
-		      .exdst3(wrrftag_ldst),
-		      .kill_spec3(kill_speculative_ldst | ~robwe_ldst),
-		      .exrslt4(result_branch),
-		      .exdst4(buf_rrftag_branch),
-		      .kill_spec4(~robwe_branch),
-		      .exrslt5(result_mul),
-		      .exdst5(buf_rrftag_mul),
-		      .kill_spec5(kill_speculative_mul | ~robwe_mul)
-		      );
+   rs_alu reserv_alu2(                                                      ///DC
+		      //System                                                      ///DC
+		      .clk(clk),                                                    ///DC
+		      .reset(reset),                                                ///DC
+		      .busyvec(busyvec_alu2),                                       ///DC
+		      .prmiss(prmiss),                                              ///DC
+		      .prsuccess(prsuccess),                                        ///DC
+		      .prtag(buf_spectag_branch),                                   ///DC
+		      .specfixtag(spectagfix),                                      ///DC
+		      .histvect(histvect2),                                         ///DC
+		      .nextrrfcyc(nextrrfcyc),                                      ///DC
+		      //WriteSignal                                                 ///DC
+		      .clearbusy(issue_alu2), //Issue                               ///DC
+		      .issueaddr(issueent_alu2), //= raddr, clsbsyadr               ///DC
+		      .we1(~stall_DP & ~kill_DP & req1_alu & rsalu2_we1), //alloc1  ///DC
+		      .we2(~stall_DP & ~kill_DP & req2_alu & rsalu2_we2), //alloc2  ///DC
+		      .waddr1(allocent1_alu[`ALU_ENT_SEL:1]), //allocent1           ///DC
+		      .waddr2(req1_alu ?                                            ///DC
+			      allocent2_alu[`ALU_ENT_SEL:1] :                           ///DC
+			      allocent1_alu[`ALU_ENT_SEL:1]), //allocent2               ///DC
+		      //WriteSignal1                                                ///DC
+		      .wpc_1(pc_id),                                                ///DC
+		      .wsrc1_1(src1_1),                                             ///DC
+		      .wsrc2_1(src2_1),                                             ///DC
+		      .wvalid1_1(~uses_rs1_1_id | resolved1_1),                     ///DC
+		      .wvalid2_1(~uses_rs2_1_id | resolved2_1),                     ///DC
+		      .wimm_1(imm1),                                                ///DC
+		      .wrrftag_1(dst1_renamed),                                     ///DC
+		      .wdstval_1(wr_reg_1_id),                                      ///DC
+		      .wsrc_a_1(src_a_sel_1_id),                                    ///DC
+		      .wsrc_b_1(src_b_sel_1_id),                                    ///DC
+		      .walu_op_1(alu_op_1_id),                                      ///DC
+		      .wspectag_1(sptag1_id),                                       ///DC
+		      .wspecbit_1(spec1_id),                                        ///DC
+		      //WriteSignal2                                                ///DC
+		      .wpc_2(pc_id + 4),                                            ///DC
+		      .wsrc1_2(src1_2),                                             ///DC
+		      .wsrc2_2(src2_2),                                             ///DC
+		      .wvalid1_2(~uses_rs1_2_id | resolved1_2),                     ///DC
+		      .wvalid2_2(~uses_rs2_2_id | resolved2_2),                     ///DC
+		      .wimm_2(imm2),                                                ///DC
+		      .wrrftag_2(dst2_renamed),                                     ///DC
+		      .wdstval_2(wr_reg_2_id),                                      ///DC
+		      .wsrc_a_2(src_a_sel_2_id),                                    ///DC
+		      .wsrc_b_2(src_b_sel_2_id),                                    ///DC
+		      .walu_op_2(alu_op_2_id),                                      ///DC
+		      .wspectag_2(sptag2_id),                                       ///DC
+		      .wspecbit_2(spec2_id),                                        ///DC
+		      //ReadSignal                                                  ///DC
+		      .ex_src1(ex_src1_alu2),                                       ///DC
+		      .ex_src2(ex_src2_alu2),                                       ///DC
+		      .ready(ready_alu2),                                           ///DC
+		      .pc(pc_alu2),                                                 ///DC
+		      .imm(imm_alu2),                                               ///DC
+		      .rrftag(rrftag_alu2),                                         ///DC
+		      .dstval(dstval_alu2),                                         ///DC
+		      .src_a(src_a_alu2),                                           ///DC
+		      .src_b(src_b_alu2),                                           ///DC
+		      .alu_op(alu_op_alu2),                                         ///DC
+		      .spectag(spectag_alu2),                                       ///DC
+		      .specbit(specbit_alu2),                                       ///DC
+		      //EXRSLT                                                      ///DC
+		      .exrslt1(result_alu1),                                        ///DC
+		      .exdst1(buf_rrftag_alu1),                                     ///DC
+		      .kill_spec1(kill_speculative_alu1 | ~robwe_alu1),             ///DC
+		      .exrslt2(result_alu2),                                        ///DC
+		      .exdst2(buf_rrftag_alu2),                                     ///DC
+		      .kill_spec2(kill_speculative_alu2 | ~robwe_alu2),             ///DC
+		      .exrslt3(result_ldst),                                        ///DC
+		      .exdst3(wrrftag_ldst),                                        ///DC
+		      .kill_spec3(kill_speculative_ldst | ~robwe_ldst),             ///DC
+		      .exrslt4(result_branch),                                      ///DC
+		      .exdst4(buf_rrftag_branch),                                   ///DC
+		      .kill_spec4(~robwe_branch),                                   ///DC
+		      .exrslt5(result_mul),                                         ///DC
+		      .exdst5(buf_rrftag_mul),                                      ///DC
+		      .kill_spec5(kill_speculative_mul | ~robwe_mul)                ///DC
+		      );                                                            ///DC
 
 
    assign allocent2_ldst = allocent1_ldst + 1;
@@ -1341,16 +1343,16 @@ module pipeline
 		       .wspectag_1(sptag1_id),
 		       .wspecbit_1(spec1_id),
 		       //WriteSignal2
-		       .wpc_2(pc_id + 4),
-		       .wsrc1_2(src1_2),
-		       .wsrc2_2(src2_2),
-		       .wvalid1_2(~uses_rs1_2_id | resolved1_2),
-		       .wvalid2_2(~uses_rs2_2_id | resolved2_2),
-		       .wimm_2(imm2),
-		       .wrrftag_2(dst2_renamed),
-		       .wdstval_2(wr_reg_2_id),
-		       .wspectag_2(sptag2_id),
-		       .wspecbit_2(spec2_id),
+		       .wpc_2(pc_id + 4),                         ///DC
+		       .wsrc1_2(src1_2),                          ///DC
+		       .wsrc2_2(src2_2),                          ///DC
+		       .wvalid1_2(~uses_rs1_2_id | resolved1_2),  ///DC
+		       .wvalid2_2(~uses_rs2_2_id | resolved2_2),  ///DC
+		       .wimm_2(imm2),                             ///DC
+		       .wrrftag_2(dst2_renamed),                  ///DC
+		       .wdstval_2(wr_reg_2_id),                   ///DC
+		       .wspectag_2(sptag2_id),                    ///DC
+		       .wspecbit_2(spec2_id),                     ///DC
 		       //ReadSignal
 		       .ex_src1(ex_src1_ldst),
 		       .ex_src2(ex_src2_ldst),
@@ -1430,26 +1432,26 @@ module pipeline
 			   .walu_op_1(alu_op_1_id),
 			   .wspectag_1(sptag1_id),
 			   .wspecbit_1(spec1_id),
-			   .wbhr_1(bhr_id),
-			   .wprcond_1(prcond1_id),
-			   .wpraddr_1(praddr1_id),
+			   .wbhr_1(bhr_id),        ///DC
+			   .wprcond_1(prcond1_id), ///DC
+			   .wpraddr_1(praddr1_id), 
 			   .wopcode_1(inst1_id[6:0]),
 			   //WriteSignal2
-			   .wpc_2(pc_id + 4),
-			   .wsrc1_2(src1_2),
-			   .wsrc2_2(src2_2),
-			   .wvalid1_2(~uses_rs1_2_id | resolved1_2),
-			   .wvalid2_2(~uses_rs2_2_id | resolved2_2),
-			   .wimm_2(brimm2),
-			   .wrrftag_2(dst2_renamed),
-			   .wdstval_2(wr_reg_2_id),
-			   .walu_op_2(alu_op_2_id),
-			   .wspectag_2(sptag2_id),
-			   .wspecbit_2(spec2_id),
-			   .wbhr_2(bhr_id),
-			   .wprcond_2(prcond2_id),
-			   .wpraddr_2(praddr2_id),
-			   .wopcode_2(inst2_id[6:0]),
+			   .wpc_2(pc_id + 4),                        ///DC
+			   .wsrc1_2(src1_2),                         ///DC
+			   .wsrc2_2(src2_2),                         ///DC
+			   .wvalid1_2(~uses_rs1_2_id | resolved1_2), ///DC
+			   .wvalid2_2(~uses_rs2_2_id | resolved2_2), ///DC
+			   .wimm_2(brimm2),                          ///DC
+			   .wrrftag_2(dst2_renamed),                 ///DC
+			   .wdstval_2(wr_reg_2_id),                  ///DC
+			   .walu_op_2(alu_op_2_id),                  ///DC
+			   .wspectag_2(sptag2_id),                   ///DC
+			   .wspecbit_2(spec2_id),                    ///DC
+			   .wbhr_2(bhr_id),                          ///DC
+			   .wprcond_2(prcond2_id),                   ///DC
+			   .wpraddr_2(praddr2_id),                   ///DC
+			   .wopcode_2(inst2_id[6:0]),                ///DC
 			   //ReadSignal
 			   .ex_src1(ex_src1_branch),
 			   .ex_src2(ex_src2_branch),
@@ -1461,8 +1463,8 @@ module pipeline
 			   .alu_op(alu_op_branch),
 			   .spectag(spectag_branch),
 			   .specbit(specbit_branch),
-			   .bhr(bhr_branch),
-			   .prcond(prcond_branch),
+			   .bhr(bhr_branch),        ///DC
+			   .prcond(prcond_branch),  ///DC
 			   .praddr(praddr_branch),
 			   .opcode(opcode_branch),
 			   //EXRSLT
@@ -1531,17 +1533,17 @@ module pipeline
 		     .wsrc2_signed_1(md_req_in_2_signed_1_id),
 		     .wsel_lohi_1(md_req_out_sel_1_id[0]),
 		     //WriteSignal2
-		     .wsrc1_2(src1_2),
-		     .wsrc2_2(src2_2),
-		     .wvalid1_2(~uses_rs1_2_id | resolved1_2),
-		     .wvalid2_2(~uses_rs2_2_id | resolved2_2),
-		     .wrrftag_2(dst2_renamed),
-		     .wdstval_2(wr_reg_2_id),
-		     .wspectag_2(sptag2_id),
-		     .wspecbit_2(spec2_id),
-		     .wsrc1_signed_2(md_req_in_1_signed_2_id),
-		     .wsrc2_signed_2(md_req_in_2_signed_2_id),
-		     .wsel_lohi_2(md_req_out_sel_2_id[0]),
+		     .wsrc1_2(src1_2),                          ///DC
+		     .wsrc2_2(src2_2),                          ///DC
+		     .wvalid1_2(~uses_rs1_2_id | resolved1_2),  ///DC
+		     .wvalid2_2(~uses_rs2_2_id | resolved2_2),  ///DC
+		     .wrrftag_2(dst2_renamed),                  ///DC
+		     .wdstval_2(wr_reg_2_id),                   ///DC
+		     .wspectag_2(sptag2_id),                    ///DC
+		     .wspecbit_2(spec2_id),                     ///DC
+		     .wsrc1_signed_2(md_req_in_1_signed_2_id),  ///DC
+		     .wsrc2_signed_2(md_req_in_2_signed_2_id),  ///DC
+		     .wsel_lohi_2(md_req_out_sel_2_id[0]),      ///DC
 		     //ReadSignal
 		     .ex_src1(ex_src1_mul),
 		     .ex_src2(ex_src2_mul),
@@ -1651,49 +1653,49 @@ module pipeline
       end
    end
    
-   exunit_alu suzaku(
-		     .clk(clk),
-		     .reset(reset),
-		     .ex_src1(buf_ex_src1_alu2),
-		     .ex_src2(buf_ex_src2_alu2),
-		     .pc(buf_pc_alu2),
-		     .imm(buf_imm_alu2),
-		     .dstval(buf_dstval_alu2),
-		     .src_a(buf_src_a_alu2),
-		     .src_b(buf_src_b_alu2),
-		     .alu_op(buf_alu_op_alu2),
-		     .spectag(buf_spectag_alu2),
-		     .specbit(buf_specbit_alu2),
-		     .issue(issue_alu2),
-		     .prmiss(prmiss),
-		     .spectagfix(spectagfix),
-		     .result(result_alu2),
-		     .rrf_we(rrfwe_alu2),
-		     .rob_we(robwe_alu2),
-		     .kill_speculative(kill_speculative_alu2)
-		     );
+   exunit_alu suzaku(                                    ///DC
+		     .clk(clk),                                  ///DC
+		     .reset(reset),                              ///DC
+		     .ex_src1(buf_ex_src1_alu2),                 ///DC
+		     .ex_src2(buf_ex_src2_alu2),                 ///DC
+		     .pc(buf_pc_alu2),                           ///DC
+		     .imm(buf_imm_alu2),                         ///DC
+		     .dstval(buf_dstval_alu2),                   ///DC
+		     .src_a(buf_src_a_alu2),                     ///DC
+		     .src_b(buf_src_b_alu2),                     ///DC
+		     .alu_op(buf_alu_op_alu2),                   ///DC
+		     .spectag(buf_spectag_alu2),                 ///DC
+		     .specbit(buf_specbit_alu2),                 ///DC
+		     .issue(issue_alu2),                         ///DC
+		     .prmiss(prmiss),                            ///DC
+		     .spectagfix(spectagfix),                    ///DC
+		     .result(result_alu2),                       ///DC
+		     .rrf_we(rrfwe_alu2),                        ///DC
+		     .rob_we(robwe_alu2),                        ///DC
+		     .kill_speculative(kill_speculative_alu2)    ///DC
+		     );                                          ///DC
 
-   always @ (posedge clk) begin
-      if (reset) begin
-	 buf_ex_src1_ldst <= 0;
-	 buf_ex_src2_ldst <= 0;
-	 buf_pc_ldst <= 0;
-	 buf_imm_ldst <= 0;
-	 buf_rrftag_ldst <= 0;
-	 buf_dstval_ldst <= 0;
-	 buf_spectag_ldst <= 0;
-	 buf_specbit_ldst <= 0;
-      end else if (issue_ldst) begin
-	 buf_ex_src1_ldst <= ex_src1_ldst;
-	 buf_ex_src2_ldst <= ex_src2_ldst;
-	 buf_pc_ldst <= pc_ldst;
-	 buf_imm_ldst <= imm_ldst;
-	 buf_rrftag_ldst <= rrftag_ldst;
-	 buf_dstval_ldst <= dstval_ldst;
-	 buf_spectag_ldst <= spectag_ldst;
-	 buf_specbit_ldst <= specbit_ldst;
-      end
-   end // always @ (posedge clk)
+   always @ (posedge clk) begin                 ///DC
+      if (reset) begin                          ///DC
+	 buf_ex_src1_ldst <= 0;                     ///DC
+	 buf_ex_src2_ldst <= 0;                     ///DC
+	 buf_pc_ldst <= 0;                          ///DC
+	 buf_imm_ldst <= 0;                         ///DC
+	 buf_rrftag_ldst <= 0;                      ///DC
+	 buf_dstval_ldst <= 0;                      ///DC
+	 buf_spectag_ldst <= 0;                     ///DC
+	 buf_specbit_ldst <= 0;                     ///DC
+      end else if (issue_ldst) begin            ///DC
+	 buf_ex_src1_ldst <= ex_src1_ldst;          ///DC
+	 buf_ex_src2_ldst <= ex_src2_ldst;          ///DC
+	 buf_pc_ldst <= pc_ldst;                    ///DC
+	 buf_imm_ldst <= imm_ldst;                  ///DC
+	 buf_rrftag_ldst <= rrftag_ldst;            ///DC
+	 buf_dstval_ldst <= dstval_ldst;            ///DC
+	 buf_spectag_ldst <= spectag_ldst;          ///DC
+	 buf_specbit_ldst <= specbit_ldst;          ///DC
+      end                                       ///DC
+   end // always @ (posedge clk)                ///DC
 
    assign dmem_addr = (memoccupy_ld) ? ldaddr : retaddr;
 
@@ -1855,9 +1857,9 @@ module pipeline
 		       .rob_we(robwe_branch),
 		       .prsuccess(prsuccess),
 		       .prmiss(prmiss),
-		       .jmpaddr(jmpaddr),
-		       .jmpaddr_taken(jmpaddr_taken),
-		       .brcond(brcond),
+		       .jmpaddr(jmpaddr), 
+		       .jmpaddr_taken(jmpaddr_taken),  ///DC
+		       .brcond(brcond), ///DC
 		       .tagregfix(tagregfix)
 		       );
 
@@ -1887,7 +1889,7 @@ module pipeline
 		  .storebit_dp1(inst1_id[6:0] == `RV32_STORE ? 1'b1 : 1'b0),
 		  .dstvalid_dp1(wr_reg_1_id),
 		  .dst_dp1(rd_1_id),
-		  .bhr_dp1(bhr_id),
+		  .bhr_dp1(bhr_id), ///DC
 		  .isbranch_dp1(req1_branch),
 		  .dp2(~stall_DP & ~kill_DP & ~inv2_id),
 		  .dp2_addr(dst2_renamed),
@@ -1895,7 +1897,7 @@ module pipeline
 		  .storebit_dp2(inst2_id[6:0] == `RV32_STORE ? 1'b1 : 1'b0),
 		  .dstvalid_dp2(wr_reg_2_id),
 		  .dst_dp2(rd_2_id),
-		  .bhr_dp2(bhr_id),
+		  .bhr_dp2(bhr_id), ///DC
 		  .isbranch_dp2(req2_branch),
 		  .exfin_alu1(robwe_alu1),
 		  .exfin_alu1_addr(buf_rrftag_alu1),
@@ -1907,8 +1909,8 @@ module pipeline
 		  .exfin_ldst_addr(wrrftag_ldst),
 		  .exfin_branch(robwe_branch),
 		  .exfin_branch_addr(buf_rrftag_branch),
-		  .exfin_branch_brcond(brcond),
-		  .exfin_branch_jmpaddr(jmpaddr_taken),
+		  .exfin_branch_brcond(brcond),          ///DC
+		  .exfin_branch_jmpaddr(jmpaddr_taken), ///DC
 
 		  .comptr(comptr),
 		  .comptr2(comptr2),
@@ -1918,11 +1920,11 @@ module pipeline
 		  .arfwe2(arfwe2),
 		  .dstarf1(dstarf1),
 		  .dstarf2(dstarf2),
-		  .pc_combranch(pc_combranch),
-		  .bhr_combranch(bhr_combranch),
-		  .brcond_combranch(brcond_combranch),
-		  .jmpaddr_combranch(jmpaddr_combranch),
-		  .combranch(combranch),
+		  .pc_combranch(pc_combranch), ///DC
+		  .bhr_combranch(bhr_combranch), ///DC
+		  .brcond_combranch(brcond_combranch),   ///DC
+		  .jmpaddr_combranch(jmpaddr_combranch), ///DC
+		  .combranch(combranch), ///DC
 		  .dispatchptr(rrfptr),
 		  .rrf_freenum(freenum),
 		  .prmiss(prmiss)

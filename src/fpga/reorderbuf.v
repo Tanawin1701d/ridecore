@@ -11,7 +11,7 @@ module reorderbuf
    input wire 			  storebit_dp1,
    input wire 			  dstvalid_dp1,
    input wire [`REG_SEL-1:0] 	  dst_dp1,
-   input wire [`GSH_BHR_LEN-1:0]  bhr_dp1,
+   input wire [`GSH_BHR_LEN-1:0]  bhr_dp1, ///DC
    input wire 			  isbranch_dp1,
    input wire 			  dp2,
    input wire [`RRF_SEL-1:0] 	  dp2_addr,
@@ -19,7 +19,7 @@ module reorderbuf
    input wire 			  storebit_dp2,
    input wire 			  dstvalid_dp2,
    input wire [`REG_SEL-1:0] 	  dst_dp2,
-   input wire [`GSH_BHR_LEN-1:0]  bhr_dp2,
+   input wire [`GSH_BHR_LEN-1:0]  bhr_dp2, ///DC
    input wire 			  isbranch_dp2,
    input wire 			  exfin_alu1,
    input wire [`RRF_SEL-1:0] 	  exfin_alu1_addr,
@@ -29,10 +29,10 @@ module reorderbuf
    input wire [`RRF_SEL-1:0] 	  exfin_mul_addr,
    input wire 			  exfin_ldst,
    input wire [`RRF_SEL-1:0] 	  exfin_ldst_addr,
-   input wire 			  exfin_branch,
-   input wire [`RRF_SEL-1:0] 	  exfin_branch_addr,
-   input wire 			  exfin_branch_brcond,
-   input wire [`ADDR_LEN-1:0] 	  exfin_branch_jmpaddr, 
+   input wire 			  exfin_branch,                      
+   input wire [`RRF_SEL-1:0] 	  exfin_branch_addr,       
+   input wire 			  exfin_branch_brcond,               ///DC
+   input wire [`ADDR_LEN-1:0] 	  exfin_branch_jmpaddr,  ///DC
   
    output reg [`RRF_SEL-1:0] 	  comptr /* verilator public */,
    output wire [`RRF_SEL-1:0] 	  comptr2,
@@ -42,11 +42,11 @@ module reorderbuf
    output wire 			  arfwe2,
    output wire [`REG_SEL-1:0] 	  dstarf1,
    output wire [`REG_SEL-1:0] 	  dstarf2,
-   output wire [`ADDR_LEN-1:0] 	  pc_combranch,
-   output wire [`GSH_BHR_LEN-1:0] bhr_combranch,
-   output wire 			  brcond_combranch,
-   output wire [`ADDR_LEN-1:0] 	  jmpaddr_combranch,
-   output wire 			  combranch,
+   output wire [`ADDR_LEN-1:0] 	  pc_combranch,      ///DC
+   output wire [`GSH_BHR_LEN-1:0] bhr_combranch,     ///DC
+   output wire 			  brcond_combranch,              ///DC
+   output wire [`ADDR_LEN-1:0] 	  jmpaddr_combranch, ///DC
+   output wire 			  combranch,                     ///DC
    input wire [`RRF_SEL-1:0] 	  dispatchptr,
    input wire [`RRF_SEL:0] 	  rrf_freenum,
    input wire 			  prmiss
@@ -55,13 +55,13 @@ module reorderbuf
    reg [`RRF_NUM-1:0] 		  finish    /* verilator public */;
    reg [`RRF_NUM-1:0] 		  storebit    /* verilator public */;
    reg [`RRF_NUM-1:0] 		  dstvalid    /* verilator public */;
-   reg [`RRF_NUM-1:0] 		  brcond    /* verilator public */;
-   reg [`RRF_NUM-1:0] 		  isbranch    /* verilator public */;
+   reg [`RRF_NUM-1:0] 		  brcond    /* verilator public */;       ///DC
+   reg [`RRF_NUM-1:0] 		  isbranch    /* verilator public */;     ///DC
    
-   reg [`ADDR_LEN-1:0] 		  inst_pc [0:`RRF_NUM-1] /* verilator public */;                 
-   reg [`ADDR_LEN-1:0] 		  jmpaddr [0:`RRF_NUM-1] /* verilator public */;                    
+   reg [`ADDR_LEN-1:0] 		  inst_pc [0:`RRF_NUM-1] /* verilator public */; ///DC           
+   reg [`ADDR_LEN-1:0] 		  jmpaddr [0:`RRF_NUM-1] /* verilator public */; ///DC
    reg [`REG_SEL-1:0] 		  dst [0:`RRF_NUM-1] /* verilator public */;                 
-   reg [`GSH_BHR_LEN-1:0] 	  bhr [0:`RRF_NUM-1] /* verilator public */;                 
+   reg [`GSH_BHR_LEN-1:0] 	  bhr [0:`RRF_NUM-1] /* verilator public */;   ///DC         
    
    assign comptr2 = comptr+1;
    
@@ -86,16 +86,16 @@ module reorderbuf
    assign arfwe2 = ~prmiss & commit2 & dstvalid[comptr2];
    assign dstarf1 = dst[comptr];
    assign dstarf2 = dst[comptr2];
-   assign combranch = (~prmiss & commit1 & isbranch[comptr]) |
-		      (~prmiss & commit2 & isbranch[comptr2]);
-   assign pc_combranch = (~prmiss & commit1 & isbranch[comptr]) ? 
-			 inst_pc[comptr] : inst_pc[comptr2];
-   assign bhr_combranch = (~prmiss & commit1 & isbranch[comptr]) ?
-			  bhr[comptr] : bhr[comptr2];
-   assign brcond_combranch = (~prmiss & commit1 & isbranch[comptr]) ?
-			     brcond[comptr] : brcond[comptr2];
-   assign jmpaddr_combranch = (~prmiss & commit1 & isbranch[comptr]) ?
-			      jmpaddr[comptr] : jmpaddr[comptr2];
+   assign combranch = (~prmiss & commit1 & isbranch[comptr]) |         ///DC
+		      (~prmiss & commit2 & isbranch[comptr2]);                     ///DC
+   assign pc_combranch = (~prmiss & commit1 & isbranch[comptr]) ?      ///DC
+			 inst_pc[comptr] : inst_pc[comptr2];                             ///DC
+   assign bhr_combranch = (~prmiss & commit1 & isbranch[comptr]) ?     ///DC
+			  bhr[comptr] : bhr[comptr2];                                    ///DC
+   assign brcond_combranch = (~prmiss & commit1 & isbranch[comptr]) ?  ///DC
+			     brcond[comptr] : brcond[comptr2];                           ///DC
+   assign jmpaddr_combranch = (~prmiss & commit1 & isbranch[comptr]) ? ///DC
+			      jmpaddr[comptr] : jmpaddr[comptr2];                        ///DC
    
 
    always @ (posedge clk) begin
@@ -110,7 +110,7 @@ module reorderbuf
    always @ (posedge clk) begin
       if (reset) begin
 	 finish <= 0;
-	 brcond <= 0;
+	 brcond <= 0; ///DC
       end else begin
 	 if (dp1)
 	   finish[dp1_addr] <= 1'b0;
@@ -126,28 +126,28 @@ module reorderbuf
 	   finish[exfin_ldst_addr] <= 1'b1;
 	 if (exfin_branch) begin
 	    finish[exfin_branch_addr] <= 1'b1;
-	    brcond[exfin_branch_addr] <= exfin_branch_brcond;
-	    jmpaddr[exfin_branch_addr] <= exfin_branch_jmpaddr;
+	    brcond[exfin_branch_addr] <= exfin_branch_brcond;    ///DC
+	    jmpaddr[exfin_branch_addr] <= exfin_branch_jmpaddr;    ///DC
 	 end
       end
    end // always @ (posedge clk)
 
    always @ (posedge clk) begin
       if (dp1) begin
-	 isbranch[dp1_addr] <= isbranch_dp1;
+	 isbranch[dp1_addr] <= isbranch_dp1; ///DC
 	 storebit[dp1_addr] <= storebit_dp1;
 	 dstvalid[dp1_addr] <= dstvalid_dp1;
 	 dst[dp1_addr] <= dst_dp1;
-	 bhr[dp1_addr] <= bhr_dp1;
-	 inst_pc[dp1_addr] <= pc_dp1;
+	 bhr[dp1_addr] <= bhr_dp1;     ///DC
+	 inst_pc[dp1_addr] <= pc_dp1;  ///DC
       end
       if (dp2) begin
-	 isbranch[dp2_addr] <= isbranch_dp2;
+	 isbranch[dp2_addr] <= isbranch_dp2; ///DC
 	 storebit[dp2_addr] <= storebit_dp2;
 	 dstvalid[dp2_addr] <= dstvalid_dp2;
 	 dst[dp2_addr] <= dst_dp2;
-	 bhr[dp2_addr] <= bhr_dp2;
-	 inst_pc[dp2_addr] <= pc_dp2;
+	 bhr[dp2_addr] <= bhr_dp2;     ///DC
+	 inst_pc[dp2_addr] <= pc_dp2;  ///DC
       end
    end
 endmodule // reorderbuf
