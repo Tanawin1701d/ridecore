@@ -14,13 +14,15 @@ namespace kathryn::o3{
                              SimProxyBuildMode        buildMode,
                              SlotWriterBase&          slotWriter,
                              SimState&                state,
-                             Vpipeline&               core):
+                             Vpipeline&               core,
+                             ResultWriter*            resultWriter):
     O3SimCtrlBase(limitCycle,
                   prefix,
                   std::move(testTypes),
                   buildMode,
                   slotWriter,
-                  state
+                  state,
+                  resultWriter
     ),
     _core(core){}
 
@@ -40,6 +42,10 @@ namespace kathryn::o3{
     void SimCtrlRide::doWorkloadInit(int curTestCaseIdx, bool reqRegTest){
         //////////////  read assembly and assertVal
         _slotWriter. renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/oslot_ride.sl");
+        if (_resultWriter != nullptr){
+            _resultWriter->fillCycleCnt(cycleCnt);
+            _resultWriter->renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/verilator_ride_result");
+        }
         iterateCycle();
         //////// set reset wire to 1
         _core.reset = 1;
@@ -135,16 +141,15 @@ namespace kathryn::o3{
             }else{
                 _core.dmem_data = _dmem[aligned_addr];
             }
-
-            // std::cout << "read Detect at @ " << cvtNum2HexStr(lastDmemAddr) << "   with  " << _dmem[aligned_addr] << std::endl;
-            // if (lastDmemAddr == 0x598){
-            //     std::cout << "read Detect at @ " << cvtNum2HexStr(lastDmemAddr) << "   with  " << _dmem[aligned_addr] << std::endl;
-            // }
         }else{
             if (aligned_addr >= DMEM_ROW){
                 std::cout << "skip write due to exceed memory address" << std::endl;
             }else{
+
                 _dmem[aligned_addr] = lastDmemWData;
+                if ((_resultWriter != nullptr) && (aligned_addr == 0x0)){
+                    _resultWriter->fillResult(lastDmemWData);
+                }
                 ////std::cout << "write Detect at @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemWData << std::endl;
                 if (lastDmemAddr == 0x0 || lastDmemAddr == 0x4 || lastDmemAddr == 0x8){
                     std::cout << "write Detect at  Ride @ " << cvtNum2HexStr(lastDmemAddr) << " with data " << lastDmemWData << std::endl;

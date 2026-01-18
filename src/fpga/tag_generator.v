@@ -33,10 +33,10 @@ module tag_generator(
 
 	 assign attachable =
     (brdepth
-     + {{($bits(brdepth)-1){1'b0}}, branchvalid1}
-     + {{($bits(brdepth)-1){1'b0}}, branchvalid2}
+     + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid1}
+     + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid2}
     ) > (`BRANCH_ENT_NUM + 
-		{{($bits(brdepth)-1){1'b0}}, prsuccess}
+		{{(`BRDEPTH_LEN-1){1'b0}}, prsuccess}
 		)
       ? 1'b0 : 1'b1;
 
@@ -50,8 +50,8 @@ module tag_generator(
 		   ~enable ? tagreg : 
 		   sptag2;
 	 brdepth <= prmiss ? `BRDEPTH_LEN'b0 :
-		    ~enable ? brdepth - {{($bits(brdepth)-1){1'b0}}, prsuccess} :
-		    brdepth + {{($bits(brdepth)-1){1'b0}}, branchvalid1} + {{($bits(brdepth)-1){1'b0}}, branchvalid2} - {{($bits(brdepth)-1){1'b0}}, prsuccess};
+		    ~enable ? brdepth - {{(`BRDEPTH_LEN-1){1'b0}}, prsuccess} :
+		    brdepth + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid1} + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid2} - {{(`BRDEPTH_LEN-1){1'b0}}, prsuccess};
       end
    end
    

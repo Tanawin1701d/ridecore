@@ -239,11 +239,12 @@ module renaming_table
    assign rs2_2busy    = busy[`SPECTAG_LEN][rs2_2];
 
 
+integer tabIdx, archIdx;
 
    always @(*) begin
 
 		/////// default value
-		integer tabIdx, archIdx;
+		//integer tabIdx, archIdx;
 		for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 			for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
 				preBusy[tabIdx][archIdx]  = busy[tabIdx][archIdx];
@@ -288,7 +289,7 @@ module renaming_table
 		//////// success //////// do it to all table except master table
 
 		if (prsuccess)begin
-			integer tabIdx;
+			//integer tabIdx;
 			for(tabIdx = 0; tabIdx < `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
 					if (prtag[tabIdx])begin
@@ -300,7 +301,7 @@ module renaming_table
 		end
 
 		if (prmiss)begin
-			integer tabIdx, archIdx;
+			//integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
 					preBusy[tabIdx][archIdx] = busy [binPrTag][archIdx];
@@ -316,7 +317,7 @@ module renaming_table
 
 		if (reset) begin
 
-			integer tabIdx, archIdx;
+			//integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
 					busy[tabIdx][archIdx] <= 0;
@@ -326,7 +327,7 @@ module renaming_table
 			
 		end else begin
 
-			integer tabIdx, archIdx;
+			//integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
 					busy[tabIdx][archIdx] <= preBusy[tabIdx][archIdx];

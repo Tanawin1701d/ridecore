@@ -74,7 +74,8 @@ module alloc_issue_ino  #(
 
    
    assign issueptr = ~notfull ? allocptr :
-		     ((b1 == 0) && (e1 == ENTSEL'(ENTNUM-1))) ? (e0+1) : 
+		     ((b1 == 0) && (e1 == {{(ENTSEL){1'b0}} + (ENTNUM-1)}  )) ? 
+		     (e0+1) : 
 		     b1;
 
    // assign issueptr = ~notfull ? allocptr :
@@ -92,7 +93,7 @@ module alloc_issue_ino  #(
 	 allocptr <= 0;
       end else if (prmiss) begin
 	 allocptr <= ~notfull_next ? allocptr :
-		     (((nb1 == 0) && (ne1 == ENTSEL'(ENTNUM-1))) ? nb0 : (ne1+1));
+		     (((nb1 == 0) && (ne1 == {{(ENTSEL){1'b0}} + (ENTNUM-1)} )) ? nb0 : (ne1+1));
 
    // allocptr <= ~notfull_next ? allocptr :
 	// 	     (((nb1 == 0) && (ne1 == ENTNUM-1)) ? nb0 : (ne1+1));

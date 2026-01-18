@@ -26,7 +26,8 @@ namespace kathryn::o3{
                     SimProxyBuildMode        buildMode,
                     SlotWriterBase&          slotWriter,
                     SimState&                state,
-                    Vpipeline& core);
+                    Vpipeline&               core,
+                    ResultWriter*            resultWriter = nullptr);
 
         /**
          *    |---------|
