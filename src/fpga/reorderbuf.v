@@ -5,7 +5,7 @@ module reorderbuf
    input wire 			  clk,
    input wire 			  reset,
    //Write Signal
-   input wire 			  dp1,
+   input wire 			  dp1,  ///CTRL ROB
    input wire [`RRF_SEL-1:0] 	  dp1_addr,
    input wire [`INSN_LEN-1:0] 	  pc_dp1,
    input wire 			  storebit_dp1,
@@ -13,7 +13,7 @@ module reorderbuf
    input wire [`REG_SEL-1:0] 	  dst_dp1,
    input wire [`GSH_BHR_LEN-1:0]  bhr_dp1, ///DC
    input wire 			  isbranch_dp1,
-   input wire 			  dp2,
+   input wire 			  dp2,      ///CTRL ROB
    input wire [`RRF_SEL-1:0] 	  dp2_addr,
    input wire [`INSN_LEN-1:0] 	  pc_dp2,
    input wire 			  storebit_dp2,
@@ -74,16 +74,16 @@ module reorderbuf
    //   wire commit2 = commit1 & com_en2 & finish[comptr2];
 
    wire 			  commit2/* verilator public */;
-   assign 	    commit2 = 
+   assign 	    commit2 =  
 				  ~(~prmiss & commit1 & isbranch[comptr]) &
 				  ~(commit1 & storebit[comptr] & ~prmiss) &
 				  commit1 & com_en2 & finish[comptr2];
 
    assign comnum = {1'b0, commit1} + {1'b0, commit2};
-   assign stcommit = (commit1 & storebit[comptr] & ~prmiss) |
+   assign stcommit = (commit1 & storebit[comptr] & ~prmiss) | ///CTRL ROB
 		     (commit2 & storebit[comptr2] & ~prmiss);
-   assign arfwe1 = ~prmiss & commit1 & dstvalid[comptr];
-   assign arfwe2 = ~prmiss & commit2 & dstvalid[comptr2];
+   assign arfwe1 = ~prmiss & commit1 & dstvalid[comptr];    ///CTRL ROB
+   assign arfwe2 = ~prmiss & commit2 & dstvalid[comptr2];   ///CTRL ROB
    assign dstarf1 = dst[comptr];
    assign dstarf2 = dst[comptr2];
    assign combranch = (~prmiss & commit1 & isbranch[comptr]) |         ///DC
@@ -98,33 +98,33 @@ module reorderbuf
 			      jmpaddr[comptr] : jmpaddr[comptr2];                        ///DC
    
 
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin ///CTRL ROB
+      if (reset) begin          ///CTRL ROB
 	 comptr <= 0;
-      end else if (~prmiss) begin
+      end else if (~prmiss) begin ///CTRL ROB
 	 comptr <= comptr + {{(`RRF_SEL-1){1'b0}}, commit1} + {{(`RRF_SEL-1){1'b0}}, commit2};
    //comptr <= comptr + commit1 + commit2;
       end
    end
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin    ///CTRL ROB
+      if (reset) begin             ///CTRL ROB
 	 finish <= 0;
 	 brcond <= 0; ///DC
       end else begin
-	 if (dp1)
+	 if (dp1)  ///CTRL ROB
 	   finish[dp1_addr] <= 1'b0;
-	 if (dp2)
+	 if (dp2)  ///CTRL ROB
 	   finish[dp2_addr] <= 1'b0;
-	 if (exfin_alu1)
+	 if (exfin_alu1)  ///CTRL ROB
 	   finish[exfin_alu1_addr] <= 1'b1;
-	 if (exfin_alu2)
+	 if (exfin_alu2)  ///CTRL ROB
 	   finish[exfin_alu2_addr] <= 1'b1;
-	 if (exfin_mul)
+	 if (exfin_mul)   ///CTRL ROB
 	   finish[exfin_mul_addr] <= 1'b1;
-	 if (exfin_ldst)
+	 if (exfin_ldst)  ///CTRL ROB
 	   finish[exfin_ldst_addr] <= 1'b1;
-	 if (exfin_branch) begin
+	 if (exfin_branch) begin  ///CTRL ROB
 	    finish[exfin_branch_addr] <= 1'b1;
 	    brcond[exfin_branch_addr] <= exfin_branch_brcond;    ///DC
 	    jmpaddr[exfin_branch_addr] <= exfin_branch_jmpaddr;    ///DC
@@ -132,8 +132,8 @@ module reorderbuf
       end
    end // always @ (posedge clk)
 
-   always @ (posedge clk) begin
-      if (dp1) begin
+   always @ (posedge clk) begin  ///CTRL ROB
+      if (dp1) begin             ///CTRL ROB
 	 isbranch[dp1_addr] <= isbranch_dp1; ///DC
 	 storebit[dp1_addr] <= storebit_dp1;
 	 dstvalid[dp1_addr] <= dstvalid_dp1;
@@ -141,7 +141,7 @@ module reorderbuf
 	 bhr[dp1_addr] <= bhr_dp1;     ///DC
 	 inst_pc[dp1_addr] <= pc_dp1;  ///DC
       end
-      if (dp2) begin
+      if (dp2) begin               ///CTRL ROB
 	 isbranch[dp2_addr] <= isbranch_dp2; ///DC
 	 storebit[dp2_addr] <= storebit_dp2;
 	 dstvalid[dp2_addr] <= dstvalid_dp2;

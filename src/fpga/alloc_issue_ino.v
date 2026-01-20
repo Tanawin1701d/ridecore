@@ -88,16 +88,16 @@ module alloc_issue_ino  #(
 			(reqnum == 2'h1) ? ((~busyvec[allocptr] ? 1'b1 : 1'b0)) :
 			((~busyvec[allocptr] && ~busyvec[allocptr2]) ? 1'b1 : 1'b0);
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin  ///CTRL RSV_SHARED
+      if (reset) begin           ///CTRL RSV_SHARED
 	 allocptr <= 0;
-      end else if (prmiss) begin
+      end else if (prmiss) begin ///CTRL RSV_SHARED
 	 allocptr <= ~notfull_next ? allocptr :
 		     (((nb1 == 0) && (ne1 == {{(ENTSEL){1'b0}} + (ENTNUM-1)} )) ? nb0 : (ne1+1));
 
    // allocptr <= ~notfull_next ? allocptr :
 	// 	     (((nb1 == 0) && (ne1 == ENTNUM-1)) ? nb0 : (ne1+1));
-      end else if (~stall_DP && ~kill_DP) begin
+      end else if (~stall_DP && ~kill_DP) begin   ///CTRL RSV_SHARED
 	 allocptr <= allocptr + reqnum;
       end
    end

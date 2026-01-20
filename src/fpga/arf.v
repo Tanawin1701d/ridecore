@@ -26,8 +26,8 @@ module arf
    output wire [`RRF_SEL-1:0] 	 rs2_2tag,
    input wire [`REG_SEL-1:0] 	 tagbusy1_addr,
    input wire [`REG_SEL-1:0] 	 tagbusy2_addr,
-   input wire 			 tagbusy1_we,
-   input wire 			 tagbusy2_we,
+   input wire 			 tagbusy1_we, ///CTRL ARF
+   input wire 			 tagbusy2_we, ///CTRL ARF
    input wire [`RRF_SEL-1:0] 	 settag1,
    input wire [`RRF_SEL-1:0] 	 settag2,
    input wire [`SPECTAG_LEN-1:0] tagbusy1_spectag,
@@ -264,7 +264,7 @@ integer tabIdx, archIdx;
 		end
 
 		/////// rename    //////// do it to all table except mpft_valid
-		if (settagbusy1)begin
+		if (settagbusy1)begin         //// DTRL we dont count because it match with kathryn's pattern  Give the benefit of the doubt to the defendant.
 			for(tabIdx = 0; tabIdx < `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				if (!mpft_valid1[tabIdx])begin
 					preBusy[tabIdx][settagbusy1_addr] = 1;
@@ -275,7 +275,7 @@ integer tabIdx, archIdx;
 			preRem [`SPECTAG_LEN][settagbusy1_addr] = settag1;	
 		end
 
-		if (settagbusy2)begin
+		if (settagbusy2)begin //// DTRL we dont count because it match with kathryn's pattern  Give the benefit of the doubt to the defendant.
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				if (!mpft_valid2[tabIdx])begin
 					preBusy[tabIdx][settagbusy2_addr] = 1;
@@ -288,7 +288,7 @@ integer tabIdx, archIdx;
 
 		//////// success //////// do it to all table except master table
 
-		if (prsuccess)begin
+		if (prsuccess)begin    ///CTRL ARF
 			//integer tabIdx;
 			for(tabIdx = 0; tabIdx < `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
@@ -300,7 +300,7 @@ integer tabIdx, archIdx;
 			end
 		end
 
-		if (prmiss)begin
+		if (prmiss)begin   ///CTRL ARF
 			//integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin
 				for (archIdx = 0; archIdx < `REG_NUM; archIdx = archIdx + 1) begin
@@ -313,9 +313,9 @@ integer tabIdx, archIdx;
    end
 
 
-   always @(posedge clk ) begin
+   always @(posedge clk ) begin ///CTRL ARF
 
-		if (reset) begin
+		if (reset) begin ///CTRL ARF
 
 			//integer tabIdx, archIdx;
 			for(tabIdx = 0; tabIdx <= `SPECTAG_LEN; tabIdx = tabIdx + 1) begin

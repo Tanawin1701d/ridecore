@@ -27,17 +27,17 @@ module exunit_alu
    wire [`DATA_LEN-1:0] 	alusrc1;
    wire [`DATA_LEN-1:0] 	alusrc2;
 
-   reg 				busy /* verilator public */;
+   reg 				busy /* verilator public */; ///CTRL EXEC_ALU    it acts as state machine of this system
 
-   assign rob_we = busy;
-   assign rrf_we = busy & dstval;
-   assign kill_speculative = ((spectag & spectagfix) != 0) && specbit && prmiss;
+   assign rob_we = busy;          ///CTRL EXEC_ALU
+   assign rrf_we = busy & dstval; ///CTRL EXEC_ALU
+   assign kill_speculative = ((spectag & spectagfix) != 0) && specbit && prmiss; ///CTRL EXEC_ALU
    
-   always @ (posedge clk) begin
-      if (reset) begin
-	 busy <= 0;
+   always @ (posedge clk) begin ///CTRL EXEC_ALU
+      if (reset) begin          ///CTRL EXEC_ALU
+	 busy <= 0;                   ///CTRL EXEC_ALU
       end else begin
-	 busy <= issue;
+	 busy <= issue;               ///CTRL EXEC_ALU
       end
    end
    

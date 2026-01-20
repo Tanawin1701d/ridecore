@@ -23,15 +23,15 @@ module exunit_mul
 
    reg 			       busy /* verilator public */;
    
-   assign rob_we = busy;
-   assign rrf_we = busy & dstval;
+   assign rob_we = busy;              ///CTRL EXEC_MUL
+   assign rrf_we = busy & dstval;     ///CTRL EXEC_MUL
    assign kill_speculative = ((spectag & spectagfix) != 0) && specbit && prmiss;
    
-   always @ (posedge clk) begin
-      if (reset) begin
-	 busy <= 0;
+   always @ (posedge clk) begin ///CTRL EXEC_MUL
+      if (reset) begin ///CTRL EXEC_MUL
+	 busy <= 0;          ///CTRL EXEC_MUL
       end else begin
-	 busy <= issue;
+	 busy <= issue;       ///CTRL EXEC_MUL
       end
    end
    

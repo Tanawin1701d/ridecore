@@ -86,7 +86,7 @@ module storebuf
    assign retdata = data[retptr];
    assign retaddr = addr[retptr];
    assign lddata = data[ldent];
-   assign stretire = valid[retptr] && completed[retptr] && ~memoccupy_ld &&
+   assign stretire = valid[retptr] && completed[retptr] && ~memoccupy_ld &&  ///CTRL EXEC_LDST
 		     ~prmiss;
    assign sb_full = ((finptr == retptr) && (valid[finptr] == 1)) ? 1'b1 : 1'b0;
    assign finptr_next = (~notfull_next | ~notempty_next) ? finptr :
@@ -111,23 +111,23 @@ module storebuf
 	end
    endgenerate
 
-   always @ (posedge clk) begin
-      if (~reset & stfin) begin
+   always @ (posedge clk) begin   ///CTRL EXEC_LDST
+      if (~reset & stfin) begin   ///CTRL EXEC_LDST
 	 data[finptr] <= stdata;
 	 addr[finptr] <= staddr;
 	 spectag[finptr] <= stspectag;
       end
    end
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin    ///CTRL EXEC_LDST
+      if (reset) begin             ///CTRL EXEC_LDST
 	 finptr <= 0;
 	 comptr <= 0;
 	 retptr <= 0;
 	 valid <= 0;
 	 completed <= 0;
-      end else if (prmiss) begin
-	 if (stfin) begin
+      end else if (prmiss) begin    ///CTRL EXEC_LDST
+	 if (stfin) begin                ///CTRL EXEC_LDST
 	    //KillNotOccur!!!
 	    finptr <= finptr + 1;
 	    valid[finptr] <= 1'b1;
@@ -141,16 +141,16 @@ module storebuf
 	    retptr <= ~notempty_next ? finptr : retptr;
 	 end
       end else begin
-	 if (stfin) begin
+	 if (stfin) begin                 ///CTRL EXEC_LDST
 	    finptr <= finptr + 1;
 	    valid[finptr] <= 1'b1;
 	    completed[finptr] <= 1'b0;
 	 end
-	 if (stcom) begin
+	 if (stcom) begin                 ///CTRL EXEC_LDST
 	    comptr <= comptr + 1;
 	    completed[comptr] <= 1'b1;
 	 end
-	 if (stretire) begin
+	 if (stretire) begin             ///CTRL EXEC_LDST
 	    retptr <= retptr + 1;
 	    valid[retptr] <= 1'b0;
 	    completed[retptr] <= 1'b0;
@@ -158,10 +158,10 @@ module storebuf
       end
    end // always @ (posedge clk)
 
-   always @ (posedge clk) begin
-      if (reset | prmiss) begin
+   always @ (posedge clk) begin       ///CTRL EXEC_LDST
+      if (reset | prmiss) begin       ///CTRL EXEC_LDST
 	 specbit <= 0;
-      end else if (prsuccess) begin
+      end else if (prsuccess) begin   ///CTRL EXEC_LDST
 	 specbit <= ((specbit & specbit_cls) &
 		    (stfin ?(~({`STBUF_ENT_NUM{1'b1}} << finptr)) : 
                   (~(`STBUF_ENT_NUM'b0))
@@ -173,7 +173,7 @@ module storebuf
 
 
       end else begin
-         if (stfin) begin
+         if (stfin) begin             ///CTRL EXEC_LDST
             specbit[finptr] <= stspecbit;
          end
       end

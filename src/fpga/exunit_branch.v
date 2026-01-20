@@ -28,17 +28,17 @@ module exunit_branch
    output wire [`SPECTAG_LEN-1:0] tagregfix
    );
 
-   reg 			       busy /* verilator public */;
+   reg 			       busy /* verilator public */; ///CTRL EXEC_BRANCH ////// it acts 
    
    wire [`DATA_LEN-1:0]        comprslt;
    wire 		       addrmatch = (jmpaddr == praddr) ? 1'b1 : 1'b0;
 
    
-   assign rob_we = busy;
-   assign rrf_we = busy & dstval;
+   assign rob_we = busy; ///CTRL EXEC_BRANCH
+   assign rrf_we = busy & dstval; ///CTRL EXEC_BRANCH
    assign result = pc + 4;
-   assign prsuccess = busy & addrmatch;
-   assign prmiss = busy & ~addrmatch;
+   assign prsuccess = busy & addrmatch; ///CTRL EXEC_BRANCH
+   assign prmiss = busy & ~addrmatch;   ///CTRL EXEC_BRANCH
    assign jmpaddr = brcond ? jmpaddr_taken : (pc + 4);
    assign jmpaddr_taken = (((opcode == `RV32_JALR) ? ex_src1 : pc) + imm);
    
@@ -46,11 +46,11 @@ module exunit_branch
 			       1'b1 : comprslt[0];
    assign tagregfix = {spectag[0], spectag[`SPECTAG_LEN-1:1]};
    
-   always @ (posedge clk) begin
-      if (reset) begin
-	 busy <= 0;
+   always @ (posedge clk) begin  ///CTRL EXEC_BRANCH
+      if (reset) begin           ///CTRL EXEC_BRANCH
+	 busy <= 0;                    ///CTRL EXEC_BRANCH
       end else begin
-	 busy <= issue;
+	 busy <= issue;               ///CTRL EXEC_BRANCH
       end
    end
 		  

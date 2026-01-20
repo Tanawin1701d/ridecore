@@ -58,8 +58,8 @@ module rs_ldst_ent
    assign ex_src2 = ~valid2 & nextvalid2 ?
 		    nextsrc2 : src2;
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin ///CTRL RSV_LDST
+      if (reset) begin ///CTRL RSV_LDST
 	 pc <= 0;
 	 imm <= 0;
 	 rrftag <= 0;
@@ -70,7 +70,7 @@ module rs_ldst_ent
 	 src2 <= 0;
 	 valid1 <= 0;
 	 valid2 <= 0;
-      end else if (we) begin
+      end else if (we) begin  ///CTRL RSV_LDST
 	 pc <= wpc;
 	 imm <= wimm;
 	 rrftag <= wrrftag;
@@ -270,15 +270,15 @@ module rs_ldst
    assign ready = {ready_3, ready_2, ready_1, ready_0};
    assign prbusyvec_next = inv_vector & busyvec;
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin ///CTRL RSV_LDST
+      if (reset) begin ///CTRL RSV_LDST
 	 busyvec <= 0;
 	 specbitvec <= 0;
       end else begin
-	 if (prmiss) begin
+	 if (prmiss) begin ///CTRL RSV_LDST
 	    busyvec <= prbusyvec_next;
 	    specbitvec <= 0;
-	 end else if (prsuccess) begin
+	 end else if (prsuccess) begin ///CTRL RSV_LDST
 	    specbitvec <= specbitvec_next;
 	    /*
 	    if (we1) begin
@@ -292,11 +292,11 @@ module rs_ldst
 	       busyvec[issueaddr] <= 1'b0;
 	    end
 	 end else begin
-	    if (we1) begin
+	    if (we1) begin ///CTRL RSV_LDST
 	       busyvec[waddr1] <= 1'b1;
 	       specbitvec[waddr1] <= wspecbit_1;
 	    end
-	    if (we2) begin
+	    if (we2) begin ///CTRL RSV_LDST
 	       busyvec[waddr2] <= 1'b1;
 	       specbitvec[waddr2] <= wspecbit_2;
 	    end

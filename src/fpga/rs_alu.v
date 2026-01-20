@@ -66,8 +66,8 @@ module rs_alu_ent
    assign ex_src2 = ~valid2 & nextvalid2 ?
 		    nextsrc2 : src2;
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin  ///CTRL RSV_ALU
+      if (reset) begin           ///CTRL RSV_ALU
 	 pc <= 0;
 	 imm <= 0;
 	 rrftag <= 0;
@@ -81,7 +81,7 @@ module rs_alu_ent
 	 src2 <= 0;
 	 valid1 <= 0;
 	 valid2 <= 0;
-      end else if (we) begin
+      end else if (we) begin  ///CTRL RSV_ALU
 	 pc <= wpc;
 	 imm <= wimm;
 	 rrftag <= wrrftag;
@@ -382,31 +382,31 @@ module rs_alu
 		      {~ready_0, sortbit[0], rrftag_0}		      
 		      };
 
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin   ///CTRL RSV_ALU
+      if (reset) begin            ///CTRL RSV_ALU
 	 sortbit <= `ALU_ENT_NUM'b1;
       end else if (nextrrfcyc) begin
 	 sortbit <= (we1 ? (`ALU_ENT_NUM'b1 << waddr1) : `ALU_ENT_NUM'b0) |
 		    (we2 ? (`ALU_ENT_NUM'b1 << waddr2) : `ALU_ENT_NUM'b0);
       end else begin
-	 if (we1) begin
+	 if (we1) begin                ///CTRL RSV_ALU
 	    sortbit[waddr1] <= 1'b1;
 	 end
-	 if (we2) begin
+	 if (we2) begin                ///CTRL RSV_ALU
 	    sortbit[waddr2] <= 1'b1;
 	 end
       end
    end
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin    ///CTRL RSV_ALU
+      if (reset) begin             ///CTRL RSV_ALU
 	 busyvec <= 0;
 	 specbitvec <= 0;
       end else begin
-	 if (prmiss) begin
+	 if (prmiss) begin             ///CTRL RSV_ALU
 	    busyvec <= inv_vector & busyvec;
 	    specbitvec <= 0;
-	 end else if (prsuccess) begin
+	 end else if (prsuccess) begin     ///CTRL RSV_ALU
 	    /*
 	     specbitvec <= (inv_vector & busyvec) |
 	     (we1 & wspecbit_1 ? (`ALU_ENT_SEL'b1 << waddr1) : 0) |
@@ -425,11 +425,11 @@ module rs_alu
 	       busyvec[issueaddr] <= 1'b0;
 	    end
 	 end else begin
-	    if (we1) begin
+	    if (we1) begin              ///CTRL RSV_ALU
 	       busyvec[waddr1] <= 1'b1;
 	       specbitvec[waddr1] <= wspecbit_1;
 	    end
-	    if (we2) begin
+	    if (we2) begin              ///CTRL RSV_ALU
 	       busyvec[waddr2] <= 1'b1;
 	       specbitvec[waddr2] <= wspecbit_2;
 	    end

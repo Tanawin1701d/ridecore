@@ -78,25 +78,25 @@ module rrf(
 				       (~dpen2 ? ~(`RRF_NUM'b0) : 
 					~(`RRF_NUM'b1 << dpaddr2));
 
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin  ///CTRL RRF
+      if (reset) begin  ///CTRL RRF
 	 valid <= 0;
-      end else begin
+      end else begin     ///CTRL RRF
 	 valid <= (valid | or_valid) & and_valid;
       end
    end
 
-   always @ (posedge clk) begin
-      if (~reset) begin
-	 if (wrrfen1)
+   always @ (posedge clk) begin   ///CTRL RRF
+      if (~reset) begin           ///CTRL RRF
+	 if (wrrfen1)                 ///CTRL RRF
 	   datarr[wrrfaddr1] <= wrrfdata1;
-	 if (wrrfen2)
+	 if (wrrfen2)                 ///CTRL RRF
 	   datarr[wrrfaddr2] <= wrrfdata2;
-	 if (wrrfen3)
+	 if (wrrfen3)                 ///CTRL RRF
 	   datarr[wrrfaddr3] <= wrrfdata3;
-	 if (wrrfen4)
+	 if (wrrfen4)                 ///CTRL RRF
 	   datarr[wrrfaddr4] <= wrrfdata4;
-	 if (wrrfen5)
+	 if (wrrfen5)                 ///CTRL RRF
 	   datarr[wrrfaddr5] <= wrrfdata5;
       end
    end

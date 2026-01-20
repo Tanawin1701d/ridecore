@@ -31,16 +31,16 @@ module rrf_freelistmanager
    assign rename_dst1 = rrfptr;
    assign rename_dst2 = rrfptr + (~invalid1 ? 1 : 0);
    
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin     ///CTRL RRF
+      if (reset) begin              ///CTRL RRF
 	 freenum <= `RRF_NUM;
 	 rrfptr <= 0;
 	 nextrrfcyc <= 0;
-      end else if (prmiss) begin
+      end else if (prmiss) begin   ///CTRL RRF
 	 rrfptr <= rrftagfix; //== prmiss_rrftag+1
 	 freenum <= `RRF_NUM - ({hi, rrftagfix} - {1'b0, comptr});
 	 nextrrfcyc <= 0;
-      end else if (stall_DP) begin
+      end else if (stall_DP) begin   ///CTRL RRF
 	 rrfptr <= rrfptr;
 	 freenum <= freenum + {{(`RRF_SEL+1-2){1'b0}}, comnum};
     /// freenum <= freenum + {{(`RRF_SEL+1-$bits(comnum)){1'b0}}, comnum};

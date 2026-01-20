@@ -119,10 +119,10 @@ module miss_prediction_fix_table
    wire [`SPECTAG_LEN-1:0] 	  value4_wprs =
 				  (prsuccess_tag[4] ? 5'b0 : ~prsuccess_tag);
    
-   always @ (posedge clk) begin
-      if (reset | prmiss) begin
+   always @ (posedge clk) begin   ///CTRL MPFT
+      if (reset | prmiss) begin   ///CTRL MPFT
 	 mpft_valid <= 0;
-      end else if (prsuccess) begin
+      end else if (prsuccess) begin  ///CTRL MPFT
 	 mpft_valid <= mpft_valid & ~prsuccess_tag;
       end else begin
 	 mpft_valid <= mpft_valid | 
@@ -131,14 +131,14 @@ module miss_prediction_fix_table
       end
    end
 
-   always @ (posedge clk) begin
-      if (reset | prmiss) begin
+   always @ (posedge clk) begin   ///CTRL MPFT
+      if (reset | prmiss) begin   ///CTRL MPFT
 	 value0 <= 0;
 	 value1 <= 0;
 	 value2 <= 0;
 	 value3 <= 0;
 	 value4 <= 0;
-      end else begin
+      end else begin  ///CTRL MPFT for prsuccess
 	 value0 <= prsuccess ? (value0 & value0_wprs) : (value0 | value0_wdec);
 	 value1 <= prsuccess ? (value1 & value1_wprs) : (value1 | value1_wdec);
 	 value2 <= prsuccess ? (value2 & value2_wprs) : (value2 | value2_wdec);

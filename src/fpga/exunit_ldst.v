@@ -37,8 +37,8 @@ module exunit_ldst
    input wire [`DATA_LEN-1:0] 	 lddatamem /* verilator public */
    );
 
-   reg 				 busy /* verilator public */;
-   wire 			 clearbusy;
+   reg 				 busy /* verilator public */; ///CTRL EXEC_LDST   //// it act as state machine of second load stage
+   wire 			 clearbusy;                      ///CTRL EXEC_LDST
    wire [`ADDR_LEN-1:0] 	 effaddr /* verilator public */;
    wire 			 killspec1/* verilator public */;
    
@@ -49,32 +49,32 @@ module exunit_ldst
    reg [`SPECTAG_LEN-1:0] 	 spectag_latch /* verilator public */;
    reg [`DATA_LEN-1:0] 		 lddatasb_latch /* verilator public */;
    reg 				 hitsb_latch /* verilator public */;
-   reg 				 insnvalid_latch /* verilator public */;
+   reg 				 insnvalid_latch /* verilator public */;     ///CTRL EXEC_LDST    //// it act as state machine of second load stage
 
-   assign clearbusy = (killspec1 || dstval || (~dstval && ~fullsb)) ? 1'b1 : 1'b0;
-   assign killspec1 = ((spectag & spectagfix) != 0) && specbit && prmiss;
-   assign kill_speculative = ((spectag_latch & spectagfix) != 0) && specbit_latch && prmiss;
+   assign clearbusy = (killspec1 || dstval || (~dstval && ~fullsb)) ? 1'b1 : 1'b0;               ///CTRL EXEC_LDST
+   assign killspec1 = ((spectag & spectagfix) != 0) && specbit && prmiss;                        ///CTRL EXEC_LDST
+   assign kill_speculative = ((spectag_latch & spectagfix) != 0) && specbit_latch && prmiss;     ///CTRL EXEC_LDST
    assign result = hitsb_latch ? lddatasb_latch : lddatamem;
-   assign rrf_we = dstval_latch & insnvalid_latch;
-   assign rob_we = insnvalid_latch;
+   assign rrf_we = dstval_latch & insnvalid_latch; ///CTRL EXEC_LDST
+   assign rob_we = insnvalid_latch;                ///CTRL EXEC_LDST
    assign wrrftag = rrftag_latch;
-   assign busy_next = clearbusy ? 1'b0 : busy;
-   assign stfin = ~killspec1 & busy & ~dstval;
+   assign busy_next = clearbusy ? 1'b0 : busy;  ///CTRL EXEC_LDST
+   assign stfin = ~killspec1 & busy & ~dstval;  ///CTRL EXEC_LDST
    assign memoccupy_ld = ~killspec1 & busy & dstval;
    assign storedata = ex_src2;
    assign storeaddr = effaddr;
    assign ldaddr = effaddr;
    assign effaddr = ex_src1 + imm;
    
-   always @ (posedge clk) begin
-      if (reset | killspec1 | ~busy | (~dstval & fullsb)) begin
+   always @ (posedge clk) begin  ///CTRL EXEC_LDST
+      if (reset | killspec1 | ~busy | (~dstval & fullsb)) begin ///CTRL EXEC_LDST
 	 dstval_latch <= 0;
 	 rrftag_latch <= 0;
 	 specbit_latch <= 0;
 	 spectag_latch <= 0;
 	 lddatasb_latch <= 0;
 	 hitsb_latch <= 0;
-	 insnvalid_latch <= 0;
+	 insnvalid_latch <= 0; ///CTRL EXEC_LDST
       end else begin
 	 dstval_latch <= dstval;
 	 rrftag_latch <= rrftag;
@@ -82,16 +82,16 @@ module exunit_ldst
 	 spectag_latch <= spectag;
 	 lddatasb_latch <= lddatasb;
 	 hitsb_latch <= hitsb;
-	 insnvalid_latch <= ~killspec1 & ((busy & dstval) |
+	 insnvalid_latch <= ~killspec1 & ((busy & dstval) | ///CTRL EXEC_LDST
 					  (busy & ~dstval & ~fullsb));
       end
    end // always @ (posedge clk)
 
-   always @ (posedge clk) begin
-      if (reset | killspec1) begin
-	 busy <= 0;
+   always @ (posedge clk) begin          ///CTRL EXEC_LDST
+      if (reset | killspec1) begin       ///CTRL EXEC_LDST
+	 busy <= 0;                           ///CTRL EXEC_LDST
       end else begin
-	 busy <= issue | busy_next;
+	 busy <= issue | busy_next;          ///CTRL EXEC_LDST
       end
    end
 endmodule // exunit_ldst
