@@ -42,8 +42,9 @@ namespace kathryn::o3{
     void SimCtrlRide::doWorkloadInit(int curTestCaseIdx, bool reqRegTest){
         //////////////  read assembly and assertVal
         _slotWriter. renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/oslot_ride.sl");
+        doWorkloadExit();
         if (_resultWriter != nullptr){
-            _resultWriter->fillCycleCnt(cycleCnt);
+
             _resultWriter->renew(_prefixFolder + _testTypes[curTestCaseIdx]+ "/verilator_ride_result");
         }
         iterateCycle();
