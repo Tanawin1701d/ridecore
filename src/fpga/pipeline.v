@@ -560,7 +560,7 @@ module pipeline
 			.branchvalid2(branchvalid2),
 			.prmiss(prmiss),
 			.prsuccess(prsuccess),
-			.enable(~stall_ID & ~stall_DP),
+			.enable(~stall_ID & ~stall_DP),  
 			.tagregfix(tagregfix),
 			.sptag1(sptag1),
 			.sptag2(sptag2),

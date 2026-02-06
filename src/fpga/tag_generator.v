@@ -41,15 +41,15 @@ module tag_generator(
       ? 1'b0 : 1'b1;
 
 
-   always @ (posedge clk) begin
-      if (reset) begin
+   always @ (posedge clk) begin  ///CTRL TAGGEN
+      if (reset) begin  ///CTRL TAGGEN
 	 tagreg <= `SPECTAG_LEN'b1;
 	 brdepth <= `BRDEPTH_LEN'b0;
       end else begin
-	 tagreg <= prmiss ? tagregfix :
+	 tagreg <= prmiss ? tagregfix :   ///CTRL TAGGEN      
 		   ~enable ? tagreg : 
 		   sptag2;
-	 brdepth <= prmiss ? `BRDEPTH_LEN'b0 :
+	 brdepth <= prmiss ? `BRDEPTH_LEN'b0 : ///CTRL TAGGEN
 		    ~enable ? brdepth - {{(`BRDEPTH_LEN-1){1'b0}}, prsuccess} :
 		    brdepth + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid1} + {{(`BRDEPTH_LEN-1){1'b0}}, branchvalid2} - {{(`BRDEPTH_LEN-1){1'b0}}, prsuccess};
       end
