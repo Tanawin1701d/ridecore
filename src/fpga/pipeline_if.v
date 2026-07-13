@@ -1,38 +1,38 @@
 `include "constants.vh"
 `default_nettype none
-module pipeline_if
+module pipeline_if   ///MD FETCH
   (
-   input wire 			  clk,
-   input wire 			  reset,
-   input wire [`ADDR_LEN-1:0] 	  pc,
+   input wire 			  clk,             ///CTRL_HC FETCH
+   input wire 			  reset,           ///CTRL_HC FETCH
+   input wire [`ADDR_LEN-1:0] 	  pc,      ///DATA_HC FETCH
 //   output wire 			  predict_cond,
-   output wire [`ADDR_LEN-1:0] 	  npc,
-   output wire [`INSN_LEN-1:0] 	  inst1,
-   output wire [`INSN_LEN-1:0] 	  inst2,
-   output wire 			  invalid2,
+   output wire [`ADDR_LEN-1:0] 	  npc,     ///DATA_HC FETCH
+   output wire [`INSN_LEN-1:0] 	  inst1,   ///DATA_HC FETCH
+   output wire [`INSN_LEN-1:0] 	  inst2,   ///DATA_HC FETCH
+   output wire 			  invalid2,        ///CTRL_HC FETCH
 //   input wire 			  btbpht_we,
 //   input wire [`ADDR_LEN-1:0] 	  btbpht_pc,
 //   input wire [`ADDR_LEN-1:0] 	  btb_jmpdst,
 //   input wire 			  pht_wcond,
 //   input wire [`SPECTAG_LEN-1:0]  mpft_valid,
 //   input wire [`GSH_BHR_LEN-1:0]  pht_bhr,
-   input wire 			  prmiss,
-   input wire 			  prsuccess,
+   input wire 			  prmiss,              ///CTRL_HC FETCH
+   input wire 			  prsuccess,           ///CTRL_HC FETCH
 //   input wire [`SPECTAG_LEN-1:0]  prtag,
 //   output wire [`GSH_BHR_LEN-1:0] bhr,
 //   input wire [`SPECTAG_LEN-1:0]  spectagnow,
-   input wire [4*`INSN_LEN-1:0]   idata
+   input wire [4*`INSN_LEN-1:0]   idata        ///DATA_HC FETCH
    );
 
-   wire 			  hit;
-   wire [`ADDR_LEN-1:0] 	  pred_pc;
+   wire 			  hit;               ///DC
+   wire [`ADDR_LEN-1:0] 	  pred_pc;   ///DC
 
    // assign npc = (hit && predict_cond) ? pred_pc :
 	// 	invalid2 ? pc + 4 :
 	// 	pc + 8;
 
-   assign npc = invalid2 ? pc + 4 :
-		                     pc + 8;
+   assign npc = invalid2 ? pc + 4 :    ///DATA_CL FETCH
+		                     pc + 8;   ///DATA_CL FETCH
    
    //assign predict_cond = 0;
 
@@ -49,12 +49,12 @@ module pipeline_if
 		     .idata(idata)
 		     );
    */
-   select_logic sellog(
-		       .sel(pc[3:2]),
-		       .idata(idata),
-		       .inst1(inst1),
-		       .inst2(inst2),
-		       .invalid(invalid2)
+   select_logic sellog(   ///MD FETCH
+		       .sel(pc[3:2]),   ///DATA_HC+DATA_CL FETCH
+		       .idata(idata),   ///DATA_HC FETCH
+		       .inst1(inst1),   ///DATA_HC FETCH
+		       .inst2(inst2),   ///DATA_HC FETCH
+		       .invalid(invalid2)   ///CTRL_HC FETCH
 		       );
 
    // btb brtbl(
@@ -91,37 +91,37 @@ module pipeline_if
 endmodule // pipeline_pc
 
 
-module select_logic
+module select_logic   ///MD FETCH
   (
-   input wire [1:0] 		sel,
-   input wire [4*`INSN_LEN-1:0] idata,
-   output reg [`INSN_LEN-1:0] 	inst1,
-   output reg [`INSN_LEN-1:0] 	inst2,
-   output wire 			invalid
+   input wire [1:0] 		sel,         ///DATA_HC FETCH
+   input wire [4*`INSN_LEN-1:0] idata,   ///DATA_HC FETCH
+   output reg [`INSN_LEN-1:0] 	inst1,   ///DATA_HC FETCH
+   output reg [`INSN_LEN-1:0] 	inst2,   ///DATA_HC FETCH
+   output wire 			invalid          ///CTRL_HC FETCH
    );
 
-   assign invalid = (sel[0] == 1'b1);
+   assign invalid = (sel[0] == 1'b1);   ///CTRL_CL FETCH
    
-   always @ (*) begin
-      inst1 = `INSN_LEN'h0;
-      inst2 = `INSN_LEN'h0;
+   always @ (*) begin   ///DATA_CL FETCH
+      inst1 = `INSN_LEN'h0;   ///DATA_DT FETCH
+      inst2 = `INSN_LEN'h0;   ///DATA_DT FETCH
       
-      case(sel)
-	2'b00 : begin
-	   inst1 = idata[31:0];
-	   inst2 = idata[63:32];
+      case(sel)   ///DATA_CL FETCH
+	2'b00 : begin   ///DATA_CL FETCH
+	   inst1 = idata[31:0];   ///DATA_CL FETCH
+	   inst2 = idata[63:32];   ///DATA_CL FETCH
 	end
-	2'b01 : begin
-	   inst1 = idata[63:32];
-	   inst2 = idata[95:64];
+	2'b01 : begin   ///DATA_CL FETCH
+	   inst1 = idata[63:32];   ///DATA_CL FETCH
+	   inst2 = idata[95:64];   ///DATA_CL FETCH
 	end
-	2'b10 : begin
-	   inst1 = idata[95:64];
-	   inst2 = idata[127:96];
+	2'b10 : begin   ///DATA_CL FETCH
+	   inst1 = idata[95:64];   ///DATA_CL FETCH
+	   inst2 = idata[127:96];   ///DATA_CL FETCH
 	end
-	2'b11 : begin
-	   inst1 = idata[127:96];
-	   inst2 = idata[31:0];
+	2'b11 : begin   ///DATA_CL FETCH
+	   inst1 = idata[127:96];   ///DATA_CL FETCH
+	   inst2 = idata[31:0];   ///DATA_CL FETCH
 	end
       endcase // case (sel)
    end

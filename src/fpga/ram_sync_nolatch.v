@@ -108,41 +108,41 @@
  
  endmodule //ram_sync_nolatch_4r1w
  */
-module ram_sync_nolatch_4r2w #(
-			       parameter BRAM_ADDR_WIDTH = `ADDR_LEN,
-			       parameter BRAM_DATA_WIDTH = `DATA_LEN,
-			       parameter DATA_DEPTH      = 32
+module ram_sync_nolatch_4r2w #(   ///MD SHARED_COMP
+			       parameter BRAM_ADDR_WIDTH = `ADDR_LEN,   ///PARAM SHARED_COMP
+			       parameter BRAM_DATA_WIDTH = `DATA_LEN,   ///PARAM SHARED_COMP
+			       parameter DATA_DEPTH      = 32   ///PARAM SHARED_COMP
 			       ) 
    (
-    input wire 			      clk,
-    input wire [BRAM_ADDR_WIDTH-1:0]  raddr1,
-    input wire [BRAM_ADDR_WIDTH-1:0]  raddr2,
-    input wire [BRAM_ADDR_WIDTH-1:0]  raddr3,
-    input wire [BRAM_ADDR_WIDTH-1:0]  raddr4,
-    output wire [BRAM_DATA_WIDTH-1:0] rdata1,
-    output wire [BRAM_DATA_WIDTH-1:0] rdata2,
-    output wire [BRAM_DATA_WIDTH-1:0] rdata3,
-    output wire [BRAM_DATA_WIDTH-1:0] rdata4,
-    input wire [BRAM_ADDR_WIDTH-1:0]  waddr1,
-    input wire [BRAM_ADDR_WIDTH-1:0]  waddr2,
-    input wire [BRAM_DATA_WIDTH-1:0]  wdata1,
-    input wire [BRAM_DATA_WIDTH-1:0]  wdata2,
-    input wire 			      we1,
-    input wire 			      we2
+    input wire 			      clk,   ///CTRL_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  raddr1,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  raddr2,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  raddr3,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  raddr4,   ///DATA_HC SHARED_COMP
+    output wire [BRAM_DATA_WIDTH-1:0] rdata1,   ///DATA_HC SHARED_COMP
+    output wire [BRAM_DATA_WIDTH-1:0] rdata2,   ///DATA_HC SHARED_COMP
+    output wire [BRAM_DATA_WIDTH-1:0] rdata3,   ///DATA_HC SHARED_COMP
+    output wire [BRAM_DATA_WIDTH-1:0] rdata4,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  waddr1,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_ADDR_WIDTH-1:0]  waddr2,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_DATA_WIDTH-1:0]  wdata1,   ///DATA_HC SHARED_COMP
+    input wire [BRAM_DATA_WIDTH-1:0]  wdata2,   ///DATA_HC SHARED_COMP
+    input wire 			      we1,   ///CTRL_HC SHARED_COMP
+    input wire 			      we2   ///CTRL_HC SHARED_COMP
     );
 
-   reg [BRAM_DATA_WIDTH-1:0] 				       mem [0:DATA_DEPTH-1] /* verilator public */;
+   reg [BRAM_DATA_WIDTH-1:0] 				       mem [0:DATA_DEPTH-1] /* verilator public */;   ///DATA_HWD SHARED_COMP
    
-   assign rdata1 = mem[raddr1];
-   assign rdata2 = mem[raddr2];
-   assign rdata3 = mem[raddr3];
-   assign rdata4 = mem[raddr4];
+   assign rdata1 = mem[raddr1];   ///DATA_DT SHARED_COMP
+   assign rdata2 = mem[raddr2];   ///DATA_DT SHARED_COMP
+   assign rdata3 = mem[raddr3];   ///DATA_DT SHARED_COMP
+   assign rdata4 = mem[raddr4];   ///DATA_DT SHARED_COMP
    
-   always @ (posedge clk) begin
-      if (we1)
-	mem[waddr1] <= wdata1;
-      if (we2)
-	mem[waddr2] <= wdata2;
+   always @ (posedge clk) begin   ///CTRL_CL SHARED_COMP
+      if (we1)   ///CTRL_CL SHARED_COMP
+	mem[waddr1] <= wdata1;   ///DATA_DT SHARED_COMP
+      if (we2)   ///CTRL_CL SHARED_COMP
+	mem[waddr2] <= wdata2;   ///DATA_DT SHARED_COMP
    end
 endmodule // ram_sync_nolatch_4r2w
 

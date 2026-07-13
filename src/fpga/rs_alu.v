@@ -2,127 +2,127 @@
 `include "alu_ops.vh"
 `include "rv32_opcodes.vh"
 `default_nettype none
-module rs_alu_ent
+module rs_alu_ent   ///MD RSV_ALU
   (
    //Memory
-   input wire 			     clk,
-   input wire 			     reset,
-   input wire 			     busy,
-   input wire [`ADDR_LEN-1:0] 	     wpc,
-   input wire [`DATA_LEN-1:0] 	     wsrc1,
-   input wire [`DATA_LEN-1:0] 	     wsrc2,
-   input wire 			     wvalid1,
-   input wire 			     wvalid2,
-   input wire [`DATA_LEN-1:0] 	     wimm,
-   input wire [`RRF_SEL-1:0] 	     wrrftag,
-   input wire 			     wdstval,
-   input wire [`SRC_A_SEL_WIDTH-1:0] wsrc_a,
-   input wire [`SRC_B_SEL_WIDTH-1:0] wsrc_b,
-   input wire [`ALU_OP_WIDTH-1:0]    walu_op,
-   input wire [`SPECTAG_LEN-1:0]     wspectag,
-   input wire 			     we,
-   output wire [`DATA_LEN-1:0] 	     ex_src1,
-   output wire [`DATA_LEN-1:0] 	     ex_src2,
-   output wire 			     ready /* verilator public */,
-   output reg [`ADDR_LEN-1:0] 	     pc /* verilator public */,
-   output reg [`DATA_LEN-1:0] 	     imm /* verilator public */,
-   output reg [`RRF_SEL-1:0] 	     rrftag /* verilator public */,
-   output reg 			             dstval /* verilator public */,
-   output reg [`SRC_A_SEL_WIDTH-1:0] src_a /* verilator public */,
-   output reg [`SRC_B_SEL_WIDTH-1:0] src_b /* verilator public */,
-   output reg [`ALU_OP_WIDTH-1:0]    alu_op /* verilator public */,
-   output reg [`SPECTAG_LEN-1:0]     spectag /* verilator public */,
+   input wire 			     clk,                                    ///CTRL_HC RSV_ALU
+   input wire 			     reset,                                  ///CTRL_HC RSV_ALU
+   input wire 			     busy,                                   ///CTRL_HC RSV_ALU
+   input wire [`ADDR_LEN-1:0] 	     wpc,                            ///DATA_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     wsrc1,                          ///DATA_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     wsrc2,                          ///DATA_HC RSV_ALU
+   input wire 			     wvalid1,                                ///CTRL_HC RSV_ALU
+   input wire 			     wvalid2,                                ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     wimm,                           ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     wrrftag,                        ///CTRL_HC RSV_ALU
+   input wire 			     wdstval,                                ///CTRL_HC RSV_ALU
+   input wire [`SRC_A_SEL_WIDTH-1:0] wsrc_a,                         ///DATA_HC RSV_ALU
+   input wire [`SRC_B_SEL_WIDTH-1:0] wsrc_b,                         ///DATA_HC RSV_ALU
+   input wire [`ALU_OP_WIDTH-1:0]    walu_op,                        ///DATA_HC RSV_ALU
+   input wire [`SPECTAG_LEN-1:0]     wspectag,                       ///CTRL_HC RSV_ALU
+   input wire 			     we,                                     ///CTRL_HC RSV_ALU
+   output wire [`DATA_LEN-1:0] 	     ex_src1,                        ///DATA_HC RSV_ALU
+   output wire [`DATA_LEN-1:0] 	     ex_src2,                        ///DATA_HC RSV_ALU
+   output wire 			     ready /* verilator public */,           ///CTRL_HC RSV_ALU
+   output reg [`ADDR_LEN-1:0] 	     pc /* verilator public */,      ///DATA_HC RSV_ALU
+   output reg [`DATA_LEN-1:0] 	     imm /* verilator public */,     ///DATA_HC RSV_ALU
+   output reg [`RRF_SEL-1:0] 	     rrftag /* verilator public */,  ///CTRL_HC RSV_ALU
+   output reg 			             dstval /* verilator public */,  ///CTRL_HC RSV_ALU
+   output reg [`SRC_A_SEL_WIDTH-1:0] src_a /* verilator public */,   ///DATA_HC RSV_ALU
+   output reg [`SRC_B_SEL_WIDTH-1:0] src_b /* verilator public */,   ///DATA_HC RSV_ALU
+   output reg [`ALU_OP_WIDTH-1:0]    alu_op /* verilator public */,  ///DATA_HC RSV_ALU
+   output reg [`SPECTAG_LEN-1:0]     spectag /* verilator public */, ///CTRL_HC RSV_ALU
    //EXRSLT
-   input wire [`DATA_LEN-1:0] 	     exrslt1,
-   input wire [`RRF_SEL-1:0] 	     exdst1,
-   input wire 			     kill_spec1,
-   input wire [`DATA_LEN-1:0] 	     exrslt2,
-   input wire [`RRF_SEL-1:0] 	     exdst2,
-   input wire 			     kill_spec2,
-   input wire [`DATA_LEN-1:0] 	     exrslt3,
-   input wire [`RRF_SEL-1:0] 	     exdst3,
-   input wire 			     kill_spec3,
-   input wire [`DATA_LEN-1:0] 	     exrslt4,
-   input wire [`RRF_SEL-1:0] 	     exdst4,
-   input wire 			     kill_spec4,
-   input wire [`DATA_LEN-1:0] 	     exrslt5,
-   input wire [`RRF_SEL-1:0] 	     exdst5,
-   input wire 			     kill_spec5
+   input wire [`DATA_LEN-1:0] 	     exrslt1,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     exdst1,    ///CTRL_HC RSV_ALU
+   input wire 			     kill_spec1,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     exrslt2,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     exdst2,    ///CTRL_HC RSV_ALU
+   input wire 			     kill_spec2,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     exrslt3,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     exdst3,    ///CTRL_HC RSV_ALU
+   input wire 			     kill_spec3,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     exrslt4,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     exdst4,    ///CTRL_HC RSV_ALU
+   input wire 			     kill_spec4,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 	     exrslt5,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 	     exdst5,    ///CTRL_HC RSV_ALU
+   input wire 			     kill_spec5         ///CTRL_HC RSV_ALU
    );
 
-   reg [`DATA_LEN-1:0] 		     src1 /* verilator public */;
-   reg [`DATA_LEN-1:0] 		     src2 /* verilator public */;
-   reg 				     valid1 /* verilator public */;
-   reg 				     valid2 /* verilator public */;
+   reg [`DATA_LEN-1:0] 		     src1 /* verilator public */;   ///DATA_HWD RSV_ALU
+   reg [`DATA_LEN-1:0] 		     src2 /* verilator public */;   ///DATA_HWD RSV_ALU
+   reg 				     valid1 /* verilator public */;         ///CTRL_HWD RSV_ALU
+   reg 				     valid2 /* verilator public */;         ///CTRL_HWD RSV_ALU
 
-   wire [`DATA_LEN-1:0] 	     nextsrc1;
-   wire [`DATA_LEN-1:0] 	     nextsrc2;   
-   wire 			     nextvalid1;
-   wire 			     nextvalid2;
+   wire [`DATA_LEN-1:0] 	     nextsrc1;   ///DATA_HWD RSV_ALU
+   wire [`DATA_LEN-1:0] 	     nextsrc2;   ///DATA_HWD RSV_ALU
+   wire 			     nextvalid1;         ///CTRL_HWD RSV_ALU
+   wire 			     nextvalid2;         ///CTRL_HWD RSV_ALU
    
-   assign ready = busy & valid1 & valid2;
-   assign ex_src1 = ~valid1 & nextvalid1 ?
-		    nextsrc1 : src1;
-   assign ex_src2 = ~valid2 & nextvalid2 ?
-		    nextsrc2 : src2;
+   assign ready = busy & valid1 & valid2;    ///CTRL_CL RSV_ALU
+   assign ex_src1 = ~valid1 & nextvalid1 ?   ///DATA_CL RSV_ALU
+		    nextsrc1 : src1;                 ///DATA_CL RSV_ALU
+   assign ex_src2 = ~valid2 & nextvalid2 ?   ///DATA_CL RSV_ALU
+		    nextsrc2 : src2;                 ///DATA_CL RSV_ALU
    
-   always @ (posedge clk) begin  ///CTRL RSV_ALU
-      if (reset) begin           ///CTRL RSV_ALU
-	 pc <= 0;
-	 imm <= 0;
-	 rrftag <= 0;
-	 dstval <= 0;
-	 src_a <= 0;
-	 src_b <= 0;
-	 alu_op <= 0;
-	 spectag <= 0;
+   always @ (posedge clk) begin ///CTRL_CL RSV_ALU
+      if (reset) begin          ///CTRL_CL RSV_ALU
+	 pc <= 0;                   ///DATA_DT RSV_ALU
+	 imm <= 0;                  ///DATA_DT RSV_ALU
+	 rrftag <= 0;               ///CTRL_DT RSV_ALU
+	 dstval <= 0;               ///CTRL_DT RSV_ALU
+	 src_a <= 0;                ///DATA_DT RSV_ALU
+	 src_b <= 0;                ///DATA_DT RSV_ALU
+	 alu_op <= 0;               ///DATA_DT RSV_ALU
+	 spectag <= 0;              ///CTRL_DT RSV_ALU
 
-	 src1 <= 0;
-	 src2 <= 0;
-	 valid1 <= 0;
-	 valid2 <= 0;
-      end else if (we) begin  ///CTRL RSV_ALU
-	 pc <= wpc;
-	 imm <= wimm;
-	 rrftag <= wrrftag;
-	 dstval <= wdstval;
-	 src_a <= wsrc_a;
-	 src_b <= wsrc_b;
-	 alu_op <= walu_op;
-	 spectag <= wspectag;
+	 src1 <= 0;                 ///DATA_DT RSV_ALU
+	 src2 <= 0;                 ///DATA_DT RSV_ALU
+	 valid1 <= 0;               ///CTRL_DT RSV_ALU
+	 valid2 <= 0;               ///CTRL_DT RSV_ALU
+      end else if (we) begin    ///CTRL_CL RSV_ALU
+	 pc <= wpc;                 ///DATA_DT RSV_ALU
+	 imm <= wimm;               ///DATA_DT RSV_ALU
+	 rrftag <= wrrftag;         ///CTRL_DT RSV_ALU
+	 dstval <= wdstval;         ///CTRL_DT RSV_ALU
+	 src_a <= wsrc_a;           ///DATA_DT RSV_ALU
+	 src_b <= wsrc_b;           ///DATA_DT RSV_ALU
+	 alu_op <= walu_op;         ///DATA_DT RSV_ALU
+	 spectag <= wspectag;       ///CTRL_DT RSV_ALU
 
-	 src1 <= wsrc1;
-	 src2 <= wsrc2;
-	 valid1 <= wvalid1;
-	 valid2 <= wvalid2;
+	 src1 <= wsrc1;       ///DATA_DT RSV_ALU
+	 src2 <= wsrc2;       ///DATA_DT RSV_ALU
+	 valid1 <= wvalid1;   ///CTRL_DT RSV_ALU
+	 valid2 <= wvalid2;   ///CTRL_DT RSV_ALU
       end else begin // if (we)
-	 src1 <= nextsrc1;
-	 src2 <= nextsrc2;
-	 valid1 <= nextvalid1;
-	 valid2 <= nextvalid2;
+	 src1 <= nextsrc1;       ///DATA_DT RSV_ALU
+	 src2 <= nextsrc2;       ///DATA_DT RSV_ALU
+	 valid1 <= nextvalid1;   ///CTRL_DT RSV_ALU
+	 valid2 <= nextvalid2;   ///CTRL_DT RSV_ALU
       end
    end
    
-   src_manager srcmng1(
-		       .opr(src1),
-		       .opr_rdy(valid1),
-		       .exrslt1(exrslt1),
-		       .exdst1(exdst1),
-		       .kill_spec1(kill_spec1),
-		       .exrslt2(exrslt2),
-		       .exdst2(exdst2),
-		       .kill_spec2(kill_spec2),
-		       .exrslt3(exrslt3),
-		       .exdst3(exdst3),
-		       .kill_spec3(kill_spec3),
-		       .exrslt4(exrslt4),
-		       .exdst4(exdst4),
-		       .kill_spec4(kill_spec4),
-		       .exrslt5(exrslt5),
-		       .exdst5(exdst5),
-		       .kill_spec5(kill_spec5),
-		       .src(nextsrc1),
-		       .resolved(nextvalid1)
+   src_manager srcmng1(                  ///MD RSV_ALU
+		       .opr(src1),               ///DATA_HC RSV_ALU
+		       .opr_rdy(valid1),         ///CTRL_HC RSV_ALU
+		       .exrslt1(exrslt1),        ///DATA_HC RSV_ALU
+		       .exdst1(exdst1),          ///CTRL_HC RSV_ALU
+		       .kill_spec1(kill_spec1),  ///CTRL_HC RSV_ALU
+		       .exrslt2(exrslt2),        ///DATA_HC RSV_ALU
+		       .exdst2(exdst2),          ///CTRL_HC RSV_ALU
+		       .kill_spec2(kill_spec2),  ///CTRL_HC RSV_ALU
+		       .exrslt3(exrslt3),        ///DATA_HC RSV_ALU
+		       .exdst3(exdst3),          ///CTRL_HC RSV_ALU
+		       .kill_spec3(kill_spec3),  ///CTRL_HC RSV_ALU
+		       .exrslt4(exrslt4),        ///DATA_HC RSV_ALU
+		       .exdst4(exdst4),          ///CTRL_HC RSV_ALU
+		       .kill_spec4(kill_spec4),  ///CTRL_HC RSV_ALU
+		       .exrslt5(exrslt5),        ///DATA_HC RSV_ALU
+		       .exdst5(exdst5),          ///CTRL_HC RSV_ALU
+		       .kill_spec5(kill_spec5),  ///CTRL_HC RSV_ALU
+		       .src(nextsrc1),           ///DATA_HC RSV_ALU
+		       .resolved(nextvalid1)     ///CTRL_HC RSV_ALU
 		       );
 
    src_manager srcmng2(                 ///DC
@@ -150,39 +150,39 @@ module rs_alu_ent
 endmodule // rs_alu
 
 
-module rs_alu
+module rs_alu   ///MD RSV_ALU
   (
    //System
-   input wire 				       clk,
-   input wire 				       reset,
-   output reg [`ALU_ENT_NUM-1:0] 	       busyvec /* verilator public */,
-   input wire 				       prmiss,
-   input wire 				       prsuccess,
-   input wire [`SPECTAG_LEN-1:0] 	       prtag,
-   input wire [`SPECTAG_LEN-1:0] 	       specfixtag,
-   output wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] histvect,
-   input wire 				       nextrrfcyc, 
+   input wire 				       clk,                                    ///CTRL_HC RSV_ALU
+   input wire 				       reset,                                  ///CTRL_HC RSV_ALU
+   output reg [`ALU_ENT_NUM-1:0] 	       busyvec /* verilator public */, ///CTRL_HC RSV_ALU
+   input wire 				       prmiss,                                 ///CTRL_HC RSV_ALU
+   input wire 				       prsuccess,                              ///CTRL_HC RSV_ALU
+   input wire [`SPECTAG_LEN-1:0] 	       prtag,                          ///CTRL_HC RSV_ALU
+   input wire [`SPECTAG_LEN-1:0] 	       specfixtag,                     ///CTRL_HC RSV_ALU
+   output wire [`ALU_ENT_NUM*(`RRF_SEL+2)-1:0] histvect,                   ///CTRL_HC RSV_ALU
+   input wire 				       nextrrfcyc,                             ///CTRL_HC RSV_ALU
    //WriteSignal
-   input wire 				       clearbusy, //Issue
-   input wire [`ALU_ENT_SEL-1:0] 	       issueaddr,
-   input wire 				       we1, //alloc1
-   input wire 				       we2, //alloc2
-   input wire [`ALU_ENT_SEL-1:0] 	       waddr1, //allocent1
-   input wire [`ALU_ENT_SEL-1:0] 	       waddr2, //allocent2
+   input wire 				       clearbusy, //Issue                      ///CTRL_HC RSV_ALU
+   input wire [`ALU_ENT_SEL-1:0] 	       issueaddr,                      ///CTRL_HC RSV_ALU
+   input wire 				       we1, //alloc1                           ///CTRL_HC RSV_ALU
+   input wire 				       we2, //alloc2                           ///CTRL_HC RSV_ALU
+   input wire [`ALU_ENT_SEL-1:0] 	       waddr1, //allocent1             ///CTRL_HC RSV_ALU
+   input wire [`ALU_ENT_SEL-1:0] 	       waddr2, //allocent2             ///CTRL_HC RSV_ALU
    //WriteSignal1
-   input wire [`ADDR_LEN-1:0] 		       wpc_1,
-   input wire [`DATA_LEN-1:0] 		       wsrc1_1,
-   input wire [`DATA_LEN-1:0] 		       wsrc2_1,
-   input wire 				       wvalid1_1,
-   input wire 				       wvalid2_1,
-   input wire [`DATA_LEN-1:0] 		       wimm_1,
-   input wire [`RRF_SEL-1:0] 		       wrrftag_1,
-   input wire 				       wdstval_1,
-   input wire [`SRC_A_SEL_WIDTH-1:0] 	       wsrc_a_1,
-   input wire [`SRC_B_SEL_WIDTH-1:0] 	       wsrc_b_1,
-   input wire [`ALU_OP_WIDTH-1:0] 	       walu_op_1,
-   input wire [`SPECTAG_LEN-1:0] 	       wspectag_1,
-   input wire 				       wspecbit_1,
+   input wire [`ADDR_LEN-1:0] 		       wpc_1,                          ///DATA_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       wsrc1_1,                        ///DATA_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       wsrc2_1,                        ///DATA_HC RSV_ALU
+   input wire 				       wvalid1_1,                              ///CTRL_HC RSV_ALU
+   input wire 				       wvalid2_1,                              ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       wimm_1,                         ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       wrrftag_1,                      ///CTRL_HC RSV_ALU
+   input wire 				       wdstval_1,                              ///CTRL_HC RSV_ALU
+   input wire [`SRC_A_SEL_WIDTH-1:0] 	       wsrc_a_1,                   ///DATA_HC RSV_ALU
+   input wire [`SRC_B_SEL_WIDTH-1:0] 	       wsrc_b_1,                   ///DATA_HC RSV_ALU
+   input wire [`ALU_OP_WIDTH-1:0] 	       walu_op_1,                      ///DATA_HC RSV_ALU
+   input wire [`SPECTAG_LEN-1:0] 	       wspectag_1,                     ///CTRL_HC RSV_ALU
+   input wire 				       wspecbit_1,                             ///CTRL_HC RSV_ALU
    //WriteSignal2
    input wire [`ADDR_LEN-1:0] 		       wpc_2,        ///DC
    input wire [`DATA_LEN-1:0] 		       wsrc1_2,      ///DC
@@ -199,49 +199,49 @@ module rs_alu
    input wire 				       wspecbit_2,           ///DC
 
    //ReadSignal
-   output wire [`DATA_LEN-1:0] 		       ex_src1,
-   output wire [`DATA_LEN-1:0] 		       ex_src2,
-   output wire [`ALU_ENT_NUM-1:0] 	       ready,
-   output wire [`ADDR_LEN-1:0] 		       pc,
-   output wire [`DATA_LEN-1:0] 		       imm,
-   output wire [`RRF_SEL-1:0] 		       rrftag,
-   output wire 				       dstval,
-   output wire [`SRC_A_SEL_WIDTH-1:0] 	       src_a,
-   output wire [`SRC_B_SEL_WIDTH-1:0] 	       src_b,
-   output wire [`ALU_OP_WIDTH-1:0] 	       alu_op,
-   output wire [`SPECTAG_LEN-1:0] 	       spectag,
-   output wire 				       specbit,
+   output wire [`DATA_LEN-1:0] 		       ex_src1,   ///DATA_HC RSV_ALU
+   output wire [`DATA_LEN-1:0] 		       ex_src2,   ///DATA_HC RSV_ALU
+   output wire [`ALU_ENT_NUM-1:0] 	       ready,     ///CTRL_HC RSV_ALU
+   output wire [`ADDR_LEN-1:0] 		       pc,        ///DATA_HC RSV_ALU
+   output wire [`DATA_LEN-1:0] 		       imm,       ///DATA_HC RSV_ALU
+   output wire [`RRF_SEL-1:0] 		       rrftag,    ///CTRL_HC RSV_ALU
+   output wire 				       dstval,            ///CTRL_HC RSV_ALU
+   output wire [`SRC_A_SEL_WIDTH-1:0] 	       src_a, ///DATA_HC RSV_ALU
+   output wire [`SRC_B_SEL_WIDTH-1:0] 	       src_b, ///DATA_HC RSV_ALU
+   output wire [`ALU_OP_WIDTH-1:0] 	       alu_op,    ///DATA_HC RSV_ALU
+   output wire [`SPECTAG_LEN-1:0] 	       spectag,   ///CTRL_HC RSV_ALU
+   output wire 				       specbit,           ///CTRL_HC RSV_ALU
   
    //EXRSLT
-   input wire [`DATA_LEN-1:0] 		       exrslt1,
-   input wire [`RRF_SEL-1:0] 		       exdst1,
-   input wire 				       kill_spec1,
-   input wire [`DATA_LEN-1:0] 		       exrslt2,
-   input wire [`RRF_SEL-1:0] 		       exdst2,
-   input wire 				       kill_spec2,
-   input wire [`DATA_LEN-1:0] 		       exrslt3,
-   input wire [`RRF_SEL-1:0] 		       exdst3,
-   input wire 				       kill_spec3,
-   input wire [`DATA_LEN-1:0] 		       exrslt4,
-   input wire [`RRF_SEL-1:0] 		       exdst4,
-   input wire 				       kill_spec4,
-   input wire [`DATA_LEN-1:0] 		       exrslt5,
-   input wire [`RRF_SEL-1:0] 		       exdst5,
-   input wire 				       kill_spec5
+   input wire [`DATA_LEN-1:0] 		       exrslt1,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       exdst1,    ///CTRL_HC RSV_ALU
+   input wire 				       kill_spec1,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       exrslt2,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       exdst2,    ///CTRL_HC RSV_ALU
+   input wire 				       kill_spec2,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       exrslt3,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       exdst3,    ///CTRL_HC RSV_ALU
+   input wire 				       kill_spec3,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       exrslt4,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       exdst4,    ///CTRL_HC RSV_ALU
+   input wire 				       kill_spec4,        ///CTRL_HC RSV_ALU
+   input wire [`DATA_LEN-1:0] 		       exrslt5,   ///DATA_HC RSV_ALU
+   input wire [`RRF_SEL-1:0] 		       exdst5,    ///CTRL_HC RSV_ALU
+   input wire 				       kill_spec5         ///CTRL_HC RSV_ALU
    );
    
    //_0
-   wire [`DATA_LEN-1:0] 	      ex_src1_0;
-   wire [`DATA_LEN-1:0] 	      ex_src2_0;
-   wire 			      ready_0;
-   wire [`ADDR_LEN-1:0] 	      pc_0;
-   wire [`DATA_LEN-1:0] 	      imm_0;
-   wire [`RRF_SEL-1:0] 		      rrftag_0;
-   wire 			      dstval_0;
-   wire [`SRC_A_SEL_WIDTH-1:0] 	      src_a_0;
-   wire [`SRC_B_SEL_WIDTH-1:0] 	      src_b_0;
-   wire [`ALU_OP_WIDTH-1:0] 	      alu_op_0;
-   wire [`SPECTAG_LEN-1:0] 	      spectag_0;
+   wire [`DATA_LEN-1:0] 	      ex_src1_0;     ///DATA_HWD RSV_ALU
+   wire [`DATA_LEN-1:0] 	      ex_src2_0;     ///DATA_HWD RSV_ALU
+   wire 			      ready_0;               ///CTRL_HWD RSV_ALU
+   wire [`ADDR_LEN-1:0] 	      pc_0;          ///DATA_HWD RSV_ALU
+   wire [`DATA_LEN-1:0] 	      imm_0;         ///DATA_HWD RSV_ALU
+   wire [`RRF_SEL-1:0] 		      rrftag_0;      ///CTRL_HWD RSV_ALU
+   wire 			      dstval_0;              ///CTRL_HWD RSV_ALU
+   wire [`SRC_A_SEL_WIDTH-1:0] 	      src_a_0;   ///DATA_HWD RSV_ALU
+   wire [`SRC_B_SEL_WIDTH-1:0] 	      src_b_0;   ///DATA_HWD RSV_ALU
+   wire [`ALU_OP_WIDTH-1:0] 	      alu_op_0;  ///DATA_HWD RSV_ALU
+   wire [`SPECTAG_LEN-1:0] 	      spectag_0;     ///CTRL_HWD RSV_ALU
    //_1
    wire [`DATA_LEN-1:0] 	      ex_src1_1;        ///DC
    wire [`DATA_LEN-1:0] 	      ex_src2_1;        ///DC
@@ -327,38 +327,37 @@ module rs_alu
    wire [`ALU_OP_WIDTH-1:0] 	      alu_op_7;     ///DC
    wire [`SPECTAG_LEN-1:0] 	      spectag_7;        ///DC
 
-   reg [`ALU_ENT_NUM-1:0] 	      specbitvec /* verilator public */;
-   reg [`ALU_ENT_NUM-1:0] 	      sortbit /* verilator public */;
+   reg [`ALU_ENT_NUM-1:0] 	      specbitvec /* verilator public */;   ///CTRL_HWD RSV_ALU
+   reg [`ALU_ENT_NUM-1:0] 	      sortbit /* verilator public */;   ///CTRL_HWD RSV_ALU
    
    
-   wire [`ALU_ENT_NUM-1:0] 	      inv_vector =
-				      {(spectag_7 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_6 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_5 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_4 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_3 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_2 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_1 & specfixtag) == 0 ? 1'b1 : 1'b0,
-				       (spectag_0 & specfixtag) == 0 ? 1'b1 : 1'b0};
+   wire [`ALU_ENT_NUM-1:0] 	      inv_vector =   ///CTRL_CL RSV_ALU
+				      {(spectag_7 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_6 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_5 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_4 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_3 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_2 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_1 & specfixtag) == 0 ? 1'b1 : 1'b0,   ///CTRL_CL RSV_ALU
+				       (spectag_0 & specfixtag) == 0 ? 1'b1 : 1'b0};   ///CTRL_CL RSV_ALU
 
-   wire [`ALU_ENT_NUM-1:0] 	      inv_vector_spec =
-				      {(spectag_7 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_6 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_5 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_4 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_3 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_2 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_1 == prtag) ? 1'b0 : 1'b1,
-				       (spectag_0 == prtag) ? 1'b0 : 1'b1};
+   wire [`ALU_ENT_NUM-1:0] 	      inv_vector_spec =   ///CTRL_CL RSV_ALU
+				      {(spectag_7 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_6 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_5 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_4 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_3 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_2 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_1 == prtag) ? 1'b0 : 1'b1,   ///CTRL_CL RSV_ALU
+				       (spectag_0 == prtag) ? 1'b0 : 1'b1};   ///CTRL_CL RSV_ALU
 
-   wire [`ALU_ENT_NUM-1:0] 	      specbitvec_next =
-				      (inv_vector_spec & specbitvec);
+   wire [`ALU_ENT_NUM-1:0] 	      specbitvec_next =   ///CTRL_CL RSV_ALU
+				      (inv_vector_spec & specbitvec);   ///CTRL_CL RSV_ALU
    /* |
     (we1 & wspecbit_1 ? (`ALU_ENT_SEL'b1 << waddr1) : 0) |
     (we2 & wspecbit_2 ? (`ALU_ENT_SEL'b1 << waddr2) : 0);
     */
-   assign specbit = prsuccess ? 
-		    specbitvec_next[issueaddr] : specbitvec[issueaddr];
+   assign specbit = prsuccess ? specbitvec_next[issueaddr] : specbitvec[issueaddr];   ///CTRL_CL RSV_ALU
    
    /*   
     assign specbit = prsuccess ? 
@@ -368,51 +367,51 @@ module rs_alu
     specbitvec[issueaddr];
     */
    
-   assign ready = {ready_7, ready_6, ready_5, ready_4,
-		   ready_3, ready_2, ready_1, ready_0};
+   assign ready = {ready_7, ready_6, ready_5, ready_4,   ///CTRL_CL RSV_ALU
+		   ready_3, ready_2, ready_1, ready_0};   ///CTRL_CL RSV_ALU
 
-   assign histvect = {
-		      {~ready_7, sortbit[7], rrftag_7},
-		      {~ready_6, sortbit[6], rrftag_6},
-		      {~ready_5, sortbit[5], rrftag_5},
-		      {~ready_4, sortbit[4], rrftag_4},
-		      {~ready_3, sortbit[3], rrftag_3},
-		      {~ready_2, sortbit[2], rrftag_2},
-		      {~ready_1, sortbit[1], rrftag_1},
-		      {~ready_0, sortbit[0], rrftag_0}		      
+   assign histvect = {   ///CTRL_CL RSV_ALU
+		      {~ready_7, sortbit[7], rrftag_7},   ///CTRL_CL RSV_ALU
+		      {~ready_6, sortbit[6], rrftag_6},   ///CTRL_CL RSV_ALU
+		      {~ready_5, sortbit[5], rrftag_5},   ///CTRL_CL RSV_ALU
+		      {~ready_4, sortbit[4], rrftag_4},   ///CTRL_CL RSV_ALU
+		      {~ready_3, sortbit[3], rrftag_3},   ///CTRL_CL RSV_ALU
+		      {~ready_2, sortbit[2], rrftag_2},   ///CTRL_CL RSV_ALU
+		      {~ready_1, sortbit[1], rrftag_1},   ///CTRL_CL RSV_ALU
+		      {~ready_0, sortbit[0], rrftag_0}   ///CTRL_CL RSV_ALU
 		      };
 
-   always @ (posedge clk) begin   ///CTRL RSV_ALU
-      if (reset) begin            ///CTRL RSV_ALU
-	 sortbit <= `ALU_ENT_NUM'b1;
-      end else if (nextrrfcyc) begin
-	 sortbit <= (we1 ? (`ALU_ENT_NUM'b1 << waddr1) : `ALU_ENT_NUM'b0) |
-		    (we2 ? (`ALU_ENT_NUM'b1 << waddr2) : `ALU_ENT_NUM'b0);
+   always @ (posedge clk) begin                                           ///CTRL_CL RSV_ALU
+      if (reset) begin                                                    ///CTRL_CL RSV_ALU
+	 sortbit <= `ALU_ENT_NUM'b1;                                          ///CTRL_DT RSV_ALU
+      end else if (nextrrfcyc) begin                                      ///CTRL_CL RSV_ALU
+	 sortbit <= (we1 ? (`ALU_ENT_NUM'b1 << waddr1) : `ALU_ENT_NUM'b0) |   ///CTRL_CL RSV_ALU
+		    (we2 ? (`ALU_ENT_NUM'b1 << waddr2) : `ALU_ENT_NUM'b0);        ///CTRL_CL RSV_ALU
       end else begin
-	 if (we1) begin                ///CTRL RSV_ALU
-	    sortbit[waddr1] <= 1'b1;
+	 if (we1) begin                ///CTRL_CL RSV_ALU
+	    sortbit[waddr1] <= 1'b1;   ///CTRL_DT RSV_ALU
 	 end
-	 if (we2) begin                ///CTRL RSV_ALU
-	    sortbit[waddr2] <= 1'b1;
+	 if (we2) begin                ///CTRL_CL RSV_ALU
+	    sortbit[waddr2] <= 1'b1;   ///CTRL_DT RSV_ALU
 	 end
       end
    end
    
-   always @ (posedge clk) begin    ///CTRL RSV_ALU
-      if (reset) begin             ///CTRL RSV_ALU
-	 busyvec <= 0;
-	 specbitvec <= 0;
+   always @ (posedge clk) begin   ///CTRL_CL RSV_ALU
+      if (reset) begin            ///CTRL_CL RSV_ALU
+	 busyvec <= 0;                ///CTRL_DT RSV_ALU
+	 specbitvec <= 0;             ///CTRL_DT RSV_ALU
       end else begin
-	 if (prmiss) begin             ///CTRL RSV_ALU
-	    busyvec <= inv_vector & busyvec;
-	    specbitvec <= 0;
-	 end else if (prsuccess) begin     ///CTRL RSV_ALU
+	 if (prmiss) begin                     ///CTRL_CL RSV_ALU
+	    busyvec <= inv_vector & busyvec;   ///CTRL_CL RSV_ALU
+	    specbitvec <= 0;                   ///CTRL_DT RSV_ALU
+	 end else if (prsuccess) begin         ///CTRL_CL RSV_ALU
 	    /*
 	     specbitvec <= (inv_vector & busyvec) |
 	     (we1 & wspecbit_1 ? (`ALU_ENT_SEL'b1 << waddr1) : 0) |
 	     (we2 & wspecbit_2 ? (`ALU_ENT_SEL'b1 << waddr2) : 0);
 	     */
-	    specbitvec <= specbitvec_next;
+	    specbitvec <= specbitvec_next;   ///CTRL_DT RSV_ALU
 	    /*
 	     if (we1) begin
 	     busyvec[waddr1] <= 1'b1;
@@ -421,68 +420,68 @@ module rs_alu
 	     busyvec[waddr2] <= 1'b1;
 	    end
 	     */
-	    if (clearbusy) begin
-	       busyvec[issueaddr] <= 1'b0;
+	    if (clearbusy) begin             ///CTRL_CL RSV_ALU
+	       busyvec[issueaddr] <= 1'b0;   ///CTRL_DT RSV_ALU
 	    end
 	 end else begin
-	    if (we1) begin              ///CTRL RSV_ALU
-	       busyvec[waddr1] <= 1'b1;
-	       specbitvec[waddr1] <= wspecbit_1;
+	    if (we1) begin                         ///CTRL_CL RSV_ALU
+	       busyvec[waddr1] <= 1'b1;            ///CTRL_DT RSV_ALU
+	       specbitvec[waddr1] <= wspecbit_1;   ///CTRL_DT RSV_ALU
 	    end
-	    if (we2) begin              ///CTRL RSV_ALU
-	       busyvec[waddr2] <= 1'b1;
-	       specbitvec[waddr2] <= wspecbit_2;
+	    if (we2) begin                         ///CTRL_CL RSV_ALU
+	       busyvec[waddr2] <= 1'b1;            ///CTRL_DT RSV_ALU
+	       specbitvec[waddr2] <= wspecbit_2;   ///CTRL_DT RSV_ALU
 	    end
-	    if (clearbusy) begin
-	       busyvec[issueaddr] <= 1'b0;
+	    if (clearbusy) begin                   ///CTRL_CL RSV_ALU
+	       busyvec[issueaddr] <= 1'b0;         ///CTRL_DT RSV_ALU
 	    end
 	 end
       end
    end
 
-   rs_alu_ent ent0(
-		   .clk(clk),
-		   .reset(reset),
-		   .busy(busyvec[0]),
-		   .wpc((we1 && (waddr1 == 0)) ? wpc_1 : wpc_2),
-		   .wsrc1((we1 && (waddr1 == 0)) ? wsrc1_1 : wsrc1_2),
-		   .wsrc2((we1 && (waddr1 == 0)) ? wsrc2_1 : wsrc2_2),
-		   .wvalid1((we1 && (waddr1 == 0)) ? wvalid1_1 : wvalid1_2),
-		   .wvalid2((we1 && (waddr1 == 0)) ? wvalid2_1 : wvalid2_2),
-		   .wimm((we1 && (waddr1 == 0)) ? wimm_1 : wimm_2),
-		   .wrrftag((we1 && (waddr1 == 0)) ? wrrftag_1 : wrrftag_2),
-		   .wdstval((we1 && (waddr1 == 0)) ? wdstval_1 : wdstval_2),
-		   .wsrc_a((we1 && (waddr1 == 0)) ? wsrc_a_1 : wsrc_a_2),
-		   .wsrc_b((we1 && (waddr1 == 0)) ? wsrc_b_1 : wsrc_b_2),
-		   .walu_op((we1 && (waddr1 == 0)) ? walu_op_1 : walu_op_2),
-		   .wspectag((we1 && (waddr1 == 0)) ? wspectag_1 : wspectag_2),
-		   .we((we1 && (waddr1 == 0)) || (we2 && (waddr2 == 0))),
-		   .ex_src1(ex_src1_0),
-		   .ex_src2(ex_src2_0),
-		   .ready(ready_0),
-		   .pc(pc_0),
-		   .imm(imm_0),
-		   .rrftag(rrftag_0),
-		   .dstval(dstval_0),
-		   .src_a(src_a_0),
-		   .src_b(src_b_0),
-		   .alu_op(alu_op_0),
-		   .spectag(spectag_0),
-		   .exrslt1(exrslt1),
-		   .exdst1(exdst1),
-		   .kill_spec1(kill_spec1),
-		   .exrslt2(exrslt2),
-		   .exdst2(exdst2),
-		   .kill_spec2(kill_spec2),
-		   .exrslt3(exrslt3),
-		   .exdst3(exdst3),
-		   .kill_spec3(kill_spec3),
-		   .exrslt4(exrslt4),
-		   .exdst4(exdst4),
-		   .kill_spec4(kill_spec4),
-		   .exrslt5(exrslt5),
-		   .exdst5(exdst5),
-		   .kill_spec5(kill_spec5)
+   rs_alu_ent ent0(                                                        ///MD RSV_ALU
+		   .clk(clk),                                                      ///CTRL_HC RSV_ALU
+		   .reset(reset),                                                  ///CTRL_HC RSV_ALU
+		   .busy(busyvec[0]),                                              ///CTRL_HC RSV_ALU
+		   .wpc((we1 && (waddr1 == 0)) ? wpc_1 : wpc_2),                   ///DATA_HC+DATA_CL RSV_ALU
+		   .wsrc1((we1 && (waddr1 == 0)) ? wsrc1_1 : wsrc1_2),             ///DATA_HC+DATA_CL RSV_ALU
+		   .wsrc2((we1 && (waddr1 == 0)) ? wsrc2_1 : wsrc2_2),             ///DATA_HC+DATA_CL RSV_ALU
+		   .wvalid1((we1 && (waddr1 == 0)) ? wvalid1_1 : wvalid1_2),       ///CTRL_HC+CTRL_CL RSV_ALU
+		   .wvalid2((we1 && (waddr1 == 0)) ? wvalid2_1 : wvalid2_2),       ///CTRL_HC+CTRL_CL RSV_ALU
+		   .wimm((we1 && (waddr1 == 0)) ? wimm_1 : wimm_2),                ///DATA_HC+DATA_CL RSV_ALU
+		   .wrrftag((we1 && (waddr1 == 0)) ? wrrftag_1 : wrrftag_2),       ///CTRL_HC+CTRL_CL RSV_ALU
+		   .wdstval((we1 && (waddr1 == 0)) ? wdstval_1 : wdstval_2),       ///CTRL_HC+CTRL_CL RSV_ALU
+		   .wsrc_a((we1 && (waddr1 == 0)) ? wsrc_a_1 : wsrc_a_2),          ///DATA_HC+DATA_CL RSV_ALU
+		   .wsrc_b((we1 && (waddr1 == 0)) ? wsrc_b_1 : wsrc_b_2),          ///DATA_HC+DATA_CL RSV_ALU
+		   .walu_op((we1 && (waddr1 == 0)) ? walu_op_1 : walu_op_2),       ///DATA_HC+DATA_CL RSV_ALU
+		   .wspectag((we1 && (waddr1 == 0)) ? wspectag_1 : wspectag_2),    ///CTRL_HC+CTRL_CL RSV_ALU
+		   .we((we1 && (waddr1 == 0)) || (we2 && (waddr2 == 0))),          ///CTRL_HC+CTRL_CL RSV_ALU
+		   .ex_src1(ex_src1_0),                                            ///DATA_HC RSV_ALU
+		   .ex_src2(ex_src2_0),                                            ///DATA_HC RSV_ALU
+		   .ready(ready_0),                                                ///CTRL_HC RSV_ALU
+		   .pc(pc_0),                                                      ///DATA_HC RSV_ALU
+		   .imm(imm_0),                                                    ///DATA_HC RSV_ALU
+		   .rrftag(rrftag_0),                                              ///CTRL_HC RSV_ALU
+		   .dstval(dstval_0),                                              ///CTRL_HC RSV_ALU
+		   .src_a(src_a_0),                                                ///DATA_HC RSV_ALU
+		   .src_b(src_b_0),                                                ///DATA_HC RSV_ALU
+		   .alu_op(alu_op_0),                                              ///DATA_HC RSV_ALU
+		   .spectag(spectag_0),                                            ///CTRL_HC RSV_ALU
+		   .exrslt1(exrslt1),                                              ///DATA_HC RSV_ALU
+		   .exdst1(exdst1),                                                ///CTRL_HC RSV_ALU
+		   .kill_spec1(kill_spec1),                                        ///CTRL_HC RSV_ALU
+		   .exrslt2(exrslt2),                                              ///DATA_HC RSV_ALU
+		   .exdst2(exdst2),                                                ///CTRL_HC RSV_ALU
+		   .kill_spec2(kill_spec2),                                        ///CTRL_HC RSV_ALU
+		   .exrslt3(exrslt3),                                              ///DATA_HC RSV_ALU
+		   .exdst3(exdst3),                                                ///CTRL_HC RSV_ALU
+		   .kill_spec3(kill_spec3),                                        ///CTRL_HC RSV_ALU
+		   .exrslt4(exrslt4),                                              ///DATA_HC RSV_ALU
+		   .exdst4(exdst4),                                                ///CTRL_HC RSV_ALU
+		   .kill_spec4(kill_spec4),                                        ///CTRL_HC RSV_ALU
+		   .exrslt5(exrslt5),                                              ///DATA_HC RSV_ALU
+		   .exdst5(exdst5),                                                ///CTRL_HC RSV_ALU
+		   .kill_spec5(kill_spec5)                                         ///CTRL_HC RSV_ALU
 		   );
 
    rs_alu_ent ent1(                                                       ///DC
@@ -800,7 +799,7 @@ module rs_alu
 		   .kill_spec5(kill_spec5)                                      ///DC
 		   );                                                           ///DC
    
-   assign ex_src1 = (issueaddr == 0) ? ex_src1_0 :
+   assign ex_src1 = (issueaddr == 0) ? ex_src1_0 :   ///DATA_CL RSV_ALU
 		    (issueaddr == 1) ? ex_src1_1 :              ///DC
 		    (issueaddr == 2) ? ex_src1_2 :              ///DC
 		    (issueaddr == 3) ? ex_src1_3 :              ///DC
@@ -808,7 +807,7 @@ module rs_alu
 		    (issueaddr == 5) ? ex_src1_5 :              ///DC
 		    (issueaddr == 6) ? ex_src1_6 : ex_src1_7;   ///DC
 
-   assign ex_src2 = (issueaddr == 0) ? ex_src2_0 :
+   assign ex_src2 = (issueaddr == 0) ? ex_src2_0 :   ///DATA_CL RSV_ALU
 		    (issueaddr == 1) ? ex_src2_1 :              ///DC
 		    (issueaddr == 2) ? ex_src2_2 :              ///DC
 		    (issueaddr == 3) ? ex_src2_3 :              ///DC
@@ -816,7 +815,7 @@ module rs_alu
 		    (issueaddr == 5) ? ex_src2_5 :              ///DC
 		    (issueaddr == 6) ? ex_src2_6 : ex_src2_7;   ///DC
 
-   assign pc = (issueaddr == 0) ? pc_0 :
+   assign pc = (issueaddr == 0) ? pc_0 :   ///DATA_CL RSV_ALU
 	       (issueaddr == 1) ? pc_1 :                    ///DC
 	       (issueaddr == 2) ? pc_2 :                    ///DC
 	       (issueaddr == 3) ? pc_3 :                    ///DC
@@ -824,7 +823,7 @@ module rs_alu
 	       (issueaddr == 5) ? pc_5 :                    ///DC
 	       (issueaddr == 6) ? pc_6 : pc_7;              ///DC
    
-   assign imm = (issueaddr == 0) ? imm_0 :
+   assign imm = (issueaddr == 0) ? imm_0 :   ///DATA_CL RSV_ALU
 		(issueaddr == 1) ? imm_1 :                      ///DC
 		(issueaddr == 2) ? imm_2 :                      ///DC
 		(issueaddr == 3) ? imm_3 :                      ///DC
@@ -832,7 +831,7 @@ module rs_alu
 		(issueaddr == 5) ? imm_5 :                      ///DC
 		(issueaddr == 6) ? imm_6 : imm_7;               ///DC
    
-   assign rrftag = (issueaddr == 0) ? rrftag_0 :
+   assign rrftag = (issueaddr == 0) ? rrftag_0 :   ///CTRL_CL RSV_ALU
 		   (issueaddr == 1) ? rrftag_1 :                 ///DC
 		   (issueaddr == 2) ? rrftag_2 :                 ///DC
 		   (issueaddr == 3) ? rrftag_3 :                 ///DC
@@ -840,7 +839,7 @@ module rs_alu
 		   (issueaddr == 5) ? rrftag_5 :                 ///DC
 		   (issueaddr == 6) ? rrftag_6 : rrftag_7;       ///DC
    
-   assign dstval = (issueaddr == 0) ? dstval_0 :
+   assign dstval = (issueaddr == 0) ? dstval_0 :   ///CTRL_CL RSV_ALU
 		   (issueaddr == 1) ? dstval_1 :                  ///DC
 		   (issueaddr == 2) ? dstval_2 :                  ///DC
 		   (issueaddr == 3) ? dstval_3 :                  ///DC
@@ -848,7 +847,7 @@ module rs_alu
 		   (issueaddr == 5) ? dstval_5 :                  ///DC
 		   (issueaddr == 6) ? dstval_6 : dstval_7;        ///DC
    
-   assign src_a = (issueaddr == 0) ? src_a_0 :
+   assign src_a = (issueaddr == 0) ? src_a_0 :   ///DATA_CL RSV_ALU
 		  (issueaddr == 1) ? src_a_1 :                    ///DC
 		  (issueaddr == 2) ? src_a_2 :                    ///DC
 		  (issueaddr == 3) ? src_a_3 :                    ///DC
@@ -856,7 +855,7 @@ module rs_alu
 		  (issueaddr == 5) ? src_a_5 :                    ///DC
 		  (issueaddr == 6) ? src_a_6 : src_a_7;           ///DC
    
-   assign src_b = (issueaddr == 0) ? src_b_0 :
+   assign src_b = (issueaddr == 0) ? src_b_0 :   ///DATA_CL RSV_ALU
 		  (issueaddr == 1) ? src_b_1 :                    ///DC
 		  (issueaddr == 2) ? src_b_2 :                    ///DC
 		  (issueaddr == 3) ? src_b_3 :                    ///DC
@@ -864,7 +863,7 @@ module rs_alu
 		  (issueaddr == 5) ? src_b_5 :                    ///DC
 		  (issueaddr == 6) ? src_b_6 : src_b_7;           ///DC
    
-   assign alu_op = (issueaddr == 0) ? alu_op_0 :
+   assign alu_op = (issueaddr == 0) ? alu_op_0 :   ///DATA_CL RSV_ALU
 		   (issueaddr == 1) ? alu_op_1 :                  ///DC
 		   (issueaddr == 2) ? alu_op_2 :                  ///DC
 		   (issueaddr == 3) ? alu_op_3 :                  ///DC
@@ -872,7 +871,7 @@ module rs_alu
 		   (issueaddr == 5) ? alu_op_5 :                  ///DC
 		   (issueaddr == 6) ? alu_op_6 : alu_op_7;        ///DC
    
-   assign spectag = (issueaddr == 0) ? spectag_0 :
+   assign spectag = (issueaddr == 0) ? spectag_0 :   ///CTRL_CL RSV_ALU
 		    (issueaddr == 1) ? spectag_1 :                ///DC
 		    (issueaddr == 2) ? spectag_2 :                ///DC
 		    (issueaddr == 3) ? spectag_3 :                ///DC

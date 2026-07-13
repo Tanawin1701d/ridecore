@@ -3,107 +3,107 @@
 `include "alu_ops.vh"
 
 `default_nettype none
-module decoder(
-	       input wire [31:0] 		  inst,
-	       output reg [`IMM_TYPE_WIDTH-1:0]   imm_type,
-	       output wire [`REG_SEL-1:0] 	  rs1,
-	       output wire [`REG_SEL-1:0] 	  rs2,
-	       output wire [`REG_SEL-1:0] 	  rd,
-	       output reg [`SRC_A_SEL_WIDTH-1:0]  src_a_sel,
-               output reg [`SRC_B_SEL_WIDTH-1:0]  src_b_sel,
-	       output reg 			  wr_reg,
+module decoder(                                                ///MD DECODE
+	       input wire [31:0] 		  inst,                    ///DATA_HC DECODE
+	       output reg [`IMM_TYPE_WIDTH-1:0]   imm_type,        ///DATA_HC DECODE
+	       output wire [`REG_SEL-1:0] 	  rs1,                 ///DATA_HC DECODE
+	       output wire [`REG_SEL-1:0] 	  rs2,                 ///DATA_HC DECODE
+	       output wire [`REG_SEL-1:0] 	  rd,                  ///DATA_HC DECODE
+	       output reg [`SRC_A_SEL_WIDTH-1:0]  src_a_sel,       ///DATA_HC DECODE
+               output reg [`SRC_B_SEL_WIDTH-1:0]  src_b_sel,   ///DATA_HC DECODE
+	       output reg 			  wr_reg,                      ///DATA_HC DECODE
 	       
-	       output reg 			  uses_rs1,
-	       output reg 			  uses_rs2,
-	       output reg 			  illegal_instruction,
-	       output reg [`ALU_OP_WIDTH-1:0] 	  alu_op,
-	       output reg [`RS_ENT_SEL-1:0] 	  rs_ent,
+	       output reg 			  uses_rs1,                    ///DATA_HC DECODE
+	       output reg 			  uses_rs2,                    ///DATA_HC DECODE
+	       output reg 			  illegal_instruction,         ///CTRL_HC DECODE
+	       output reg [`ALU_OP_WIDTH-1:0] 	  alu_op,          ///DATA_HC DECODE
+	       output reg [`RS_ENT_SEL-1:0] 	  rs_ent,          ///DATA_HC DECODE
 //	       output reg 			  dmem_use,
 //	       output reg 			  dmem_write,
-	       output wire [2:0] 		  dmem_size,
-	       output wire [`MEM_TYPE_WIDTH-1:0]  dmem_type, 
-	       output reg [`MD_OP_WIDTH-1:0] 	  md_req_op,
-	       output reg 			  md_req_in_1_signed,
-	       output reg 			  md_req_in_2_signed,
-	       output reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel
+	       output wire [2:0] 		  dmem_size,               ///DATA_HC DECODE
+	       output wire [`MEM_TYPE_WIDTH-1:0]  dmem_type,       ///DATA_HC DECODE
+	       output reg [`MD_OP_WIDTH-1:0] 	  md_req_op,       ///DATA_HC DECODE
+	       output reg 			  md_req_in_1_signed,          ///DATA_HC DECODE
+	       output reg 			  md_req_in_2_signed,          ///DATA_HC DECODE
+	       output reg [`MD_OUT_SEL_WIDTH-1:0] md_req_out_sel   ///DATA_HC DECODE
 
 	       );
 
-   wire [`ALU_OP_WIDTH-1:0] 			  srl_or_sra;
-   wire [`ALU_OP_WIDTH-1:0] 			  add_or_sub;
-   wire [`RS_ENT_SEL-1:0] 			  rs_ent_md;
+   wire [`ALU_OP_WIDTH-1:0] 			  srl_or_sra;   ///DATA_HWD DECODE
+   wire [`ALU_OP_WIDTH-1:0] 			  add_or_sub;   ///DATA_HWD DECODE
+   wire [`RS_ENT_SEL-1:0] 			  rs_ent_md;        ///DATA_HWD DECODE
    
-   wire [6:0] 		    opcode = inst[6:0];
-   wire [6:0] 		    funct7 = inst[31:25];
-   wire [11:0] 		    funct12 = inst[31:20];
-   wire [2:0] 		    funct3 = inst[14:12];
+   wire [6:0] 		    opcode = inst[6:0];     ///DATA_CL DECODE
+   wire [6:0] 		    funct7 = inst[31:25];   ///DATA_CL DECODE
+   wire [11:0] 		    funct12 = inst[31:20];  ///DATA_CL DECODE
+   wire [2:0] 		    funct3 = inst[14:12];   ///DATA_CL DECODE
 // reg [`MD_OP_WIDTH-1:0]   md_req_op;
-   reg [`ALU_OP_WIDTH-1:0]  alu_op_arith;
+   reg [`ALU_OP_WIDTH-1:0]  alu_op_arith;       ///DATA_HWD DECODE
    
-   assign rd = inst[11:7];
-   assign rs1 = inst[19:15];
-   assign rs2 = inst[24:20];
+   assign rd = inst[11:7];                      ///DATA_CL DECODE
+   assign rs1 = inst[19:15];                    ///DATA_CL DECODE
+   assign rs2 = inst[24:20];                    ///DATA_CL DECODE
 
-   assign dmem_size = {1'b0,funct3[1:0]};
-   assign dmem_type = funct3;
+   assign dmem_size = {1'b0,funct3[1:0]};       ///DATA_CL DECODE
+   assign dmem_type = funct3;                   ///DATA_DT DECODE
    
-   always @ (*) begin
-      imm_type = `IMM_I;
-      src_a_sel = `SRC_A_RS1;
-      src_b_sel = `SRC_B_IMM;
-      wr_reg = 1'b0;
-      uses_rs1 = 1'b1;
-      uses_rs2 = 1'b0;
-      illegal_instruction = 1'b0;
+   always @ (*) begin                           ///DATA_CL DECODE
+      imm_type = `IMM_I;                        ///DATA_DT DECODE
+      src_a_sel = `SRC_A_RS1;                   ///DATA_DT DECODE
+      src_b_sel = `SRC_B_IMM;                   ///DATA_DT DECODE
+      wr_reg = 1'b0;                            ///DATA_DT DECODE
+      uses_rs1 = 1'b1;                          ///DATA_DT DECODE
+      uses_rs2 = 1'b0;                          ///DATA_DT DECODE
+      illegal_instruction = 1'b0;               ///CTRL_DT DECODE
       //      dmem_use = 1'b0;
       //     dmem_write = 1'b0;
-      rs_ent = `RS_ENT_ALU;
-      alu_op = `ALU_OP_ADD;
+      rs_ent = `RS_ENT_ALU;                     ///DATA_DT DECODE
+      alu_op = `ALU_OP_ADD;                     ///DATA_DT DECODE
       
-      case (opcode)
-	`RV32_LOAD : begin
+      case (opcode)                             ///DATA_CL DECODE
+	`RV32_LOAD : begin                          ///DATA_CL DECODE
 //           dmem_use = 1'b1;
-           wr_reg = 1'b1;
-	   rs_ent = `RS_ENT_LDST;
+           wr_reg = 1'b1;                       ///DATA_DT DECODE
+	   rs_ent = `RS_ENT_LDST;                   ///DATA_DT DECODE
 //           wb_src_sel_DX = `WB_SRC_MEM;
         end
-        `RV32_STORE : begin
-           uses_rs2 = 1'b1;
-           imm_type = `IMM_S;
+        `RV32_STORE : begin                    ///DATA_CL DECODE
+           uses_rs2 = 1'b1;                    ///DATA_DT DECODE
+           imm_type = `IMM_S;                  ///DATA_DT DECODE
 //           dmem_use = 1'b1;
  //          dmem_write = 1'b1;
-	   rs_ent = `RS_ENT_LDST;
+	   rs_ent = `RS_ENT_LDST;                  ///DATA_DT DECODE
         end
-        `RV32_BRANCH : begin
-           uses_rs2 = 1'b1;
+        `RV32_BRANCH : begin                   ///DATA_CL DECODE
+           uses_rs2 = 1'b1;                    ///DATA_DT DECODE
            //branch_taken_unkilled = cmp_true;
-           src_b_sel = `SRC_B_RS2;
-           case (funct3)
-             `RV32_FUNCT3_BEQ : alu_op = `ALU_OP_SEQ;
-             `RV32_FUNCT3_BNE : alu_op = `ALU_OP_SNE;
-             `RV32_FUNCT3_BLT : alu_op = `ALU_OP_SLT;
-             `RV32_FUNCT3_BLTU : alu_op = `ALU_OP_SLTU;
-             `RV32_FUNCT3_BGE : alu_op = `ALU_OP_SGE;
-             `RV32_FUNCT3_BGEU : alu_op = `ALU_OP_SGEU;
-             default : illegal_instruction = 1'b1;
+           src_b_sel = `SRC_B_RS2;             ///DATA_DT DECODE
+           case (funct3)   ///DATA_CL DECODE
+             `RV32_FUNCT3_BEQ : alu_op = `ALU_OP_SEQ;     ///DATA_DT DECODE
+             `RV32_FUNCT3_BNE : alu_op = `ALU_OP_SNE;     ///DATA_DT DECODE
+             `RV32_FUNCT3_BLT : alu_op = `ALU_OP_SLT;     ///DATA_DT DECODE
+             `RV32_FUNCT3_BLTU : alu_op = `ALU_OP_SLTU;   ///DATA_DT DECODE
+             `RV32_FUNCT3_BGE : alu_op = `ALU_OP_SGE;     ///DATA_DT DECODE
+             `RV32_FUNCT3_BGEU : alu_op = `ALU_OP_SGEU;   ///DATA_DT DECODE
+             default : illegal_instruction = 1'b1;        ///CTRL_DT DECODE
            endcase // case (funct3)
-	   rs_ent = `RS_ENT_BRANCH;
+	   rs_ent = `RS_ENT_BRANCH;                           ///DATA_DT DECODE
         end
-        `RV32_JAL : begin
+        `RV32_JAL : begin                                 ///DATA_CL DECODE
 	   //           jal_unkilled = 1'b1;
-           uses_rs1 = 1'b0;
-           src_a_sel = `SRC_A_PC;
-           src_b_sel = `SRC_B_FOUR;
-           wr_reg = 1'b1;
-	   rs_ent = `RS_ENT_JAL;
+           uses_rs1 = 1'b0;                               ///DATA_DT DECODE
+           src_a_sel = `SRC_A_PC;                         ///DATA_DT DECODE
+           src_b_sel = `SRC_B_FOUR;                       ///DATA_DT DECODE
+           wr_reg = 1'b1;                                 ///DATA_DT DECODE
+	   rs_ent = `RS_ENT_JAL;                              ///DATA_DT DECODE
         end
-        `RV32_JALR : begin
-           illegal_instruction = (funct3 != 0);
+        `RV32_JALR : begin                        ///DATA_CL DECODE
+           illegal_instruction = (funct3 != 0);   ///CTRL_CL DECODE
 	   //           jalr_unkilled = 1'b1;
-           src_a_sel = `SRC_A_PC;
-           src_b_sel = `SRC_B_FOUR;
-           wr_reg = 1'b1;
-	   rs_ent = `RS_ENT_JALR;
+           src_a_sel = `SRC_A_PC;                 ///DATA_DT DECODE
+           src_b_sel = `SRC_B_FOUR;               ///DATA_DT DECODE
+           wr_reg = 1'b1;                         ///DATA_DT DECODE
+	   rs_ent = `RS_ENT_JALR;                     ///DATA_DT DECODE
         end
 	/*
         `RV32_MISC_MEM : begin
@@ -124,18 +124,18 @@ module decoder(
            endcase // case (funct3)
         end
 	 */
-        `RV32_OP_IMM : begin
-           alu_op = alu_op_arith;
-           wr_reg = 1'b1;
+        `RV32_OP_IMM : begin                           ///DATA_CL DECODE
+           alu_op = alu_op_arith;                      ///DATA_DT DECODE
+           wr_reg = 1'b1;                              ///DATA_DT DECODE
         end
-        `RV32_OP  : begin
-           uses_rs2 = 1'b1;
-           src_b_sel = `SRC_B_RS2;
-           alu_op = alu_op_arith;
-           wr_reg = 1'b1;
-           if (funct7 == `RV32_FUNCT7_MUL_DIV) begin
+        `RV32_OP  : begin                              ///DATA_CL DECODE
+           uses_rs2 = 1'b1;                            ///DATA_DT DECODE
+           src_b_sel = `SRC_B_RS2;                     ///DATA_DT DECODE
+           alu_op = alu_op_arith;                      ///DATA_DT DECODE
+           wr_reg = 1'b1;                              ///DATA_DT DECODE
+           if (funct7 == `RV32_FUNCT7_MUL_DIV) begin   ///CTRL_CL DECODE
 //              uses_md_unkilled = 1'b1;
-	      rs_ent = rs_ent_md;
+	      rs_ent = rs_ent_md;   ///DATA_DT DECODE
 //              wb_src_sel_DX = `WB_SRC_MD;
            end
         end
@@ -169,87 +169,87 @@ module decoder(
            endcase // case (funct3)
         end
 	 */
-        `RV32_AUIPC : begin
-           uses_rs1 = 1'b0;
-           src_a_sel = `SRC_A_PC;
-           imm_type = `IMM_U;
-           wr_reg = 1'b1;
+        `RV32_AUIPC : begin         ///DATA_CL DECODE
+           uses_rs1 = 1'b0;         ///DATA_DT DECODE
+           src_a_sel = `SRC_A_PC;   ///DATA_DT DECODE
+           imm_type = `IMM_U;       ///DATA_DT DECODE
+           wr_reg = 1'b1;           ///DATA_DT DECODE
         end
-        `RV32_LUI : begin
-           uses_rs1 = 1'b0;
-           src_a_sel = `SRC_A_ZERO;
-           imm_type = `IMM_U;
-           wr_reg = 1'b1;
+        `RV32_LUI : begin             ///DATA_CL DECODE
+           uses_rs1 = 1'b0;           ///DATA_DT DECODE
+           src_a_sel = `SRC_A_ZERO;   ///DATA_DT DECODE
+           imm_type = `IMM_U;         ///DATA_DT DECODE
+           wr_reg = 1'b1;             ///DATA_DT DECODE
         end
-        default : begin
-           illegal_instruction = 1'b1;
+        default : begin                  ///DATA_CL DECODE
+           illegal_instruction = 1'b1;   ///CTRL_DT DECODE
         end
       endcase // case (opcode)
    end // always @ (*)
 
-   assign add_or_sub = ((opcode == `RV32_OP) && (funct7[5])) ? `ALU_OP_SUB : `ALU_OP_ADD;
-   assign srl_or_sra = (funct7[5]) ? `ALU_OP_SRA : `ALU_OP_SRL;
+   assign add_or_sub = ((opcode == `RV32_OP) && (funct7[5])) ? `ALU_OP_SUB : `ALU_OP_ADD;   ///DATA_CL DECODE
+   assign srl_or_sra = (funct7[5]) ? `ALU_OP_SRA : `ALU_OP_SRL;                             ///DATA_CL DECODE
 
-   always @(*) begin
-      case (funct3)
-        `RV32_FUNCT3_ADD_SUB : alu_op_arith = add_or_sub;
-        `RV32_FUNCT3_SLL : alu_op_arith = `ALU_OP_SLL;
-        `RV32_FUNCT3_SLT : alu_op_arith = `ALU_OP_SLT;
-        `RV32_FUNCT3_SLTU : alu_op_arith = `ALU_OP_SLTU;
-        `RV32_FUNCT3_XOR : alu_op_arith = `ALU_OP_XOR;
-        `RV32_FUNCT3_SRA_SRL : alu_op_arith = srl_or_sra;
-        `RV32_FUNCT3_OR : alu_op_arith = `ALU_OP_OR;
-        `RV32_FUNCT3_AND : alu_op_arith = `ALU_OP_AND;
-        default : alu_op_arith = `ALU_OP_ADD;
+   always @(*) begin   ///DATA_CL DECODE
+      case (funct3)   ///DATA_CL DECODE
+        `RV32_FUNCT3_ADD_SUB : alu_op_arith = add_or_sub; ///DATA_DT DECODE
+        `RV32_FUNCT3_SLL : alu_op_arith = `ALU_OP_SLL;    ///DATA_DT DECODE
+        `RV32_FUNCT3_SLT : alu_op_arith = `ALU_OP_SLT;    ///DATA_DT DECODE
+        `RV32_FUNCT3_SLTU : alu_op_arith = `ALU_OP_SLTU;  ///DATA_DT DECODE
+        `RV32_FUNCT3_XOR : alu_op_arith = `ALU_OP_XOR;    ///DATA_DT DECODE
+        `RV32_FUNCT3_SRA_SRL : alu_op_arith = srl_or_sra; ///DATA_DT DECODE
+        `RV32_FUNCT3_OR : alu_op_arith = `ALU_OP_OR;      ///DATA_DT DECODE
+        `RV32_FUNCT3_AND : alu_op_arith = `ALU_OP_AND;    ///DATA_DT DECODE
+        default : alu_op_arith = `ALU_OP_ADD;             ///DATA_DT DECODE
       endcase // case (funct3)
    end // always @ begin
 
 
    //assign md_req_valid = uses_md;
-   assign rs_ent_md = (
-		       (funct3 == `RV32_FUNCT3_MUL) ||
-		       (funct3 == `RV32_FUNCT3_MULH) ||
-		       (funct3 == `RV32_FUNCT3_MULHSU) ||
-		       (funct3 == `RV32_FUNCT3_MULHU)
-		       ) ? `RS_ENT_MUL : `RS_ENT_DIV;
+   assign rs_ent_md = (   ///DATA_CL DECODE
+		       (funct3 == `RV32_FUNCT3_MUL) ||      ///DATA_CL DECODE
+		       (funct3 == `RV32_FUNCT3_MULH) ||     ///DATA_CL DECODE
+		       (funct3 == `RV32_FUNCT3_MULHSU) ||   ///DATA_CL DECODE
+		       (funct3 == `RV32_FUNCT3_MULHU)       ///DATA_CL DECODE
+		       ) ? `RS_ENT_MUL : `RS_ENT_DIV;       ///DATA_CL DECODE
    
-   always @(*) begin
-      md_req_op = `MD_OP_MUL;
-      md_req_in_1_signed = 0;
-      md_req_in_2_signed = 0;
-      md_req_out_sel = `MD_OUT_LO;
-      case (funct3)
-        `RV32_FUNCT3_MUL : begin
+   always @(*) begin   ///DATA_CL DECODE
+      md_req_op = `MD_OP_MUL;                       ///DATA_DT DECODE
+      md_req_in_1_signed = 0;                       ///DATA_DT DECODE
+      md_req_in_2_signed = 0;                       ///DATA_DT DECODE
+      md_req_out_sel = `MD_OUT_LO;                  ///DATA_DT DECODE
+      case (funct3)                                 ///DATA_CL DECODE
+        `RV32_FUNCT3_MUL : begin                    ///DATA_CL DECODE
         end
-        `RV32_FUNCT3_MULH : begin
-           md_req_in_1_signed = 1;
-           md_req_in_2_signed = 1;
-           md_req_out_sel = `MD_OUT_HI;
+        `RV32_FUNCT3_MULH : begin                   ///DATA_CL DECODE
+           md_req_in_1_signed = 1;                  ///DATA_DT DECODE
+           md_req_in_2_signed = 1;                  ///DATA_DT DECODE
+           md_req_out_sel = `MD_OUT_HI;             ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_MULHSU : begin
-           md_req_in_1_signed = 1;
-           md_req_out_sel = `MD_OUT_HI;
+        `RV32_FUNCT3_MULHSU : begin                 ///DATA_CL DECODE
+           md_req_in_1_signed = 1;                  ///DATA_DT DECODE
+           md_req_out_sel = `MD_OUT_HI;             ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_MULHU : begin
-           md_req_out_sel = `MD_OUT_HI;
+        `RV32_FUNCT3_MULHU : begin                  ///DATA_CL DECODE
+           md_req_out_sel = `MD_OUT_HI;             ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_DIV : begin
-           md_req_op = `MD_OP_DIV;
-           md_req_in_1_signed = 1;
-           md_req_in_2_signed = 1;
+        `RV32_FUNCT3_DIV : begin                    ///DATA_CL DECODE
+           md_req_op = `MD_OP_DIV;                  ///DATA_DT DECODE
+           md_req_in_1_signed = 1;                  ///DATA_DT DECODE
+           md_req_in_2_signed = 1;                  ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_DIVU : begin
-           md_req_op = `MD_OP_DIV;
+        `RV32_FUNCT3_DIVU : begin                   ///DATA_CL DECODE
+           md_req_op = `MD_OP_DIV;                  ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_REM : begin
-           md_req_op = `MD_OP_REM;
-           md_req_in_1_signed = 1;
-           md_req_in_2_signed = 1;
-           md_req_out_sel = `MD_OUT_REM;
+        `RV32_FUNCT3_REM : begin                    ///DATA_CL DECODE
+           md_req_op = `MD_OP_REM;                  ///DATA_DT DECODE
+           md_req_in_1_signed = 1;                  ///DATA_DT DECODE
+           md_req_in_2_signed = 1;                  ///DATA_DT DECODE
+           md_req_out_sel = `MD_OUT_REM;            ///DATA_DT DECODE
         end
-        `RV32_FUNCT3_REMU : begin
-           md_req_op = `MD_OP_REM;
-           md_req_out_sel = `MD_OUT_REM;
+        `RV32_FUNCT3_REMU : begin          ///DATA_CL DECODE
+           md_req_op = `MD_OP_REM;         ///DATA_DT DECODE
+           md_req_out_sel = `MD_OUT_REM;   ///DATA_DT DECODE
         end
       endcase
    end

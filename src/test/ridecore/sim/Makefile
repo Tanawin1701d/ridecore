@@ -22,7 +22,6 @@ $(MD)/pipeline_if.v \
 $(MD)/pipeline.v \
 $(MD)/prioenc.v \
 $(MD)/ram_sync_nolatch.v \
-$(MD)/ram_sync.v \
 $(MD)/reorderbuf.v \
 $(MD)/rrf_freelistmanager.v \
 $(MD)/rrf.v \
