@@ -27,6 +27,7 @@ module arf   ///MD ARF
    output wire [`RRF_SEL-1:0] 	 rs2_1tag,                   ///CTRL_HC ARF
    output wire [`RRF_SEL-1:0] 	 rs1_2tag,                   ///CTRL_HC ARF
    output wire [`RRF_SEL-1:0] 	 rs2_2tag,                   ///CTRL_HC ARF
+
    input wire [`REG_SEL-1:0] 	 tagbusy1_addr,              ///DATA_HC ARF
    input wire [`REG_SEL-1:0] 	 tagbusy2_addr,              ///DATA_HC ARF
    input wire 			 tagbusy1_we,                        ///CTRL_HC ARF

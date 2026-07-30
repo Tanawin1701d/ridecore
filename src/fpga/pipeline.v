@@ -777,44 +777,44 @@ module pipeline   ///MD CORE
 				 .rdy(rdy1_1)                                ///CTRL_HC DISPATCH
 				 );
 
-   sourceoperand_manager sopm2_1(                            ///MD DISPATCH
-				 .arfdata(adat2_1),                          ///DATA_HC DISPATCH
-				 .arf_busy(abusy2_1),                        ///CTRL_HC DISPATCH
-				 .rrf_valid(rvalid2_1),                      ///CTRL_HC DISPATCH
-				 .rrftag(rs2_1tag),                          ///CTRL_HC DISPATCH
-				 .rrfdata(rdat2_1),                          ///DATA_HC DISPATCH
-				 .dst1_renamed(dst1_renamed),                ///CTRL_HC DISPATCH
-				 .src_eq_dst1(1'b0),                         ///CTRL_HC DISPATCH
-				 .src_eq_0((rs2_1_id == 0) ? 1'b1 : 1'b0),   ///CTRL_HC+CTRL_CL DISPATCH
-				 .src(opr2_1),                               ///DATA_HC DISPATCH
-				 .rdy(rdy2_1)                                ///CTRL_HC DISPATCH
-				 );
+   sourceoperand_manager sopm2_1(                            ///DC
+				 .arfdata(adat2_1),                          ///DC
+				 .arf_busy(abusy2_1),                        ///DC
+				 .rrf_valid(rvalid2_1),                      ///DC
+				 .rrftag(rs2_1tag),                          ///DC
+				 .rrfdata(rdat2_1),                          ///DC
+				 .dst1_renamed(dst1_renamed),                ///DC
+				 .src_eq_dst1(1'b0),                         ///DC
+				 .src_eq_0((rs2_1_id == 0) ? 1'b1 : 1'b0),   ///DC
+				 .src(opr2_1),                               ///DC
+				 .rdy(rdy2_1)                                ///DC
+				 );                                          ///DC
 
-   sourceoperand_manager sopm1_2(                            ///MD DISPATCH
-				 .arfdata(adat1_2),                          ///DATA_HC DISPATCH
-				 .arf_busy(abusy1_2),                        ///CTRL_HC DISPATCH
-				 .rrf_valid(rvalid1_2),                      ///CTRL_HC DISPATCH
-				 .rrftag(rs1_2tag),                          ///CTRL_HC DISPATCH
-				 .rrfdata(rdat1_2),                          ///DATA_HC DISPATCH
-				 .dst1_renamed(dst1_renamed),                ///CTRL_HC DISPATCH
-				 .src_eq_dst1(rs1_2_eq_dst1_id),             ///CTRL_HC DISPATCH
-				 .src_eq_0((rs1_2_id == 0) ? 1'b1 : 1'b0),   ///CTRL_HC+CTRL_CL DISPATCH
-				 .src(opr1_2),                               ///DATA_HC DISPATCH
-				 .rdy(rdy1_2)                                ///CTRL_HC DISPATCH
-				 );
+   sourceoperand_manager sopm1_2(                            ///DC
+				 .arfdata(adat1_2),                          ///DC
+				 .arf_busy(abusy1_2),                        ///DC
+				 .rrf_valid(rvalid1_2),                      ///DC
+				 .rrftag(rs1_2tag),                          ///DC
+				 .rrfdata(rdat1_2),                          ///DC
+				 .dst1_renamed(dst1_renamed),                ///DC
+				 .src_eq_dst1(rs1_2_eq_dst1_id),             ///DC
+				 .src_eq_0((rs1_2_id == 0) ? 1'b1 : 1'b0),   ///DC
+				 .src(opr1_2),                               ///DC
+				 .rdy(rdy1_2)                                ///DC
+				 );                                          ///DC
 
-   sourceoperand_manager sopm2_2(                            ///MD DISPATCH
-				 .arfdata(adat2_2),                          ///DATA_HC DISPATCH
-				 .arf_busy(abusy2_2),                        ///CTRL_HC DISPATCH
-				 .rrf_valid(rvalid2_2),                      ///CTRL_HC DISPATCH
-				 .rrftag(rs2_2tag),                          ///CTRL_HC DISPATCH
-				 .rrfdata(rdat2_2),                          ///DATA_HC DISPATCH
-				 .dst1_renamed(dst1_renamed),                ///CTRL_HC DISPATCH
-				 .src_eq_dst1(rs2_2_eq_dst1_id),             ///CTRL_HC DISPATCH
-				 .src_eq_0((rs2_2_id == 0) ? 1'b1 : 1'b0),   ///CTRL_HC+CTRL_CL DISPATCH
-				 .src(opr2_2),                               ///DATA_HC DISPATCH
-				 .rdy(rdy2_2)                                ///CTRL_HC DISPATCH
-				 );
+   sourceoperand_manager sopm2_2(                            ///DC
+				 .arfdata(adat2_2),                          ///DC
+				 .arf_busy(abusy2_2),                        ///DC
+				 .rrf_valid(rvalid2_2),                      ///DC
+				 .rrftag(rs2_2tag),                          ///DC
+				 .rrfdata(rdat2_2),                          ///DC
+				 .dst1_renamed(dst1_renamed),                ///DC
+				 .src_eq_dst1(rs2_2_eq_dst1_id),             ///DC
+				 .src_eq_0((rs2_2_id == 0) ? 1'b1 : 1'b0),   ///DC
+				 .src(opr2_2),                               ///DC
+				 .rdy(rdy2_2)                                ///DC
+				 );                                          ///DC
 
    
    rrf_freelistmanager rrf_fl(                ///MD RRF
