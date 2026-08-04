@@ -4,6 +4,7 @@
 
 #include "simCtrlRide.h"
 
+#include <chrono>
 
 
 namespace kathryn::o3{
@@ -27,15 +28,21 @@ namespace kathryn::o3{
     _core(core){}
 
     void SimCtrlRide::iterateCycle(){
+        auto st = std::chrono::steady_clock::now();
         _core.clk = 1;
         _core.eval();
         _core.clk = 0;
         _core.eval();
+        _rtlSimSec +=
+            std::chrono::duration<double>(std::chrono::steady_clock::now() - st).count();
     }
 
     void SimCtrlRide::iterateAtEndCycle(){
+        auto st = std::chrono::steady_clock::now();
         _core.clk = 0;
         _core.eval();
+        _rtlSimSec +=
+            std::chrono::duration<double>(std::chrono::steady_clock::now() - st).count();
     }
 
 

@@ -17,6 +17,12 @@ namespace kathryn::o3{
 
     class SimCtrlRide : public O3SimCtrlBase{
 
+    protected:
+        //////// accumulated wall time spent INSIDE Vpipeline::eval() only, so the
+        ///////  testbench work (mem drive, state capture, slot dump) never counts.
+        ///////  counterpart of EventBase::getRtlSimSec() on the kathryn side.
+        double _rtlSimSec = 0;
+
     public:
         Vpipeline& _core;
 
@@ -38,6 +44,9 @@ namespace kathryn::o3{
 
         void  iterateCycle();
         void  iterateAtEndCycle();
+
+        [[nodiscard]] double getRtlSimSec() const {return _rtlSimSec;}
+        void resetRtlSimSec(){_rtlSimSec = 0;}
 
         void  doWorkloadInit (int curTestCaseIdx, bool reqRegTest) override;
         void  doWorkloadCycle(bool recordThisCycle) override;
